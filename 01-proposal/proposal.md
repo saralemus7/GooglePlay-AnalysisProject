@@ -66,7 +66,7 @@ genres.
 
 ``` r
 ggplot(apps, aes(x = Genres, y = Rating, color = `Content Rating`)) + geom_point() +
-labs( title = "Relationship between Genre and Rating", x ="Genre ", y = "Rating out of 5")
+labs( title = "Relationship between Genres and Rating", x ="Genres Covered", y = "Rating out of 5")
 ```
 
     ## Warning: Removed 1474 rows containing missing values (geom_point).
@@ -76,8 +76,10 @@ labs( title = "Relationship between Genre and Rating", x ="Genre ", y = "Rating 
 As shown in the plot above, there may be a correlation between having a
 lower content rating and being in a “family-friendly” genre such as
 Family or game. This interaction will have to be considered when
-building the model. Secondly, there may be an interaction between number
-of reviews and
+building the model. As well, there is a clear interaction between other
+categories such as Mature or Teen being heavily represented among
+certain Genres. Secondly, there may be an interaction between number of
+reviews and
 installs.
 
 ``` r
