@@ -30,9 +30,6 @@ apps <- read_csv("/cloud/project/02-data/googleplaystore.csv")
 apps <- apps %>%
   na.omit(apps)
 ```
-
-## Section 3. Regression Analysis Plan
-
 ```{r rating-distribution}
 ggplot(data = apps, aes(x = Rating)) + geom_histogram(binwidth = 0.1, fill = "blue") + xlim(0,5) +
   labs(title = "Distribution of App Rating")
@@ -53,6 +50,7 @@ We determined median and IQR as our summary statistics because the distribution 
 - In the possible interactions below, we can also see the relationship between our responsible variable `rating` and predictor variables of interest. 
 
 
+## Section 3. Regression Analysis Plan
 
 ### Possible Interactions
 

@@ -52,14 +52,14 @@ individual app on the Google Play
 library(tidyverse)
 ```
 
-    ## ── Attaching packages ────────────────────────────────────────── tidyverse 1.2.1 ──
+    ## ── Attaching packages ────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
 
     ## ✔ ggplot2 3.2.1     ✔ purrr   0.3.2
     ## ✔ tibble  2.1.3     ✔ dplyr   0.8.3
     ## ✔ tidyr   0.8.3     ✔ stringr 1.4.0
     ## ✔ readr   1.3.1     ✔ forcats 0.4.0
 
-    ## ── Conflicts ───────────────────────────────────────────── tidyverse_conflicts() ──
+    ## ── Conflicts ───────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
     ## ✖ dplyr::filter() masks stats::filter()
     ## ✖ dplyr::lag()    masks stats::lag()
 
@@ -99,8 +99,6 @@ apps <- read_csv("/cloud/project/02-data/googleplaystore.csv")
 apps <- apps %>%
   na.omit(apps)
 ```
-
-## Section 3. Regression Analysis Plan
 
 ``` r
 ggplot(data = apps, aes(x = Rating)) + geom_histogram(binwidth = 0.1, fill = "blue") + xlim(0,5) +
@@ -148,6 +146,8 @@ rating of an app is approximately **4.3** and the IQR is **0.5**
   - In the possible interactions below, we can also see the relationship
     between our responsible variable `rating` and predictor variables of
     interest.
+
+## Section 3. Regression Analysis Plan
 
 ### Possible Interactions
 
