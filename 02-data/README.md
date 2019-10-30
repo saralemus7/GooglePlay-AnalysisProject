@@ -4,53 +4,30 @@ The dimensions of our dataset are: 10841 by 13 (there are 13 variables - rows - 
 
 Data Dictionary:
 
+App: Application name	
 
-App
+Category: Category the app belongs to	our of 34 possible categories (ex. Family, Game, Art and Design, etc.)
 
-Application name	
-Category
+Rating: Overall user rating for the app out of 5
 
-Category the app belongs to	
-Rating
+Reviews: Number of user reviews for the app 
 
-Overall user rating of the app (as when scraped)	
-Reviews
+Size: Size of the app in Megabytes
 
-Number of user reviews for the app (as when scraped)	
-Size
+Installs: Number of user downloads/installs for the app 
 
-Size of the app (as when scraped)	String
-Installs
-Installs
+Type: Wether the app of Paid or Free	
 
-Number of user downloads/installs for the app (as when scraped)	String
-Type
-Type
+Price: Price of the app 
 
-Paid or Free	String
-Price
-Price
+Content Rating: Age group the app is targeted at - Children / Mature 21+ / Adult
 
-Price of the app (as when scraped)	String
-Content Rating
-Content Rating
+Genres: The genre(s) an app belongs to; an app can belong to multiple genres (apart from its main category). For eg, a musical family game will belong to Music, Game, Family genres.	
 
-Age group the app is targeted at - Children / Mature 21+ / Adult	String
-Genres
-Genres
+Last Updated: Date when the app was last updated on Play Store
 
-An app can belong to multiple genres (apart from its main category). For eg, a musical family game will belong to Music, Game, Family genres.	Date
-Last Updated
-Last Updated
+Current Ver: Current version of the app available on Play Store 
 
-Date when the app was last updated on Play Store (as when scraped)	String
-Current Ver
-Current Ver
-
-Current version of the app available on Play Store (as when scraped)	String
-Android Ver
-Android Ver
-
-Min required Android version (as when scraped)
+Android Ver: Minimum required Android version 
 
 
