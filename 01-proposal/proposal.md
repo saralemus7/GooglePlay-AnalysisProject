@@ -5,20 +5,61 @@ October 29, 2019
 
 ## Section 1. Introduction
 
-## Section 2. Analysis plan
+As technology has become increasingly prevalent around the world, there
+has been a change in the consumption of media. One of these ways is via
+the purchase of applications (apps) for various smartphones and other
+devices. Several technology companies, including Apple and Google, run
+virtual stores for these apps in which a person can download an app for
+their device. These apps can be for various purposes like socializing,
+playing games, or watching television and movies, among others. While
+any user of a phone can agree that apps hold an important effect on how
+one interacts with technology on a daily basis, the weight of the impact
+becomes even more shocking when one looks at the figures- in 2018,
+global app downloads topped 194 billion (Dignan).
+
+Our motivation for this project is to understand what makes apps (from
+the Google Play store specifically) have favorable ratings.
+Understanding the ratings of an app is important for several reasons.
+First, ratings can be important to the provider- in this case Google-
+who can decide whether an app should continue to be sold to maintain
+their quality standards. Ratings are additionally useful as a direct
+line of communication between the user and the developers- often,
+developers are made aware of changes that need to be made to their apps
+through user feedback. Lastly, reviews serve to inform potential users
+of an app whether or not it is worth their time and can affect future
+downloads. Considering that app users are predicted to spend about $120
+billion in app stores in 2019, understanding which apps do well on the
+Play Store and what factors affect app performance is an immensely
+important question to gain more insight into. Thus leads us to introduce
+our main research questions- What are the relevant factors that affect
+the rating given for apps in the Google Play store? Although this
+project will give a detailed attempt to answer this question, our
+preliminary hypothesis is that the variables Category, Price/Type,
+Genre, Content Rating are the predictor variables that will most affect
+a given app rating and popularity, as measured by the number of installs
+of the app. Furthermore, once we test our hypothesis and determine which
+factors are relevant, we will attempt to use that information to predict
+the success of an app.
+
+## Section 2. Exploratory Data Analysis
+
+The dataset is obtained from Kaggle. It was scraped directly from the
+Google Play Store in August 2018. Each observation represents one
+individual app on the Google Play
+    Store.
 
 ``` r
 library(tidyverse)
 ```
 
-    ## ── Attaching packages ────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
+    ## ── Attaching packages ────────────────────────────────────────── tidyverse 1.2.1 ──
 
     ## ✔ ggplot2 3.2.1     ✔ purrr   0.3.2
     ## ✔ tibble  2.1.3     ✔ dplyr   0.8.3
     ## ✔ tidyr   0.8.3     ✔ stringr 1.4.0
     ## ✔ readr   1.3.1     ✔ forcats 0.4.0
 
-    ## ── Conflicts ───────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+    ## ── Conflicts ───────────────────────────────────────────── tidyverse_conflicts() ──
     ## ✖ dplyr::filter() masks stats::filter()
     ## ✖ dplyr::lag()    masks stats::lag()
 
@@ -169,6 +210,15 @@ both an efficiency and relevancy perspective is much better suited to
 model your data as opposed to other methods.
 
 ## Section 4. References
+
+Gupta, Lavanya. Kaggle. Jan. 2019,
+www.kaggle.com/lava18/google-play-store-apps?fbclid=IwAR36EMS2jg5fhPi-BQlX6Mv4MCk8YUm2XmyOLt0zsKkNyc9JK-JD7aLy-6I.
+Accessed 30 Oct. 2019.
+
+Dignan, Larry. “App Economy Expected to Be $120 Billion in 2019 as Small
+Screen Leads Digital Transformation Efforts.” ZDNet, ZDNet, 16
+Jan. 2019,
+www.zdnet.com/article/app-economy-expected-to-be-120-billion-in-2019-as-small-screen-leads-digital-transformation-efforts/
 
 ## The Data
 

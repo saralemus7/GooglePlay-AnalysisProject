@@ -18,7 +18,7 @@ Installs: Number of user downloads/installs for the app
 
 Type: Wether the app of Paid or Free	
 
-Price: Price of the app 
+Price: Price of the app, USD
 
 Content Rating: Age group the app is targeted at - Children / Mature 21+ / Adult
 
@@ -28,6 +28,6 @@ Last Updated: Date when the app was last updated on Play Store
 
 Current Ver: Current version of the app available on Play Store 
 
-Android Ver: Minimum required Android version 
+Android Ver: Minimum required Android version
 
 
