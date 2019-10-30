@@ -62,11 +62,11 @@ Since our question of interest is measuring the effect of various
 qualities of an app on its rating, there are a number of interactions
 within our predictor variables to consider. First, there is a possible
 interaction between content rating and
-genres.
+categories.
 
 ``` r
-ggplot(apps, aes(x = Genres, y = Rating, color = `Content Rating`)) + geom_point() +
-labs( title = "Relationship between Genres and Rating", x ="Genres Covered", y = "Rating out of 5")
+ggplot(apps, aes(x = Category, y = Rating, color = `Content Rating`)) + geom_point() +
+labs( title = "Relationship between Category and Rating", x ="Category", y = "Rating out of 5")
 ```
 
     ## Warning: Removed 1474 rows containing missing values (geom_point).
@@ -74,12 +74,12 @@ labs( title = "Relationship between Genres and Rating", x ="Genres Covered", y =
 ![](proposal_files/figure-gfm/int-content-1.png)<!-- -->
 
 As shown in the plot above, there may be a correlation between having a
-lower content rating and being in a “family-friendly” genre such as
+lower content rating and being in a “family-friendly” category such as
 Family or game. This interaction will have to be considered when
 building the model. As well, there is a clear interaction between other
 categories such as Mature or Teen being heavily represented among
-certain Genres. Secondly, there may be an interaction between number of
-reviews and
+certain Categories. Secondly, there may be an interaction between number
+of reviews and
 installs.
 
 ``` r
