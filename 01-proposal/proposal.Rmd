@@ -53,6 +53,7 @@ Our ultimate goal is to create the model which most accurately and concisely pre
 
 ### Use of Model and Reason
 
+The regression modeling technique we will use will be Multiple Linear Regression (MLR). Since we are exploring the effect of multiple predictor variables on our response, `rating`, it is apt that we use MLR to model our data. MLR allows us to see the effect of multiple predictors on a response and explore both the significance of each predictor on the response as well as the effect of each predictor on the response. As opposed to Simple Linear Regression, MLR allows us to measure the effect of multiple predictors on your response in one model - SLR only allows us to measure the effect of one predictor on the response in one model. This is very taxing and inefficient for the number of predictors we want to measure. As well, there may be interactions between these predictors that we will be unable to view using SLR. MLR allows us to both model and view the amalgamation of these predictors in their effects on the response variable. MLR from both an efficiency and relevancy perspective is much better suited to model your data as opposed to other methods. 
 
 ## Section 4. References
 
