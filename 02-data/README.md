@@ -4,3 +4,5 @@ The dimensions of our dataset are: 10841 by 13 (there are 13 variables - rows - 
 
 Data Dictionary:
 
+
+
