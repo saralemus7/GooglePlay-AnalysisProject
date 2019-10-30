@@ -56,6 +56,62 @@ apps <- read_csv("/cloud/project/02-data/googleplaystore.csv")
 
 ## Section 3. Regression Analysis Plan
 
+### Possible Interactions
+
+Since our question of interest is measuring the effect of various
+qualities of an app on its rating, there are a number of interactions
+within our predictor variables to consider. First, there is a possible
+interaction between content rating and
+genres.
+
+``` r
+ggplot(apps, aes(x = Genres, y = Rating, color = `Content Rating`)) + geom_point() +
+labs( title = "Relationship between Genre and Rating", x ="Genre ", y = "Rating out of 5")
+```
+
+    ## Warning: Removed 1474 rows containing missing values (geom_point).
+
+![](proposal_files/figure-gfm/int-content-1.png)<!-- -->
+
+As shown in the plot above, there may be a correlation between having a
+lower content rating and being in a “family-friendly” genre such as
+Family or game. This interaction will have to be considered when
+building the model. Secondly, there may be an interaction between number
+of reviews and
+installs.
+
+``` r
+ggplot(apps, aes(x = Reviews, y = Rating, color = Installs)) + geom_point() +
+labs( title = "Relationship between Reviews and Rating", x ="# of Reviews ", y = "Rating out of 5")
+```
+
+    ## Warning: Removed 1475 rows containing missing values (geom_point).
+
+![](proposal_files/figure-gfm/int-installs-1.png)<!-- -->
+
+As shown in this plot, as the number of reviews for an app increases, so
+does the number of installs. This is indicative of an app being popular
+so there is most likely some interaction between these two variables in
+the dataset. Thirdly, there may be an interaction between Type and
+Price. Since Type is an indicator measuring wether an app is paid or
+free, all apps that are free will be correlated with apps that have a
+price = 0 and apps that are paid will be correlated with apps that have
+a price greater than 0.
+
+``` r
+ggplot(apps, aes(x = Type, y = Rating, color = Price)) + geom_point() +
+labs( title = "Relationship between Tyle and Rating", x ="Type", y = "Rating out of 5")
+```
+
+    ## Warning: Removed 1474 rows containing missing values (geom_point).
+
+![](proposal_files/figure-gfm/int-type-1.png)<!-- -->
+
+This is further illustrated through the above plot, which clearly shows
+this interaction. These interactions along with any further ones we may
+find after our preliminary analysis will have to be explored further and
+considered when building our model.
+
 ## Section 4. References
 
 ## The Data
