@@ -47,6 +47,13 @@ labs( title = "Relationship between Tyle and Rating", x ="Type", y = "Rating out
 
 This is further illustrated through the above plot, which clearly shows this interaction. These interactions along with any further ones we may find after our preliminary analysis will have to be explored further and considered when building our model. 
 
+### Model Selection
+
+Our ultimate goal is to create the model which most accurately and concisely predicts the Rating of an app given the predictors in the dataset. We will attempt to choose a model using a minimization of BIC as our criteria as this will allow us to calculate a precise prediction of our response variable while also removing extraneous predictors. We will use BIC as the selection criteria as it penalizes more for erroneous predictors. We will not use R-squared as a criteria for model selection. R squared increases strictly as the number of predictors increases and does not tell us if these additional predictors are significant or not. If we used r-squared we would always choose models with the largest numbers of predictors, which would not always produce the simplest, most accurate model. Unlike R squared, AIC, BIC, and adjusted R squared do penalize for insignificant predictors and can give us a better idea of which predictors actually contribute to the response variable. In order to find our final model, we will use a process of backwards selection slowly adding a combination of relevant predictors into our model. We will then check the BIC values for each of these models as well as the adj-R squared values and find the model with the highest value- this will be the model that most accurately predicts our response with the fewest number of predictors. We will then plot each predictor on the response to determine if the effect is relevant or if there are possible interactions between other variables. As well, we will need to consider potential outliers and extraneous values in our model. Using the distributions of standardized residuals and a calculation of Cook’s distance, we will attempt to determine those observations with high standardized residuals or cook’s distance and determine if those observations have a significant effect on our model. Lastly, we will need to find the VIF factor for each of our final predictors to see if there is any collinearity between them. A VIF greater than 10 would require us to explore possible ways to mitigate interactions between variables or consider dropping predictors are are too heavily correlated. 
+
+### Use of Model and Reason
+
+
 ## Section 4. References
 
 ## The Data
