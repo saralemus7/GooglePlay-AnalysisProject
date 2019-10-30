@@ -11,14 +11,14 @@ October 29, 2019
 library(tidyverse)
 ```
 
-    ## ── Attaching packages ────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
+    ## ── Attaching packages ──────────────────────────────────────────────────── tidyverse 1.2.1 ──
 
     ## ✔ ggplot2 3.2.1     ✔ purrr   0.3.2
     ## ✔ tibble  2.1.3     ✔ dplyr   0.8.3
     ## ✔ tidyr   0.8.3     ✔ stringr 1.4.0
     ## ✔ readr   1.3.1     ✔ forcats 0.4.0
 
-    ## ── Conflicts ───────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+    ## ── Conflicts ─────────────────────────────────────────────────────── tidyverse_conflicts() ──
     ## ✖ dplyr::filter() masks stats::filter()
     ## ✖ dplyr::lag()    masks stats::lag()
 
@@ -54,7 +54,59 @@ apps <- read_csv("/cloud/project/02-data/googleplaystore.csv")
     ## 10473 Reviews no trailing characters M          '/cloud/project/02-data/googleplaystore.csv'
     ## 10473 NA      13 columns             12 columns '/cloud/project/02-data/googleplaystore.csv'
 
+``` r
+apps <- apps %>%
+  na.omit(apps)
+```
+
 ## Section 3. Regression Analysis Plan
+
+``` r
+ggplot(data = apps, aes(x = Rating)) + geom_histogram(binwidth = 0.1, fill = "blue") + xlim(0,5) +
+  labs(title = "Distribution of App Rating")
+```
+
+    ## Warning: Removed 2 rows containing missing values (geom_bar).
+
+![](proposal_files/figure-gfm/rating-distribution-1.png)<!-- -->
+
+``` r
+apps %>% 
+  summarise(median(Rating), IQR(Rating))
+```
+
+    ## # A tibble: 1 x 2
+    ##   `median(Rating)` `IQR(Rating)`
+    ##              <dbl>         <dbl>
+    ## 1              4.3           0.5
+
+``` r
+count(apps, Category) %>% 
+  arrange(desc(n)) 
+```
+
+    ## # A tibble: 33 x 2
+    ##    Category          n
+    ##    <chr>         <int>
+    ##  1 FAMILY         1747
+    ##  2 GAME           1097
+    ##  3 TOOLS           734
+    ##  4 PRODUCTIVITY    351
+    ##  5 MEDICAL         350
+    ##  6 COMMUNICATION   328
+    ##  7 FINANCE         323
+    ##  8 SPORTS          319
+    ##  9 PHOTOGRAPHY     317
+    ## 10 LIFESTYLE       314
+    ## # … with 23 more rows
+
+We determined median and IQR as our summary statistics because the
+distribution of `rating` appears to be slightly left-skewed. The median
+rating of an app is approximately **4.3** and the IQR is **0.5**
+
+  - In the possible interactions below, we can also see the relationship
+    between our responsible variable `rating` and predictor variables of
+    interest.
 
 ### Possible Interactions
 
@@ -68,8 +120,6 @@ categories.
 ggplot(apps, aes(x = Category, y = Rating, color = `Content Rating`)) + geom_point() +
 labs( title = "Relationship between Category and Rating", x ="Category", y = "Rating out of 5")
 ```
-
-    ## Warning: Removed 1474 rows containing missing values (geom_point).
 
 ![](proposal_files/figure-gfm/int-content-1.png)<!-- -->
 
@@ -87,8 +137,6 @@ ggplot(apps, aes(x = Reviews, y = Rating, color = Installs)) + geom_point() +
 labs( title = "Relationship between Reviews and Rating", x ="# of Reviews ", y = "Rating out of 5")
 ```
 
-    ## Warning: Removed 1475 rows containing missing values (geom_point).
-
 ![](proposal_files/figure-gfm/int-installs-1.png)<!-- -->
 
 As shown in this plot, as the number of reviews for an app increases, so
@@ -102,10 +150,8 @@ a price greater than 0.
 
 ``` r
 ggplot(apps, aes(x = Type, y = Rating, color = Price)) + geom_point() +
-labs( title = "Relationship between Tyle and Rating", x ="Type", y = "Rating out of 5")
+labs( title = "Relationship between Type & Rating", x ="Type", y = "Rating out of 5")
 ```
-
-    ## Warning: Removed 1474 rows containing missing values (geom_point).
 
 ![](proposal_files/figure-gfm/int-type-1.png)<!-- -->
 
@@ -176,7 +222,7 @@ model your data as opposed to other methods.
 glimpse(apps)
 ```
 
-    ## Observations: 10,841
+    ## Observations: 9,365
     ## Variables: 13
     ## $ App              <chr> "Photo Editor & Candy Camera & Grid & ScrapBook…
     ## $ Category         <chr> "ART_AND_DESIGN", "ART_AND_DESIGN", "ART_AND_DE…

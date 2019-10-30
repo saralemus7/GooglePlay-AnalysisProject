@@ -18,13 +18,37 @@ library(broom)
 library(knitr) 
 library(ggplot2)
 ```
+
 ```{r load-data}
 apps <- read_csv("/cloud/project/02-data/googleplaystore.csv")
+apps <- apps %>%
+  na.omit(apps)
 ```
 
 
 
 ## Section 3. Regression Analysis Plan
+
+```{r rating-distribution}
+ggplot(data = apps, aes(x = Rating)) + geom_histogram(binwidth = 0.1, fill = "blue") + xlim(0,5) +
+  labs(title = "Distribution of App Rating")
+```
+
+```{r summary-stats}
+apps %>% 
+  summarise(median(Rating), IQR(Rating))
+```
+
+```{r}
+count(apps, Category) %>% 
+  arrange(desc(n)) 
+```
+
+We determined median and IQR as our summary statistics because the distribution of `rating` appears to be slightly left-skewed. The median rating of an app is approximately **4.3** and the IQR is **0.5**
+
+- In the possible interactions below, we can also see the relationship between our responsible variable `rating` and predictor variables of interest. 
+
+
 
 ### Possible Interactions
 Since our question of interest is measuring the effect of various qualities of an app on its rating, there are a number of interactions within our predictor variables to consider. First, there is a possible interaction between content rating and categories. 
@@ -45,7 +69,7 @@ As shown in this plot, as the number of reviews for an app increases, so does th
 
 ```{r int-type}
 ggplot(apps, aes(x = Type, y = Rating, color = Price)) + geom_point() +
-labs( title = "Relationship between Tyle and Rating", x ="Type", y = "Rating out of 5")
+labs( title = "Relationship between Type & Rating", x ="Type", y = "Rating out of 5")
 ```
 
 This is further illustrated through the above plot, which clearly shows this interaction. These interactions along with any further ones we may find after our preliminary analysis will have to be explored further and considered when building our model. 
