@@ -10,8 +10,22 @@ output: github_document
 
 ## Section 2. Analysis plan
 
+
+```{r load-packages}
+library(tidyverse)
+library(broom)
+library(knitr) 
+library(ggplot2)
+```
+```{r load-data}
+apps <- read_csv("/cloud/project/02-data/googleplaystore.csv")
+```
+
 ## Section 3. Regression Analysis Plan
 
 ## Section 4. References
 
 ## The Data
+```{r glimpse}
+glimpse(apps)
+```
