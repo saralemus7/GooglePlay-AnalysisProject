@@ -1,8 +1,8 @@
 ---
 title: "PROJECT TITLE"
 subtitle: "Project Proposal"
-author: "NAME HERE"
-date: "TODAY'S DATE"
+author: "RTime2Shine"
+date: "October 29, 2019"
 output: github_document
 ---
 
