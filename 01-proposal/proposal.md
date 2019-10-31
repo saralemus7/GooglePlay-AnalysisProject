@@ -52,14 +52,14 @@ individual app on the Google Play
 library(tidyverse)
 ```
 
-    ## ── Attaching packages ──────────────────────────────────────────────────── tidyverse 1.2.1 ──
+    ## ── Attaching packages ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
 
     ## ✔ ggplot2 3.2.1     ✔ purrr   0.3.2
     ## ✔ tibble  2.1.3     ✔ dplyr   0.8.3
     ## ✔ tidyr   0.8.3     ✔ stringr 1.4.0
     ## ✔ readr   1.3.1     ✔ forcats 0.4.0
 
-    ## ── Conflicts ─────────────────────────────────────────────────────── tidyverse_conflicts() ──
+    ## ── Conflicts ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
     ## ✖ dplyr::filter() masks stats::filter()
     ## ✖ dplyr::lag()    masks stats::lag()
 
@@ -81,6 +81,7 @@ library(skimr)
     ##     filter
 
 ``` r
+library(readr)
 library(ggplot2)
 ```
 
@@ -213,12 +214,13 @@ rating among apps of different price levels is needed.
 ### Possible Interactions
 
 ``` r
-apps$Price <- as.numeric(apps$Price)
-```
+apps$Price <- as.numeric(gsub('[$.]', '', apps$Price))
+apps <- apps %>%
+  mutate(Price = case_when(
+  Price == 0 ~ "Free", 
+  Price < 5 & Price > 0~ "Between $0 and $4.99", 
+  Price > 5 ~ "Greater than $5"))
 
-    ## Warning: NAs introduced by coercion
-
-``` r
 skim(apps, Price)
 ```
 
@@ -226,33 +228,9 @@ skim(apps, Price)
     ##  n obs: 9365 
     ##  n variables: 13 
     ## 
-    ## ── Variable type:numeric ────────────────────────────────────────────────────────────────────
-    ##  variable missing complete    n mean sd p0 p25 p50 p75 p100     hist
-    ##     Price     647     8718 9365    0  0  0   0   0   0    0 ▁▁▁▇▁▁▁▁
-
-``` r
-filter(apps, Category == "FAMILY", Category == "GAME", Category =="TOOLS",Category =="PRODUCTIVITY", Category =="MEDICAL", Category =="COMMUNICATION", Category =="FINANCE", Category =="SPORTS",Category =="PHOTOGRAPHY", Category =="LIFESTYLE")
-```
-
-    ## # A tibble: 0 x 13
-    ## # … with 13 variables: App <chr>, Category <chr>, Rating <dbl>,
-    ## #   Reviews <dbl>, Size <chr>, Installs <chr>, Type <chr>, Price <dbl>,
-    ## #   `Content Rating` <chr>, Genres <chr>, `Last Updated` <chr>, `Current
-    ## #   Ver` <chr>, `Android Ver` <chr>
-
-``` r
-#mutate(Price = case_when(Price == 0 ~ "Free", Price < 5 & Price > 0~ "Between $0 and $4.99", Price > 5 ~ "Greater than $5"))
-
-skim(apps, Category)
-```
-
-    ## Skim summary statistics
-    ##  n obs: 9365 
-    ##  n variables: 13 
-    ## 
-    ## ── Variable type:character ──────────────────────────────────────────────────────────────────
+    ## ── Variable type:character ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
     ##  variable missing complete    n min max empty n_unique
-    ##  Category       0     9365 9365   4  19     0       33
+    ##     Price       0     9365 9365   4  15     0        2
 
 Since our question of interest is measuring the effect of various
 qualities of an app on its rating, there are a number of interactions
@@ -261,46 +239,53 @@ interaction between content rating and
 categories.
 
 ``` r
-filter(apps, Category == "FAMILY", Category == "GAME", Category =="TOOLS",Category =="PRODUCTIVITY", Category =="MEDICAL", Category =="COMMUNICATION", Category =="FINANCE", Category =="SPORTS",Category =="PHOTOGRAPHY", Category =="LIFESTYLE")
-```
-
-    ## # A tibble: 0 x 13
-    ## # … with 13 variables: App <chr>, Category <chr>, Rating <dbl>,
-    ## #   Reviews <dbl>, Size <chr>, Installs <chr>, Type <chr>, Price <dbl>,
-    ## #   `Content Rating` <chr>, Genres <chr>, `Last Updated` <chr>, `Current
-    ## #   Ver` <chr>, `Android Ver` <chr>
-
-``` r
-ggplot(apps, aes(x = Category, y = Rating, color = `Content Rating`)) + geom_point() +
-labs( title = "Relationship between Category and Rating", x ="Category", y = "Rating out of 5")
+ggplot(apps, aes(x = Category, y = Rating, color = `Content Rating`)) + geom_point() + coord_flip()
 ```
 
 ![](proposal_files/figure-gfm/int-content-1.png)<!-- -->
 
+``` r
+labs( title = "Relationship between Category and Rating", x ="Category", y = "Rating out of 5")
+```
+
+    ## $x
+    ## [1] "Category"
+    ## 
+    ## $y
+    ## [1] "Rating out of 5"
+    ## 
+    ## $title
+    ## [1] "Relationship between Category and Rating"
+    ## 
+    ## attr(,"class")
+    ## [1] "labels"
+
 As shown in the plot above, there may be a correlation between having a
 lower content rating and being in a “family-friendly” category such as
-Family or game. This interaction will have to be considered when
-building the model. As well, there is a clear interaction between other
-categories such as Mature or Teen being heavily represented among
-certain Categories. Secondly, there may be an interaction between number
-of reviews and
-installs.
+Family or game - a clear example of this phenomenon is in the category
+dating. This interaction will have to be considered when building the
+model. As well, there is a clear interaction between other categories
+such as Mature or Teen being heavily represented among certain
+Categories. Secondly, there may be an interaction between number of
+reviews and
+rating.
 
 ``` r
-ggplot(apps, aes(x = Reviews, y = Rating, color = Installs)) + geom_point() +
+ggplot(apps, aes(x = Reviews, y = Rating, color = Reviews)) + geom_point() +
 labs( title = "Relationship between Reviews and Rating", x ="# of Reviews ", y = "Rating out of 5")
 ```
 
-![](proposal_files/figure-gfm/int-installs-1.png)<!-- -->
+![](proposal_files/figure-gfm/int-reviews-1.png)<!-- -->
 
 As shown in this plot, as the number of reviews for an app increases, so
-does the number of installs. This is indicative of an app being popular
-so there is most likely some interaction between these two variables in
-the dataset. Thirdly, there may be an interaction between Type and
-Price. Since Type is an indicator measuring wether an app is paid or
-free, all apps that are free will be correlated with apps that have a
-price = 0 and apps that are paid will be correlated with apps that have
-a price greater than 0.
+does the rating generally. This is indicative of an app being popular so
+as there are more reviews there is most likely more polarization in the
+ratings. There is most likely some interaction between these two
+variables in the dataset. Thirdly, there may be an interaction between
+Type and Price. Since Type is an indicator measuring wether an app is
+paid or free, all apps that are free will be correlated with apps that
+have a price = 0 and apps that are paid will be correlated with apps
+that have a price greater than 0.
 
 ``` r
 ggplot(apps, aes(x = Type, y = Rating, color = Price)) + geom_point() +
@@ -394,7 +379,7 @@ glimpse(apps)
     ## $ Size             <chr> "19M", "14M", "8.7M", "25M", "2.8M", "5.6M", "1…
     ## $ Installs         <chr> "10,000+", "500,000+", "5,000,000+", "50,000,00…
     ## $ Type             <chr> "Free", "Free", "Free", "Free", "Free", "Free",…
-    ## $ Price            <dbl> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+    ## $ Price            <chr> "Free", "Free", "Free", "Free", "Free", "Free",…
     ## $ `Content Rating` <chr> "Everyone", "Everyone", "Everyone", "Teen", "Ev…
     ## $ Genres           <chr> "Art & Design", "Art & Design;Pretend Play", "A…
     ## $ `Last Updated`   <chr> "January 7, 2018", "January 15, 2018", "August …

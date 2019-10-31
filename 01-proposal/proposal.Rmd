@@ -23,6 +23,7 @@ library(tidyverse)
 library(broom)
 library(knitr) 
 library(skimr)
+library(readr)
 library(ggplot2)
 ```
 
@@ -83,30 +84,31 @@ This tells us that whether an app is free or paid doesn't appear to have a major
 ### Possible Interactions
 
 ```{r mutation}
-apps$Price <- as.numeric(apps$Price)
-skim(apps, Price)
-filter(apps, Category == "FAMILY", Category == "GAME", Category =="TOOLS",Category =="PRODUCTIVITY", Category =="MEDICAL", Category =="COMMUNICATION", Category =="FINANCE", Category =="SPORTS",Category =="PHOTOGRAPHY", Category =="LIFESTYLE")
-  
-#mutate(Price = case_when(Price == 0 ~ "Free", Price < 5 & Price > 0~ "Between $0 and $4.99", Price > 5 ~ "Greater than $5"))
+apps$Price <- as.numeric(gsub('[$.]', '', apps$Price))
+apps <- apps %>%
+  mutate(Price = case_when(
+  Price == 0 ~ "Free", 
+  Price < 5 & Price > 0~ "Between $0 and $4.99", 
+  Price > 5 ~ "Greater than $5"))
 
-skim(apps, Category)
+skim(apps, Price)
 ```
 Since our question of interest is measuring the effect of various qualities of an app on its rating, there are a number of interactions within our predictor variables to consider. First, there is a possible interaction between content rating and categories. 
 
 ```{r int-content}
-filter(apps, Category == "FAMILY", Category == "GAME", Category =="TOOLS",Category =="PRODUCTIVITY", Category =="MEDICAL", Category =="COMMUNICATION", Category =="FINANCE", Category =="SPORTS",Category =="PHOTOGRAPHY", Category =="LIFESTYLE")
-ggplot(apps, aes(x = Category, y = Rating, color = `Content Rating`)) + geom_point() +
+
+ggplot(apps, aes(x = Category, y = Rating, color = `Content Rating`)) + geom_point() + coord_flip()
 labs( title = "Relationship between Category and Rating", x ="Category", y = "Rating out of 5")
 ```
 
-As shown in the plot above, there may be a correlation between having a lower content rating and being in a “family-friendly” category such as Family or game. This interaction will have to be considered when building the model. As well, there is a clear interaction between other categories such as Mature or Teen being heavily represented among certain Categories. Secondly, there may be an interaction between number of reviews and installs. 
+As shown in the plot above, there may be a correlation between having a lower content rating and being in a “family-friendly” category such as Family or game -  a clear example of this phenomenon is in the category dating. This interaction will have to be considered when building the model. As well, there is a clear interaction between other categories such as Mature or Teen being heavily represented among certain Categories. Secondly, there may be an interaction between number of reviews and rating. 
 
-```{r int-installs}
-ggplot(apps, aes(x = Reviews, y = Rating, color = Installs)) + geom_point() +
+```{r int-reviews}
+ggplot(apps, aes(x = Reviews, y = Rating, color = Reviews)) + geom_point() +
 labs( title = "Relationship between Reviews and Rating", x ="# of Reviews ", y = "Rating out of 5")
 ```
 
-As shown in this plot, as the number of reviews for an app increases, so does the number of installs. This is indicative of an app being popular so there is most likely some interaction between these two variables in the dataset. Thirdly, there may be an interaction between Type and Price. Since Type is an indicator measuring wether an app is paid or free, all apps that are free will be correlated with apps that have a price = 0 and apps that are paid will be correlated with apps that have a price greater than 0. 
+As shown in this plot, as the number of reviews for an app increases, so does the rating generally. This is indicative of an app being popular so as there are more reviews there is most likely more polarization in the ratings. There is most likely some interaction between these two variables in the dataset. Thirdly, there may be an interaction between Type and Price. Since Type is an indicator measuring wether an app is paid or free, all apps that are free will be correlated with apps that have a price = 0 and apps that are paid will be correlated with apps that have a price greater than 0. 
 
 ```{r int-type}
 ggplot(apps, aes(x = Type, y = Rating, color = Price)) + geom_point() +
