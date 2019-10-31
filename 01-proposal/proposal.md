@@ -30,57 +30,29 @@ of an app whether or not it is worth their time and can affect future
 downloads. Considering that app users are predicted to spend about $120
 billion in app stores in 2019, understanding which apps do well on the
 Play Store and what factors affect app performance is an immensely
-important question to gain more insight into. Thus leads us to introduce
-our main research questions- What are the relevant factors that affect
-the rating given for apps in the Google Play store? Although this
-project will give a detailed attempt to answer this question, our
-preliminary hypothesis is that the variables Category, Price/Type,
-Genre, Content Rating are the predictor variables that will most affect
-a given app rating and popularity, as measured by the number of installs
-of the app. Furthermore, once we test our hypothesis and determine which
-factors are relevant, we will attempt to use that information to predict
-the success of an app.
+important question to gain more insight into.
+
+This leads us to introduce our main research questions- What are the
+relevant factors that affect the rating given for apps in the Google
+Play store? Although this project will give a detailed attempt to answer
+this question, our preliminary hypothesis is that the variables
+Category, Price/Type, Genre, Content Rating are the predictor variables
+that will most affect a given app rating and popularity, as measured by
+the number of installs of the app. Furthermore, once we test our
+hypothesis and determine which factors are relevant, we will attempt to
+use that information to predict the success of an app.
 
 ## Section 2. Exploratory Data Analysis
 
-The dataset is obtained from Kaggle. It was scraped directly from the
-Google Play Store in August 2018. Each observation represents one
-individual app on the Google Play
-    Store.
+The dataset was obtained from Kaggle. According to Kaggle, the dataset
+was scraped directly from the Google Play Store in August 2018. Each
+observation represents one individual app on the Google Play Store.
 
 ``` r
 library(tidyverse)
-```
-
-    ## ── Attaching packages ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
-
-    ## ✔ ggplot2 3.2.1     ✔ purrr   0.3.2
-    ## ✔ tibble  2.1.3     ✔ dplyr   0.8.3
-    ## ✔ tidyr   0.8.3     ✔ stringr 1.4.0
-    ## ✔ readr   1.3.1     ✔ forcats 0.4.0
-
-    ## ── Conflicts ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
-    ## ✖ dplyr::filter() masks stats::filter()
-    ## ✖ dplyr::lag()    masks stats::lag()
-
-``` r
 library(broom)
 library(knitr) 
 library(skimr)
-```
-
-    ## 
-    ## Attaching package: 'skimr'
-
-    ## The following object is masked from 'package:knitr':
-    ## 
-    ##     kable
-
-    ## The following object is masked from 'package:stats':
-    ## 
-    ##     filter
-
-``` r
 library(readr)
 library(ggplot2)
 ```
@@ -88,23 +60,6 @@ library(ggplot2)
 ``` r
 apps <- read_csv("/cloud/project/02-data/googleplaystore.csv")
 ```
-
-    ## Parsed with column specification:
-    ## cols(
-    ##   App = col_character(),
-    ##   Category = col_character(),
-    ##   Rating = col_double(),
-    ##   Reviews = col_double(),
-    ##   Size = col_character(),
-    ##   Installs = col_character(),
-    ##   Type = col_character(),
-    ##   Price = col_character(),
-    ##   `Content Rating` = col_character(),
-    ##   Genres = col_character(),
-    ##   `Last Updated` = col_character(),
-    ##   `Current Ver` = col_character(),
-    ##   `Android Ver` = col_character()
-    ## )
 
     ## Warning: 2 parsing failures.
     ##   row     col               expected     actual                                         file
@@ -154,10 +109,10 @@ count(apps, Category) %>%
     ## 10 LIFESTYLE       314
     ## # … with 23 more rows
 
-We determined median and IQR as our summary statistics because the
-distribution of `rating` appears to be slightly left-skewed. The median
-rating of an app is approximately **4.3** and the IQR is
-**0.5**
+As shown above, qe determined median and IQR as our summary statistics
+because the distribution of `rating` appears to be slightly left-skewed.
+The median rating of an app is approximately **4.3** and the IQR is
+**0.5**.
 
 ``` r
 ggplot(data = apps, aes(x = Category, y = Rating)) + geom_boxplot() + coord_flip() +
@@ -169,7 +124,7 @@ ggplot(data = apps, aes(x = Category, y = Rating)) + geom_boxplot() + coord_flip
 Although there is some variation in rating between app categories, the
 most telling aspect of this exploratory model is the outliers. It
 appears that some categories are more suspectible to outliers with low
-ratings. Moreover there are notable discrepancies between minimum
+ratings. More over there are notable discrepancies between minimum
 boxplot rating among categories.
 
 ``` r
@@ -204,10 +159,9 @@ ggplot(data = apps, aes(x = Type, y = Rating)) + geom_boxplot() +
 ![](proposal_files/figure-gfm/type-rating-1.png)<!-- -->
 
 The boxplots for free and paid apps sport nearly identical median and
-IQR values.  
-This tells us that whether an app is free or paid doesn’t appear to have
-a major impact on the rating. Further analysis into the variation of
-rating among apps of different price levels is needed.
+IQR values. This tells us that whether an app is free or paid doesn’t
+appear to have a major impact on the rating. Further analysis into the
+variation of rating among apps of different price levels is needed.
 
 ## Section 3. Regression Analysis Plan
 
@@ -228,7 +182,7 @@ skim(apps, Price)
     ##  n obs: 9365 
     ##  n variables: 13 
     ## 
-    ## ── Variable type:character ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+    ## ── Variable type:character ───────────────────────────────────────────────────────
     ##  variable missing complete    n min max empty n_unique
     ##     Price       0     9365 9365   4  15     0        2
 
@@ -239,26 +193,12 @@ interaction between content rating and
 categories.
 
 ``` r
-ggplot(apps, aes(x = Category, y = Rating, color = `Content Rating`)) + geom_point() + coord_flip()
-```
-
-![](proposal_files/figure-gfm/int-content-1.png)<!-- -->
-
-``` r
+ggplot(apps, aes(x = Category, y = Rating, color = `Content Rating`)) + geom_point() + 
+coord_flip() +
 labs( title = "Relationship between Category and Rating", x ="Category", y = "Rating out of 5")
 ```
 
-    ## $x
-    ## [1] "Category"
-    ## 
-    ## $y
-    ## [1] "Rating out of 5"
-    ## 
-    ## $title
-    ## [1] "Relationship between Category and Rating"
-    ## 
-    ## attr(,"class")
-    ## [1] "labels"
+![](proposal_files/figure-gfm/int-content-1.png)<!-- -->
 
 As shown in the plot above, there may be a correlation between having a
 lower content rating and being in a “family-friendly” category such as
@@ -267,12 +207,12 @@ dating. This interaction will have to be considered when building the
 model. As well, there is a clear interaction between other categories
 such as Mature or Teen being heavily represented among certain
 Categories. Secondly, there may be an interaction between number of
-reviews and
-rating.
+reviews and rating.
 
 ``` r
-ggplot(apps, aes(x = Reviews, y = Rating, color = Reviews)) + geom_point() +
-labs( title = "Relationship between Reviews and Rating", x ="# of Reviews ", y = "Rating out of 5")
+ggplot(apps, aes(x = Reviews, y = Rating, color = Reviews)) + 
+  geom_point() +
+  labs( title = "Relationship between Reviews and Rating", x ="# of Reviews ", y = "Rating out of 5")
 ```
 
 ![](proposal_files/figure-gfm/int-reviews-1.png)<!-- -->
@@ -288,8 +228,9 @@ have a price = 0 and apps that are paid will be correlated with apps
 that have a price greater than 0.
 
 ``` r
-ggplot(apps, aes(x = Type, y = Rating, color = Price)) + geom_point() +
-labs( title = "Relationship between Type & Rating", x ="Type", y = "Rating out of 5")
+ggplot(apps, aes(x = Type, y = Rating, color = Price)) + 
+  geom_point() +
+  labs( title = "Relationship between Type & Rating", x ="Type", y = "Rating out of 5")
 ```
 
 ![](proposal_files/figure-gfm/int-type-1.png)<!-- -->
@@ -315,24 +256,26 @@ with the largest numbers of predictors, which would not always produce
 the simplest, most accurate model. Unlike R squared, AIC, BIC, and
 adjusted R squared do penalize for insignificant predictors and can give
 us a better idea of which predictors actually contribute to the response
-variable. In order to find our final model, we will use a process of
-backwards selection slowly adding a combination of relevant predictors
-into our model. We will then check the BIC values for each of these
-models as well as the adj-R squared values and find the model with the
-highest value- this will be the model that most accurately predicts our
-response with the fewest number of predictors. We will then plot each
-predictor on the response to determine if the effect is relevant or if
-there are possible interactions between other variables. As well, we
-will need to consider potential outliers and extraneous values in our
-model. Using the distributions of standardized residuals and a
-calculation of Cook’s distance, we will attempt to determine those
-observations with high standardized residuals or cook’s distance and
-determine if those observations have a significant effect on our model.
-Lastly, we will need to find the VIF factor for each of our final
-predictors to see if there is any collinearity between them. A VIF
-greater than 10 would require us to explore possible ways to mitigate
-interactions between variables or consider dropping predictors are are
-too heavily correlated.
+variable.
+
+In order to find our final model, we will use a process of backwards
+selection slowly adding a combination of relevant predictors into our
+model. We will then check the BIC values for each of these models as
+well as the adj-R squared values and find the model with the highest
+value- this will be the model that most accurately predicts our response
+with the fewest number of predictors. We will then plot each predictor
+on the response to determine if the effect is relevant or if there are
+possible interactions between other variables. As well, we will need to
+consider potential outliers and extraneous values in our model. Using
+the distributions of standardized residuals and a calculation of Cook’s
+distance, we will attempt to determine those observations with high
+standardized residuals or cook’s distance and determine if those
+observations have a significant effect on our model. Lastly, we will
+need to find the VIF factor for each of our final predictors to see if
+there is any collinearity between them. A VIF greater than 10 would
+require us to explore possible ways to mitigate interactions between
+variables or consider dropping predictors are are too heavily
+correlated.
 
 ### Use of Model and Reason
 
