@@ -52,14 +52,14 @@ individual app on the Google Play
 library(tidyverse)
 ```
 
-    ## ── Attaching packages ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
+    ## ── Attaching packages ──────────────────────────────────────────────────── tidyverse 1.2.1 ──
 
     ## ✔ ggplot2 3.2.1     ✔ purrr   0.3.2
     ## ✔ tibble  2.1.3     ✔ dplyr   0.8.3
     ## ✔ tidyr   0.8.3     ✔ stringr 1.4.0
     ## ✔ readr   1.3.1     ✔ forcats 0.4.0
 
-    ## ── Conflicts ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+    ## ── Conflicts ─────────────────────────────────────────────────────── tidyverse_conflicts() ──
     ## ✖ dplyr::filter() masks stats::filter()
     ## ✖ dplyr::lag()    masks stats::lag()
 
@@ -116,8 +116,7 @@ apps <- apps %>%
 ```
 
 ``` r
-ggplot(data = apps, aes(x = Rating)) + geom_histogram(binwidth = 0.1, fill = "blue") + xlim(0,5) +
-  labs(title = "Distribution of App Rating")
+ggplot(data = apps, aes(x = Rating)) + geom_histogram(binwidth = 0.1, fill = "blue") + xlim(0,5) + labs(title = "Distribution of App Ratings")
 ```
 
     ## Warning: Removed 2 rows containing missing values (geom_bar).
@@ -156,11 +155,58 @@ count(apps, Category) %>%
 
 We determined median and IQR as our summary statistics because the
 distribution of `rating` appears to be slightly left-skewed. The median
-rating of an app is approximately **4.3** and the IQR is **0.5**
+rating of an app is approximately **4.3** and the IQR is
+**0.5**
 
-  - In the possible interactions below, we can also see the relationship
-    between our responsible variable `rating` and predictor variables of
-    interest.
+``` r
+ggplot(data = apps, aes(x = Category, y = Rating)) + geom_boxplot() + coord_flip() +
+  labs(title = "Relationship between Category and Rating") 
+```
+
+![](proposal_files/figure-gfm/category-rating-1.png)<!-- -->
+
+Although there is some variation in rating between app categories, the
+most telling aspect of this exploratory model is the outliers. It
+appears that some categories are more suspectible to outliers with low
+ratings. Moreover there are notable discrepancies between minimum
+boxplot rating among categories.
+
+``` r
+ggplot(data = apps, aes(x = Reviews, y = Rating)) + geom_point() +
+  labs(title = "Relationship between Reviews and Rating", x = "Number of Reviews") 
+```
+
+![](proposal_files/figure-gfm/reviews-rating-1.png)<!-- -->
+
+Based on the scatterplot above, there is likely **not** a relationship
+between number of reviews and app rating. As the number of reviews
+increased the app rating was concentrated at approximately 4.5 - which
+was consistent with apps holding smaller number of reviews.
+
+``` r
+ggplot(data = apps, aes(x = Installs, y = Rating)) + geom_boxplot() +
+  labs(title = "Relationship between Installs and Rating", x = "Number of Installs") + coord_flip()
+```
+
+![](proposal_files/figure-gfm/installs-rating-1.png)<!-- -->
+
+The boxplot above clearly shows a significant relationship between
+number of installs and rating. As the number of installs increases the
+IQR appears to decrease in conjunction. Moreover median rating also
+increases with number of installs.
+
+``` r
+ggplot(data = apps, aes(x = Type, y = Rating)) + geom_boxplot() +
+  labs(title = "Relationship between Type and Rating")
+```
+
+![](proposal_files/figure-gfm/type-rating-1.png)<!-- -->
+
+The boxplots for free and paid apps sport nearly identical median and
+IQR values.  
+This tells us that whether an app is free or paid doesn’t appear to have
+a major impact on the rating. Further analysis into the variation of
+rating among apps of different price levels is needed.
 
 ## Section 3. Regression Analysis Plan
 
@@ -180,7 +226,7 @@ skim(apps, Price)
     ##  n obs: 9365 
     ##  n variables: 13 
     ## 
-    ## ── Variable type:numeric ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+    ## ── Variable type:numeric ────────────────────────────────────────────────────────────────────
     ##  variable missing complete    n mean sd p0 p25 p50 p75 p100     hist
     ##     Price     647     8718 9365    0  0  0   0   0   0    0 ▁▁▁▇▁▁▁▁
 
@@ -204,7 +250,7 @@ skim(apps, Category)
     ##  n obs: 9365 
     ##  n variables: 13 
     ## 
-    ## ── Variable type:character ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+    ## ── Variable type:character ──────────────────────────────────────────────────────────────────
     ##  variable missing complete    n min max empty n_unique
     ##  Category       0     9365 9365   4  19     0       33
 

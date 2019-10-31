@@ -31,9 +31,9 @@ apps <- read_csv("/cloud/project/02-data/googleplaystore.csv")
 apps <- apps %>%
   na.omit(apps)
 ```
+
 ```{r rating-distribution}
-ggplot(data = apps, aes(x = Rating)) + geom_histogram(binwidth = 0.1, fill = "blue") + xlim(0,5) +
-  labs(title = "Distribution of App Rating")
+ggplot(data = apps, aes(x = Rating)) + geom_histogram(binwidth = 0.1, fill = "blue") + xlim(0,5) + labs(title = "Distribution of App Ratings")
 ```
 
 ```{r summary-stats}
@@ -48,8 +48,35 @@ count(apps, Category) %>%
 
 We determined median and IQR as our summary statistics because the distribution of `rating` appears to be slightly left-skewed. The median rating of an app is approximately **4.3** and the IQR is **0.5**
 
-- In the possible interactions below, we can also see the relationship between our responsible variable `rating` and predictor variables of interest. 
 
+```{r category-rating}
+ggplot(data = apps, aes(x = Category, y = Rating)) + geom_boxplot() + coord_flip() +
+  labs(title = "Relationship between Category and Rating") 
+```
+
+Although there is some variation in rating between app categories, the most telling aspect of this exploratory model is the outliers. It appears that some categories are more suspectible to outliers with low ratings. Moreover there are notable discrepancies between minimum boxplot rating among categories. 
+
+```{r reviews-rating}
+ggplot(data = apps, aes(x = Reviews, y = Rating)) + geom_point() +
+  labs(title = "Relationship between Reviews and Rating", x = "Number of Reviews") 
+```
+
+Based on the scatterplot above, there is likely **not** a relationship between number of reviews and app rating. As the number of reviews increased the app rating was concentrated at approximately 4.5 - which was consistent with apps holding smaller number of reviews. 
+
+```{r installs-rating}
+ggplot(data = apps, aes(x = Installs, y = Rating)) + geom_boxplot() +
+  labs(title = "Relationship between Installs and Rating", x = "Number of Installs") + coord_flip()
+```
+
+The boxplot above clearly shows a significant relationship between number of installs and rating. As the number of installs increases the IQR appears to decrease in conjunction. Moreover median rating also increases with number of installs. 
+
+```{r type-rating}
+ggplot(data = apps, aes(x = Type, y = Rating)) + geom_boxplot() +
+  labs(title = "Relationship between Type and Rating")
+```
+
+The boxplots for free and paid apps sport nearly identical median and IQR values.  
+This tells us that whether an app is free or paid doesn't appear to have a major impact on the rating. Further analysis into the variation of rating among apps of different price levels is needed. 
 
 ## Section 3. Regression Analysis Plan
 
