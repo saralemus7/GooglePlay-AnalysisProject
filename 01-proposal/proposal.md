@@ -52,20 +52,35 @@ individual app on the Google Play
 library(tidyverse)
 ```
 
-    ## ── Attaching packages ────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
+    ## ── Attaching packages ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
 
     ## ✔ ggplot2 3.2.1     ✔ purrr   0.3.2
     ## ✔ tibble  2.1.3     ✔ dplyr   0.8.3
     ## ✔ tidyr   0.8.3     ✔ stringr 1.4.0
     ## ✔ readr   1.3.1     ✔ forcats 0.4.0
 
-    ## ── Conflicts ───────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+    ## ── Conflicts ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
     ## ✖ dplyr::filter() masks stats::filter()
     ## ✖ dplyr::lag()    masks stats::lag()
 
 ``` r
 library(broom)
 library(knitr) 
+library(skimr)
+```
+
+    ## 
+    ## Attaching package: 'skimr'
+
+    ## The following object is masked from 'package:knitr':
+    ## 
+    ##     kable
+
+    ## The following object is masked from 'package:stats':
+    ## 
+    ##     filter
+
+``` r
 library(ggplot2)
 ```
 
@@ -151,11 +166,63 @@ rating of an app is approximately **4.3** and the IQR is **0.5**
 
 ### Possible Interactions
 
+``` r
+apps$Price <- as.numeric(apps$Price)
+```
+
+    ## Warning: NAs introduced by coercion
+
+``` r
+skim(apps, Price)
+```
+
+    ## Skim summary statistics
+    ##  n obs: 9365 
+    ##  n variables: 13 
+    ## 
+    ## ── Variable type:numeric ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+    ##  variable missing complete    n mean sd p0 p25 p50 p75 p100     hist
+    ##     Price     647     8718 9365    0  0  0   0   0   0    0 ▁▁▁▇▁▁▁▁
+
+``` r
+filter(apps, Category == "FAMILY", Category == "GAME", Category =="TOOLS",Category =="PRODUCTIVITY", Category =="MEDICAL", Category =="COMMUNICATION", Category =="FINANCE", Category =="SPORTS",Category =="PHOTOGRAPHY", Category =="LIFESTYLE")
+```
+
+    ## # A tibble: 0 x 13
+    ## # … with 13 variables: App <chr>, Category <chr>, Rating <dbl>,
+    ## #   Reviews <dbl>, Size <chr>, Installs <chr>, Type <chr>, Price <dbl>,
+    ## #   `Content Rating` <chr>, Genres <chr>, `Last Updated` <chr>, `Current
+    ## #   Ver` <chr>, `Android Ver` <chr>
+
+``` r
+#mutate(Price = case_when(Price == 0 ~ "Free", Price < 5 & Price > 0~ "Between $0 and $4.99", Price > 5 ~ "Greater than $5"))
+
+skim(apps, Category)
+```
+
+    ## Skim summary statistics
+    ##  n obs: 9365 
+    ##  n variables: 13 
+    ## 
+    ## ── Variable type:character ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+    ##  variable missing complete    n min max empty n_unique
+    ##  Category       0     9365 9365   4  19     0       33
+
 Since our question of interest is measuring the effect of various
 qualities of an app on its rating, there are a number of interactions
 within our predictor variables to consider. First, there is a possible
 interaction between content rating and
 categories.
+
+``` r
+filter(apps, Category == "FAMILY", Category == "GAME", Category =="TOOLS",Category =="PRODUCTIVITY", Category =="MEDICAL", Category =="COMMUNICATION", Category =="FINANCE", Category =="SPORTS",Category =="PHOTOGRAPHY", Category =="LIFESTYLE")
+```
+
+    ## # A tibble: 0 x 13
+    ## # … with 13 variables: App <chr>, Category <chr>, Rating <dbl>,
+    ## #   Reviews <dbl>, Size <chr>, Installs <chr>, Type <chr>, Price <dbl>,
+    ## #   `Content Rating` <chr>, Genres <chr>, `Last Updated` <chr>, `Current
+    ## #   Ver` <chr>, `Android Ver` <chr>
 
 ``` r
 ggplot(apps, aes(x = Category, y = Rating, color = `Content Rating`)) + geom_point() +
@@ -281,7 +348,7 @@ glimpse(apps)
     ## $ Size             <chr> "19M", "14M", "8.7M", "25M", "2.8M", "5.6M", "1…
     ## $ Installs         <chr> "10,000+", "500,000+", "5,000,000+", "50,000,00…
     ## $ Type             <chr> "Free", "Free", "Free", "Free", "Free", "Free",…
-    ## $ Price            <chr> "0", "0", "0", "0", "0", "0", "0", "0", "0", "0…
+    ## $ Price            <dbl> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
     ## $ `Content Rating` <chr> "Everyone", "Everyone", "Everyone", "Teen", "Ev…
     ## $ Genres           <chr> "Art & Design", "Art & Design;Pretend Play", "A…
     ## $ `Last Updated`   <chr> "January 7, 2018", "January 15, 2018", "August …

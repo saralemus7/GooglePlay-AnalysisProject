@@ -22,6 +22,7 @@ The dataset is obtained from Kaggle. It was scraped directly from the Google Pla
 library(tidyverse)
 library(broom)
 library(knitr) 
+library(skimr)
 library(ggplot2)
 ```
 
@@ -54,10 +55,19 @@ We determined median and IQR as our summary statistics because the distribution 
 
 ### Possible Interactions
 
+```{r mutation}
+apps$Price <- as.numeric(apps$Price)
+skim(apps, Price)
+filter(apps, Category == "FAMILY", Category == "GAME", Category =="TOOLS",Category =="PRODUCTIVITY", Category =="MEDICAL", Category =="COMMUNICATION", Category =="FINANCE", Category =="SPORTS",Category =="PHOTOGRAPHY", Category =="LIFESTYLE")
+  
+#mutate(Price = case_when(Price == 0 ~ "Free", Price < 5 & Price > 0~ "Between $0 and $4.99", Price > 5 ~ "Greater than $5"))
 
+skim(apps, Category)
+```
 Since our question of interest is measuring the effect of various qualities of an app on its rating, there are a number of interactions within our predictor variables to consider. First, there is a possible interaction between content rating and categories. 
 
 ```{r int-content}
+filter(apps, Category == "FAMILY", Category == "GAME", Category =="TOOLS",Category =="PRODUCTIVITY", Category =="MEDICAL", Category =="COMMUNICATION", Category =="FINANCE", Category =="SPORTS",Category =="PHOTOGRAPHY", Category =="LIFESTYLE")
 ggplot(apps, aes(x = Category, y = Rating, color = `Content Rating`)) + geom_point() +
 labs( title = "Relationship between Category and Rating", x ="Category", y = "Rating out of 5")
 ```
