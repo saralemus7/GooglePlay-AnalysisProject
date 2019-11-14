@@ -1,8 +1,8 @@
 ---
 title: "PROJECT TITLE"
 subtitle: "Regression Analysis"
-author: "NAME HERE"
-date: "TODAY'S DATE"
+author: "RTime2Shine"
+date: "11/20/19"
 output: github_document
 ---
 
@@ -22,3 +22,51 @@ Your regression analysis results go here. At a minimum, the regression analysis 
 - Additional work of other models or analylsis not included in the final model.
 
 *Use proper headings as needed.*
+
+### Research Question:
+
+What are the relevant factors that affect the rating given for apps in the Google Play store?
+
+### Response Variable:
+
+The response variable in our investigation is `Rating` which is the mean rating out of 5.0 for an application in the Google Play Store. This is a numeric variable. 
+
+Below is some additional exploratory data analysis to further understand the response variable. 
+
+```{r load-packages, message=FALSE}
+library(tidyverse)
+library(broom)
+library(knitr) 
+library(skimr)
+library(readr)
+library(ggplot2)
+library(stringr)
+```
+
+```{r load-data, message=FALSE}
+apps <- read_csv("/cloud/project/02-data/googleplaystore.csv")
+```
+
+```{r na}
+skim(apps)
+```
+
+For our predictor variables, it looks like there occasionally one or two observations missing. It is worth noting, however, that 1474 of our response variable values are missing. This is roughly 10% of the data. Given that the data was web scrapped, we will assume that the reason behind the 10% missing is that there was not a mean rating value for that observation (app), this we will omit all of the omit values as we are investigating the apps for which do have ratings. 
+
+```{r omit}
+apps <- apps %>%
+  na.omit(apps)
+```
+
+```{r rating-distribution}
+ggplot(data = apps, aes(x = Rating)) + geom_histogram(binwidth = 0.1, fill = "blue") + xlim(0,5) + labs(title = "Distribution of App Ratings")
+```
+
+```{r summary-stats}
+apps %>% 
+  summarise(median(Rating), IQR(Rating))
+```
+
+
+
+

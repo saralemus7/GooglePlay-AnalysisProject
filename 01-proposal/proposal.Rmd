@@ -14,7 +14,6 @@ Our motivation for this project is to understand what makes apps (from the Googl
 
 This leads us to introduce our main research questions- What are the relevant factors that affect the rating given for apps in the Google Play store? Although this project will give a detailed attempt to answer this question, our preliminary hypothesis is that the variables Category, Price/Type, Genre, Content Rating are the predictor variables that will most affect a given app rating and popularity, as measured by the number of installs of the app. Furthermore, once we test our hypothesis and determine which factors are relevant, we will attempt to use that information to predict the success of an app.
 
-
 ## Section 2. Exploratory Data Analysis
 
 The dataset was obtained from Kaggle. According to Kaggle, the dataset was scraped directly from the Google Play Store in August 2018. Each observation represents one individual app on the Google Play Store. 
@@ -26,6 +25,7 @@ library(knitr)
 library(skimr)
 library(readr)
 library(ggplot2)
+library(stringr)
 ```
 
 ```{r load-data, message=FALSE}
@@ -43,13 +43,20 @@ apps %>%
   summarise(median(Rating), IQR(Rating))
 ```
 
-```{r}
+```{r count}
 count(apps, Category) %>% 
   arrange(desc(n)) 
 ```
 
-As shown above, qe determined median and IQR as our summary statistics because the distribution of `rating` appears to be slightly left-skewed. The median rating of an app is approximately **4.3** and the IQR is **0.5**. 
+As shown above, qe determined median and IQR as our summary statistics because the distribution of `rating` appears to be slightly left-skewed. The median rating of an app is approximately **4.3** and the IQR is **0.5**.
 
+
+To conduct a bivariate analysis, we will be making a pairs plot. 
+```{r pairs-plot}
+#pairs(Rating ~  Reviews + Size + Price + `Content Rating` + Genres, data = apps)
+```
+
+Given the above pairs plot, we will be investigating some relationships more in depth: 
 ```{r category-rating}
 ggplot(data = apps, aes(x = Category, y = Rating)) + geom_boxplot() + coord_flip() +
   labs(title = "Relationship between Category and Rating") 

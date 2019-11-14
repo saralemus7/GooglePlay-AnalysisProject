@@ -55,6 +55,7 @@ library(knitr)
 library(skimr)
 library(readr)
 library(ggplot2)
+library(stringr)
 ```
 
 ``` r
@@ -113,6 +114,17 @@ As shown above, qe determined median and IQR as our summary statistics
 because the distribution of `rating` appears to be slightly left-skewed.
 The median rating of an app is approximately **4.3** and the IQR is
 **0.5**.
+
+To conduct a bivariate analysis, we will be making a pairs
+plot.
+
+``` r
+#pairs(Rating ~  Reviews + Size + Price + `Content Rating` + Genres, data = apps)
+```
+
+Given the above pairs plot, we will be investigating some relationships
+more in
+depth:
 
 ``` r
 ggplot(data = apps, aes(x = Category, y = Rating)) + geom_boxplot() + coord_flip() +
@@ -182,7 +194,7 @@ skim(apps, Price)
     ##  n obs: 9365 
     ##  n variables: 13 
     ## 
-    ## ── Variable type:character ───────────────────────────────────────────────────────
+    ## ── Variable type:character ──────────────────────────────────────────────────────
     ##  variable missing complete    n min max empty n_unique
     ##     Price       0     9365 9365   4  15     0        2
 
