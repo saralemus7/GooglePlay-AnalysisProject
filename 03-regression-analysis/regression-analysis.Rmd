@@ -21,18 +21,6 @@ Your regression analysis results go here. At a minimum, the regression analysis 
 - Interpretations / interesting findings from the model coefficients
 - Additional work of other models or analylsis not included in the final model.
 
-*Use proper headings as needed.*
-
-### Research Question:
-
-What are the relevant factors that affect the rating given for apps in the Google Play store?
-
-### Response Variable:
-
-The response variable in our investigation is `Rating` which is the mean rating out of 5.0 for an application in the Google Play Store. This is a numeric variable. 
-
-Below is some additional exploratory data analysis to further understand the response variable. 
-
 ```{r load-packages, message=FALSE}
 library(tidyverse)
 library(broom)
@@ -47,15 +35,40 @@ library(stringr)
 apps <- read_csv("/cloud/project/02-data/googleplaystore.csv")
 ```
 
+### Research Question:
+
+What are the relevant factors that affect the rating given for apps in the Google Play store?
+
+### Response Variable:
+
+The response variable in our investigation is `Rating` which is the mean rating out of 5.0 for an application in the Google Play Store. This is a numeric variable. 
+
+### Updated EDA
+
+Below is some additional exploratory data analysis to further understand the response variable. 
+
 ```{r na}
 skim(apps)
 ```
 
-For our predictor variables, it looks like there occasionally one or two observations missing. It is worth noting, however, that 1474 of our response variable values are missing. This is roughly 10% of the data. Given that the data was web scrapped, we will assume that the reason behind the 10% missing is that there was not a mean rating value for that observation (app), this we will omit all of the omit values as we are investigating the apps for which do have ratings. 
+For our predictor variables, it looks like there occasionally one or two observations missing, which does not raise lots of concern. It is worth noting, however, that 1474 of our response variable values are missing. This is roughly 10% of the data. Given that the data was web scrapped, we will assume that the reason behind the 10% missing is that there was not a mean rating value for that observation (app), thus we will omit all of the NA values as we are investigating the apps for which do have ratings. 
 
 ```{r omit}
 apps <- apps %>%
   na.omit(apps)
+```
+
+We also have a lot of predictors that are characters, so we will recode them as factors. 
+
+```{r fact recode}
+apps <- apps %>%
+  mutate(Category = as.factor(Category)) %>%
+  mutate(Size = as.factor(Size)) %>%
+  mutate(Installs = as.factor(Installs)) %>%
+  mutate(Type = as.factor(Type)) %>%
+  mutate(`Content Rating` = as.factor(`Content Rating`)) %>%
+  mutate(Genres = as.factor(Genres)) %>%
+  mutate(Category = as.factor(Category))
 ```
 
 ```{r rating-distribution}
@@ -67,6 +80,45 @@ apps %>%
   summarise(median(Rating), IQR(Rating))
 ```
 
+```{r count}
+count(apps, Category) %>% 
+  arrange(desc(n)) 
+```
 
+As shown above, qe determined median and IQR as our summary statistics because the distribution of `rating` appears to be slightly left-skewed. The median rating of an app is approximately **4.3** and the IQR is **0.5**.
+
+To conduct a bivariate analysis, we will be making a pairs plot. 
+```{r pairs-plot}
+#pairs(Rating ~  Reviews + Size + `Content Rating` + Genres + Category + Installs + Type + Price, data = apps, lower.panel = NULL)
+```
+
+Given the above pairs plot, we will be investigating some relationships more in depth: 
+```{r category-rating}
+ggplot(data = apps, aes(x = Category, y = Rating)) + geom_boxplot() + coord_flip() +
+  labs(title = "Relationship between Category and Rating") 
+```
+
+Although there is some variation in rating between app categories, the most telling aspect of this exploratory model is the outliers. It appears that some categories are more suspectible to outliers with low ratings. More over there are notable discrepancies between minimum boxplot rating among categories. 
+
+```{r reviews-rating}
+ggplot(data = apps, aes(x = Reviews, y = Rating)) + geom_point() +
+  labs(title = "Relationship between Reviews and Rating", x = "Number of Reviews") 
+```
+
+Based on the scatterplot above, there is likely **not** a relationship between number of reviews and app rating. As the number of reviews increased the app rating was concentrated at approximately 4.5 - which was consistent with apps holding smaller number of reviews. 
+
+```{r installs-rating}
+ggplot(data = apps, aes(x = Installs, y = Rating)) + geom_boxplot() +
+  labs(title = "Relationship between Installs and Rating", x = "Number of Installs") + coord_flip()
+```
+
+The boxplot above clearly shows a significant relationship between number of installs and rating. As the number of installs increases the IQR appears to decrease in conjunction. Moreover median rating also increases with number of installs. 
+
+```{r type-rating}
+ggplot(data = apps, aes(x = Type, y = Rating)) + geom_boxplot() +
+  labs(title = "Relationship between Type and Rating")
+```
+
+The boxplots for free and paid apps sport nearly identical median and IQR values. This tells us that whether an app is free or paid doesn't appear to have a major impact on the rating. Further analysis into the variation of rating among apps of different price levels is needed. 
 
 
