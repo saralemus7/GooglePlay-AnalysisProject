@@ -32,6 +32,9 @@ library(stringr)
 apps <- read_csv("/cloud/project/02-data/googleplaystore.csv")
 apps <- apps %>%
   na.omit(apps)
+apps$Price <- str_replace(apps$Price, "\\$", "")
+apps$Size <- str_replace(apps$Size, "\\M", "")
+apps$Installs <- str_replace(apps$Installs, "\\+", "")
 ```
 
 ```{r rating-distribution}
