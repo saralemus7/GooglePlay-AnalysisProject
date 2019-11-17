@@ -46,21 +46,21 @@ the response variable.
     ##  n obs: 10841 
     ##  n variables: 13 
     ## 
-    ## ── Variable type:character ───────────────────────────────────────────────────────────────────
+    ## ── Variable type:character ──────────────────────────────────────────────────────────────────
     ##        variable missing complete     n min max empty n_unique
     ##     Android Ver       1    10840 10841   3  18     0       34
     ##             App       0    10841 10841   1 194     0     9660
     ##        Category       0    10841 10841   3  19     0       34
-    ##  Content Rating       1    10840 10841   4  15     0        6
+    ##  Content Rating       1    10840 10841   4  12     0        6
     ##     Current Ver       1    10840 10841   1  50     0     2833
     ##          Genres       0    10841 10841   4  37     0      120
-    ##        Installs       0    10841 10841   1  14     0       22
+    ##        Installs       0    10841 10841   1  13     0       21
     ##    Last Updated       0    10841 10841   6  18     0     1378
     ##           Price       0    10841 10841   1   8     0       93
-    ##            Size       0    10841 10841   3  18     0      462
+    ##            Size       0    10841 10841   2  18     0      462
     ##            Type       0    10841 10841   1   4     0        4
     ## 
-    ## ── Variable type:numeric ─────────────────────────────────────────────────────────────────────
+    ## ── Variable type:numeric ────────────────────────────────────────────────────────────────────
     ##  variable missing complete     n      mean         sd p0 p25    p50
     ##    Rating    1474     9367 10841      4.19       0.54  1   4    4.3
     ##   Reviews       1    10840 10841 444152.9  2927760.6   0  38 2094  

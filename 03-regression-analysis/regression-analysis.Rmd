@@ -33,6 +33,11 @@ library(stringr)
 
 ```{r load-data, message=FALSE}
 apps <- read_csv("/cloud/project/02-data/googleplaystore.csv")
+apps$Price <- str_replace(apps$Price, "\\$", "")
+apps$Size <- str_replace(apps$Size, "\\M", "")
+apps$Installs <- str_replace(apps$Installs, "\\+", "")
+apps$`Content Rating`<- str_replace(apps$`Content Rating`, "\\+", "")
+apps$`Content Rating`<- str_replace(apps$`Content Rating`, "[[:digit:]]+", "")
 ```
 
 ### Research Question:
