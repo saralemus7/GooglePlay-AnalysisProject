@@ -73,6 +73,8 @@ apps <- apps %>%
 apps$Price <- str_replace(apps$Price, "\\$", "")
 apps$Size <- str_replace(apps$Size, "\\M", "")
 apps$Installs <- str_replace(apps$Installs, "\\+", "")
+apps$`Content Rating`<- str_replace(apps$`Content Rating`, "\\+", "")
+apps$`Content Rating`<- str_replace(apps$`Content Rating`, "[[:digit:]]+", "")
 ```
 
 ``` r
@@ -197,11 +199,7 @@ skim(apps, Price)
     ##  n obs: 9365 
     ##  n variables: 13 
     ## 
-<<<<<<< Updated upstream
-    ## ── Variable type:character ──────────────────────────────────────────────────────
-=======
     ## ── Variable type:character ──────────────────────────────────────────────────────────────────
->>>>>>> Stashed changes
     ##  variable missing complete    n min max empty n_unique
     ##     Price       0     9365 9365   4  15     0        2
 
