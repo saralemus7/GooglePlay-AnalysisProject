@@ -46,7 +46,7 @@ the response variable.
     ##  n obs: 10841 
     ##  n variables: 13 
     ## 
-    ## ── Variable type:character ──────────────────────────────────────────────────────────────────
+    ## ── Variable type:character ─────────────────────────────────────────────────────────
     ##        variable missing complete     n min max empty n_unique
     ##     Android Ver       1    10840 10841   3  18     0       34
     ##             App       0    10841 10841   1 194     0     9660
@@ -60,7 +60,7 @@ the response variable.
     ##            Size       0    10841 10841   2  18     0      462
     ##            Type       0    10841 10841   1   4     0        4
     ## 
-    ## ── Variable type:numeric ────────────────────────────────────────────────────────────────────
+    ## ── Variable type:numeric ───────────────────────────────────────────────────────────
     ##  variable missing complete     n      mean         sd p0 p25    p50
     ##    Rating    1474     9367 10841      4.19       0.54  1   4    4.3
     ##   Reviews       1    10840 10841 444152.9  2927760.6   0  38 2094  
@@ -142,3 +142,44 @@ The boxplots for free and paid apps sport nearly identical median and
 IQR values. This tells us that whether an app is free or paid doesn’t
 appear to have a major impact on the rating. Further analysis into the
 variation of rating among apps of different price levels is needed.
+
+### Final Model
+
+### Final Model Assumptions
+
+Becuase we have conducted Multipule Linear Regression, the model
+assumptions we will check are Linearity, Constant Variance, Normality,
+and Independence.
+
+#### Linearity
+
+The Linearity Assumptions assumes that the response variable has a
+linear relationship with the predictor variables used in the final
+model. To assess linearity, we look at the plots created in the
+Exploratory Data Analysis. DID WE MAKE SINGLE VARIABLE DISTRIBUTIONS?
+
+#### Constant Variance
+
+The Constant Variance Assumption assumges that the regression variance
+is the same for all of the predictor variables in the model. To test
+this assumption, we will plot the residual values against predictors.
+
+#### Normality
+
+The Normality Assumption assumes that for any given set of predictors,
+the response variable, `ratings`, follows a Normal distribution around
+its mean. To test this, we will make a Normal QQ plot.
+
+#### Independence
+
+The Independence Assumption assumes that all observations in the data
+used to construct the model are independent of each other.
+
+### Interpretations and Findings
+
+  - Interpretations / interesting findings from the model coefficients
+
+### Aditional Model Work
+
+  - Additional work of other models or analylsis not included in the
+    final model.

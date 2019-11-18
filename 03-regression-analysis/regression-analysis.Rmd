@@ -126,4 +126,54 @@ ggplot(data = apps, aes(x = Type, y = Rating)) + geom_boxplot() +
 
 The boxplots for free and paid apps sport nearly identical median and IQR values. This tells us that whether an app is free or paid doesn't appear to have a major impact on the rating. Further analysis into the variation of rating among apps of different price levels is needed. 
 
+### Final Model
 
+### Final Model Assumptions
+
+Becuase we have conducted Multipule Linear Regression, the model assumptions we will check are Linearity, Constant Variance, Normality, and Independence. 
+
+#### Linearity
+
+The Linearity Assumptions assumes that the response variable has a linear relationship with the predictor variables used in the final model. To assess linearity, we look at the plots created in the Exploratory Data Analysis. DID WE MAKE SINGLE VARIABLE DISTRIBUTIONS?
+
+#### Constant Variance
+
+The Constant Variance Assumption assumges that the regression variance is the same for all of the predictor variables in the model. To test this assumption, we will plot the residual values against predictors.
+
+```{r resid-plots}
+#apps <- apps %>% 
+  #mutate(predicted = predict.lm(model), residuals = resid(model)) #mutates residuals to the model
+#ggplot(data=apps,aes(x=predicted, y=residuals)) + #plots residuals vs predictors
+  #geom_point() + 
+ # geom_hline(yintercept=0,color="red") +
+  #labs(title="Residuals vs. Predicted Values")
+
+#make plots with resid as the y and the predictor values as the x. 
+```
+
+#### Normality
+
+The Normality Assumption assumes that for any given set of predictors, the response variable, `ratings`, follows a Normal distribution around its mean. To test this, we will make a Normal QQ plot. 
+
+```{r norm-qq}
+# ggplot(data = apps, mapping = aes(sample = resid)) + 
+#   stat_qq() + 
+#   stat_qq_line() +
+#   labs(title = "Normal QQ Plot of Residuals")
+# 
+# ggplot(data = apps, mapping = aes(x = resid)) + 
+#   geom_histogram()+
+#   labs(title = "Distribution of Residuals")
+```
+
+
+#### Independence
+
+The Independence Assumption assumes that all observations in the data used to construct the model are independent of each other. 
+
+
+### Interpretations and Findings
+- Interpretations / interesting findings from the model coefficients
+
+### Aditional Model Work
+- Additional work of other models or analylsis not included in the final model.
