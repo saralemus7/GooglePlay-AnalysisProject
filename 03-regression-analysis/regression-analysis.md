@@ -1,7 +1,12 @@
-PROJECT TITLE
+Understanding Google Play Application Reviews
 ================
 RTime2Shine
 11/20/19
+
+To Do: - Edit current version (Lukengu) - Edit Date Since Update (Sara)
+- Size and Current verison should be in bins (lukengu) - Explain why we
+deleted genres (Zoe) - Make the model (sanjay) - Univariate Analysis
+(Zoe) - Explanation of Model Process (Sanjay)
 
 Your regression analysis results go here. At a minimum, the regression
 analysis should include the following:
@@ -10,14 +15,18 @@ analysis should include the following:
     (prediction, inference, etc.)
   - Description of the response variable
   - Updated exploratory data analysis, incorporating any feedback from
-    the proposal
+    the proposal (Zoe, Sara, Lukengu)
+      - Univariate analysis, include the changed variables, explain why
+        we are taking out what we are taking out, response vs all
+        predictor variables.
   - Explanation of the modeling process and why you chose those metohds,
-    incorporating any feedback from the proposal
-  - Output of the final model
-  - Discussion of the assumptions for the final model
+    incorporating any feedback from the proposal (Sanjay)
+  - Output of the final model (Sanjay)
+  - Discussion of the assumptions for the final model (Zoe)
   - Interpretations / interesting findings from the model coefficients
+    (Sara and Sanjay)
   - Additional work of other models or analylsis not included in the
-    final model.
+    final model.(Sanjay)
 
 <!-- end list -->
 
@@ -46,7 +55,7 @@ the response variable.
     ##  n obs: 10841 
     ##  n variables: 13 
     ## 
-    ## ── Variable type:character ─────────────────────────────────────────────────────────
+    ## ── Variable type:character ─────────────────────────────────────────────────────────────────
     ##        variable missing complete     n min max empty n_unique
     ##     Android Ver       1    10840 10841   3  18     0       34
     ##             App       0    10841 10841   1 194     0     9660
@@ -60,7 +69,7 @@ the response variable.
     ##            Size       0    10841 10841   2  18     0      462
     ##            Type       0    10841 10841   1   4     0        4
     ## 
-    ## ── Variable type:numeric ───────────────────────────────────────────────────────────
+    ## ── Variable type:numeric ───────────────────────────────────────────────────────────────────
     ##  variable missing complete     n      mean         sd p0 p25    p50
     ##    Rating    1474     9367 10841      4.19       0.54  1   4    4.3
     ##   Reviews       1    10840 10841 444152.9  2927760.6   0  38 2094  
@@ -142,6 +151,8 @@ The boxplots for free and paid apps sport nearly identical median and
 IQR values. This tells us that whether an app is free or paid doesn’t
 appear to have a major impact on the rating. Further analysis into the
 variation of rating among apps of different price levels is needed.
+
+### Explanation of the Model Process
 
 ### Final Model
 

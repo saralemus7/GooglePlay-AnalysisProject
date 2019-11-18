@@ -1,10 +1,19 @@
 ---
-title: "PROJECT TITLE"
+title: "Understanding Google Play Application Reviews"
 subtitle: "Regression Analysis"
 author: "RTime2Shine"
 date: "11/20/19"
 output: github_document
 ---
+
+To Do:
+- Edit current version (Lukengu)
+- Edit Date Since Update (Sara)
+- Size and Current verison should be in bins (lukengu)
+- Explain why we deleted genres (Zoe)
+- Make the model (sanjay)
+- Univariate Analysis (Zoe)
+- Explanation of Model Process (Sanjay)
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
@@ -14,12 +23,13 @@ Your regression analysis results go here. At a minimum, the regression analysis 
 
 - Statement of the research question and modeling obejctive (prediction, inference, etc.)
 - Description of the response variable
-- Updated exploratory data analysis, incorporating any feedback from the proposal
-- Explanation of the modeling process and why you chose those metohds, incorporating any feedback from the proposal
-- Output of the final model
-- Discussion of the assumptions for the final model
-- Interpretations / interesting findings from the model coefficients
-- Additional work of other models or analylsis not included in the final model.
+- Updated exploratory data analysis, incorporating any feedback from the proposal (Zoe, Sara, Lukengu)
+  - Univariate analysis, include the changed variables, explain why we are taking out what we are taking out, response vs all predictor variables. 
+- Explanation of the modeling process and why you chose those metohds, incorporating any feedback from the proposal (Sanjay)
+- Output of the final model (Sanjay)
+- Discussion of the assumptions for the final model (Zoe)
+- Interpretations / interesting findings from the model coefficients (Sara and Sanjay)
+- Additional work of other models or analylsis not included in the final model.(Sanjay)
 
 ```{r load-packages, message=FALSE}
 library(tidyverse)
@@ -125,6 +135,8 @@ ggplot(data = apps, aes(x = Type, y = Rating)) + geom_boxplot() +
 ```
 
 The boxplots for free and paid apps sport nearly identical median and IQR values. This tells us that whether an app is free or paid doesn't appear to have a major impact on the rating. Further analysis into the variation of rating among apps of different price levels is needed. 
+
+### Explanation of the Model Process
 
 ### Final Model
 
