@@ -39,6 +39,7 @@ library(skimr)
 library(readr)
 library(ggplot2)
 library(stringr)
+library(lubridate)
 ```
 
 ```{r load-data, message=FALSE}
@@ -84,6 +85,14 @@ apps <- apps %>%
   mutate(`Content Rating` = as.factor(`Content Rating`)) %>%
   mutate(Genres = as.factor(Genres)) %>%
   mutate(Category = as.factor(Category))
+```
+
+Now, we're going to create a variable called `date_since`, which marks the number of days that the app has been updated since the day that the data was scraped on August 8, 2018.
+```{r dates}
+apps <- apps %>%
+  mutate(date_new = mdy(`Last Updated`))
+apps <- apps %>%
+  mutate(date_since = mdy("August 8, 2018") - date_new)
 ```
 
 ```{r rating-distribution}

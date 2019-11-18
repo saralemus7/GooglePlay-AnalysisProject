@@ -55,7 +55,7 @@ the response variable.
     ##  n obs: 10841 
     ##  n variables: 13 
     ## 
-    ## ── Variable type:character ─────────────────────────────────────────────────────────────────
+    ## ── Variable type:character ───────────────────────────────────────────────────────────────────
     ##        variable missing complete     n min max empty n_unique
     ##     Android Ver       1    10840 10841   3  18     0       34
     ##             App       0    10841 10841   1 194     0     9660
@@ -69,7 +69,7 @@ the response variable.
     ##            Size       0    10841 10841   2  18     0      462
     ##            Type       0    10841 10841   1   4     0        4
     ## 
-    ## ── Variable type:numeric ───────────────────────────────────────────────────────────────────
+    ## ── Variable type:numeric ─────────────────────────────────────────────────────────────────────
     ##  variable missing complete     n      mean         sd p0 p25    p50
     ##    Rating    1474     9367 10841      4.19       0.54  1   4    4.3
     ##   Reviews       1    10840 10841 444152.9  2927760.6   0  38 2094  
@@ -87,8 +87,12 @@ all of the NA values as we are investigating the apps for which do have
 ratings.
 
 We also have a lot of predictors that are characters, so we will recode
-them as
-factors.
+them as factors.
+
+Now, we’re going to create a variable called `date_since`, which marks
+the number of days that the app has been updated since the day that the
+data was scraped on August 8,
+2018.
 
     ## Warning: Removed 2 rows containing missing values (geom_bar).
 
