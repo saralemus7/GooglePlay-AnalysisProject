@@ -3,9 +3,11 @@ Understanding Google Play Application Reviews
 RTime2Shine
 11/20/19
 
-To Do: - Edit current version (Lukengu) - Edit Date Since Update (Sara)
-DONE - Size should be in bins (lukengu) - Make the model (sanjay) -
-Univariate Analysis (Zoe) - Explanation of Model Process (Sanjay)
+To Do: - add explanations for univariate plots (Zoe) - fix model - check
+all possible interactions - finish assumptions - add model assessment
+(cooks distance, standard resid, VIF) - finish interpretation (ask
+Tackett if we need to interpret every level bc we have a lot of
+categorical vars) - final edits
 
 Your regression analysis results go here. At a minimum, the regression
 analysis should include the following:
