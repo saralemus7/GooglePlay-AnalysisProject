@@ -136,10 +136,48 @@ may affect an app’s rating.
 Now we are ready to do some preliminary analysis and vizualization to
 have a more complete idea of the data we are working with.
 
-##### Releveling `size`
+##### Releveling `Price`
 
-Explain and relevel
-size
+Since our variable `Price` is currently not numeric and isn’t coded into
+categories, it is best that we relevel and factorize this as to
+streamline our analysis. We will relevel price into 3 categories: Free,
+Between 0 and 4.99 dollars, and greater than 5 dollars.
+
+    ## Skim summary statistics
+    ##  n obs: 9365 
+    ##  n variables: 15 
+    ## 
+    ## ── Variable type:factor ───────────────────────────────────────────────────────────────────────────────────────────────────
+    ##  variable missing complete    n n_unique
+    ##     Price       0     9365 9365        3
+    ##                            top_counts ordered
+    ##  Fre: 8718, Bet: 507, Gre: 140, NA: 0   FALSE
+
+##### Releveling `Installs`
+
+Since our variable `Installs` is currently very widely distributed, we
+will relevel this variable and create new bins as to streamline our
+analysis. We will relevel installs into 3 categories: Less than 100,
+Between 100 and 1,000, Between 1,000 and 10,000, Between 10,000 and
+100,000, and 100,000 or Greater.
+
+    ## Skim summary statistics
+    ##  n obs: 9365 
+    ##  n variables: 15 
+    ## 
+    ## ── Variable type:factor ───────────────────────────────────────────────────────────────────────────────────────────────────
+    ##  variable missing complete    n n_unique
+    ##  Installs       0     9365 9365        5
+    ##                                 top_counts ordered
+    ##  100: 6096, Bet: 1477, Bet: 1145, Bet: 510   FALSE
+
+##### Releveling `Size`
+
+Since our variable `Size` is currently very widely distributed, we will
+relevel this variable and create new bins as to streamline our analysis.
+We will relevel size into 3 categories: Varies with Device, Less than
+100, and Greater than
+100.
 
 #### Distribution of Response
 
@@ -262,7 +300,12 @@ variation of rating among apps of different price levels is needed.
 
 #### Possible Interactions
 
-#### Collinearity
+#### Correlation
+
+Since our variables are mostly categorial, we will not need to check a
+correlation matrix to determine if we need to remove any highly
+correlated variables. Instead, our preliminary analysis of interactions
+should suffice.
 
 ### Explanation of the Model Process
 
