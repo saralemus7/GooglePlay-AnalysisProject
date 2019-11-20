@@ -4,9 +4,8 @@ RTime2Shine
 11/20/19
 
 To Do: - Edit current version (Lukengu) - Edit Date Since Update (Sara)
-- Size and Current verison should be in bins (lukengu) - Make the model
-(sanjay) - Univariate Analysis (Zoe) - Explanation of Model Process
-(Sanjay)
+DONE - Size should be in bins (lukengu) - Make the model (sanjay) -
+Univariate Analysis (Zoe) - Explanation of Model Process (Sanjay)
 
 Your regression analysis results go here. At a minimum, the regression
 analysis should include the following:
@@ -33,15 +32,21 @@ analysis should include the following:
     ## 10473 Reviews no trailing characters M          '/cloud/project/02-data/googleplaystore.csv'
     ## 10473 NA      13 columns             12 columns '/cloud/project/02-data/googleplaystore.csv'
 
-### Research Question and Modelling Objective:
+### Research Question and Modeling Objective:
 
 What are the relevant factors that affect the rating given for apps in
 the Google Play store?
 
-Our ultimate goal is to create the model which most accurately and
+Our ultimate goal is to create a model which most accurately and
 concisely predicts the Rating of an app given the predictors in the
 dataset. This will enable us to see which predictor variables interact
-with each other to effect the rating for a given app.
+with each other to effect the rating for a given app. We posit that
+examining such relationships will help developers understand what
+factors may influence an app’s rating and use that information to create
+better applications for consumers. As well, conglomerates such as Google
+(whom this dataset is from) can use this information to more accurately
+display or promote apps that meet these characteristics or promote ads
+related to these apps and generate revenue.
 
 ### Response Variable:
 
@@ -58,7 +63,7 @@ the response variable.
     ##  n obs: 10841 
     ##  n variables: 13 
     ## 
-    ## ── Variable type:character ────────────────────────────────────────────────────────────────────────────
+    ## ── Variable type:character ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
     ##        variable missing complete     n min max empty n_unique
     ##     Android Ver       1    10840 10841   3  18     0       34
     ##             App       0    10841 10841   1 194     0     9660
@@ -72,7 +77,7 @@ the response variable.
     ##            Size       0    10841 10841   2  18     0      462
     ##            Type       0    10841 10841   1   4     0        4
     ## 
-    ## ── Variable type:numeric ──────────────────────────────────────────────────────────────────────────────
+    ## ── Variable type:numeric ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
     ##  variable missing complete     n      mean         sd p0 p25    p50
     ##    Rating    1474     9367 10841      4.19       0.54  1   4    4.3
     ##   Reviews       1    10840 10841 444152.9  2927760.6   0  38 2094  
@@ -80,41 +85,63 @@ the response variable.
     ##      4.5 19       ▁▇▁▁▁▁▁▁
     ##  54775.5  7.8e+07 ▇▁▁▁▁▁▁▁
 
-For our predictor variables, it looks like there occasionally one or two
-observations missing, which does not raise lots of concern. It is worth
-noting, however, that 1474 of our response variable values are missing.
-This is roughly 10% of the data. Given that the data was web scrapped,
-we will assume that the reason behind the 10% missing is that there was
-not a mean rating value for that observation (app), thus we will omit
-all of the NA values as we are investigating the apps for which do have
+#### Data Wrangling
+
+##### Removing Missing Values
+
+Upon examining our predictor variables, it looks like there are
+occasionally one or two observations missing in the dataset, which does
+not raise lots of concern. It is worth noting, however, that 1474 of our
+response variable values are missing. This is roughly 10% of the data.
+Given that the data was web scraped, we will assume that the reason
+behind these missing values is that there was not a mean rating value
+for those particular observations (app). Thus, we will omit all of the
+NA values and continue to investigate only those apps for which we have
 ratings.
 
 Furthermore, here it is worth noting that the variable, `Genres`
-contains the same information in the `category` variable, the data is
-just displaid a bit differently. Therefore, as to avoid being redundant,
-we will only be using `category` in our analysis from here on out. We
-are not deleting the variable from the dataset as to maintain integrity.
+contains the same information in the `category` variable - the only
+difference being that the data is just displaid a bit differently.
+Therefore, as to avoid being redundant, we will only be using `category`
+in our analysis. We will not deleting the variable from the dataset as
+to maintain integrity.
 
-We also have a lot of predictors that are characters, so we will recode
-them as factors. We also have some variables that are characters due to
-a symbol, we will be editing these to be in the format we would like.
+##### Recoding Variables
+
+We also have a lot of predictors that are coded as characters in the
+dataset, so we will recode them as factors. We also have some variables
+that are coded as characters due to the existence of a particular a
+symbol (ex. $), we will also recode these inot a format which will be
+useable for our analysis.
 
 Looking at the data, there are two variables related to the version, or
 iteration of the app as provided by the developers. Given that Google
 owns both Android and the Google Play Store, the company would likely be
 more interested in the Android version of the app. Furthermore, Android
-users would unlikely be using other app stores like Apples, so the
-developer who is interested in the Andriod using market would prefer the
-Andriod version of the app. Some data wrangling is necessary to make the
-variable suitable for analysis.
+users are unlikely to be using other operating system’s application
+stores, so a developer who is interested in creating apps for the
+Andriod market would gain more information through an examination of the
+compatibility of certain apps with a particular version of Android. Some
+data wrangling is necessary to make this variable suitable for analysis.
+
+##### Creating `date_since`
 
 Now, we’re going to create a variable called `date_since`, which marks
 the number of days that the app has been updated since the day that the
-data was scraped on August 8, 2018.
+data was scraped on August 8, 2018. This will allow us to determine how
+recent the last update was for a particular app and provides some
+information related to the relative frequency of updates and how that
+may affect an app’s rating.
 
 Now we are ready to do some preliminary analysis and vizualization to
-have a more complete idea of the data we are working
-with.
+have a more complete idea of the data we are working with.
+
+##### Releveling `size`
+
+Explain and relevel
+size
+
+#### Distribution of Response
 
     ## Warning: Removed 2 rows containing missing values (geom_bar).
 
@@ -124,6 +151,16 @@ with.
     ##   `median(Rating)` `IQR(Rating)`
     ##              <dbl>         <dbl>
     ## 1              4.3           0.5
+
+As shown above, the distribution of our response variable, `rating`
+appears to be left-skewed. This will be important to take into account
+as we continue our analysis as it may require a transformation; however,
+our model is robust to departures in normality so we will continue. We
+determined to report median and IQR as our summary statistics because
+the distribution of `rating` appears to be left-skewed. The median
+rating of an app is approximately **4.3** and the IQR is **0.5**.
+
+#### Univariate Analysis
 
     ## # A tibble: 33 x 2
     ##    Category          n
@@ -139,11 +176,6 @@ with.
     ##  9 PHOTOGRAPHY     317
     ## 10 LIFESTYLE       314
     ## # … with 23 more rows
-
-As shown above, we determined median and IQR as our summary statistics
-because the distribution of `rating` appears to be slightly left-skewed.
-The median rating of an app is approximately **4.3** and the IQR is
-**0.5**.
 
 We will now conduct a univariate analysis of all the possible predictor
 variables.
