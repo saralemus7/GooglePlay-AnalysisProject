@@ -300,6 +300,39 @@ variation of rating among apps of different price levels is needed.
 
 #### Possible Interactions
 
+First, there is a possible interaction between content rating and
+categories.
+
+![](regression-analysis_files/figure-gfm/int-content-1.png)<!-- -->
+
+As shown in the plot above, there may be a correlation between having a
+lower content rating and being in a “family-friendly” category such as
+Family or game - a clear example of this phenomenon is in the category
+dating. This interaction will have to be considered when building the
+model. As well, there is a clear interaction between other categories
+such as Mature or Teen being heavily represented among certain
+Categories. Secondly, there may be an interaction between number of
+reviews and rating.
+
+![](regression-analysis_files/figure-gfm/int-reviews-1.png)<!-- -->
+
+As shown in this plot, as the number of reviews for an app increases, so
+does the rating generally. This is indicative of an app being popular so
+as there are more reviews there is most likely more polarization in the
+ratings. There is most likely some interaction between these two
+variables in the dataset. Thirdly, there may be an interaction between
+Type and Price. Since Type is an indicator measuring wether an app is
+paid or free, all apps that are free will be correlated with apps that
+have a price = 0 and apps that are paid will be correlated with apps
+that have a price greater than 0.
+
+![](regression-analysis_files/figure-gfm/int-type-1.png)<!-- -->
+
+This is further illustrated through the above plot, which clearly shows
+this interaction. These interactions along with any further ones we may
+find after our preliminary analysis will have to be explored further and
+considered when building our model.
+
 #### Correlation
 
 Since our variables are mostly categorial, we will not need to check a
