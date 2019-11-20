@@ -65,7 +65,7 @@ the response variable.
     ##  n obs: 10841 
     ##  n variables: 13 
     ## 
-    ## ── Variable type:character ────────────────────────────────────────────────────────────────────────────────────────────────
+    ## ── Variable type:character ──────────────────────────────────────────────────────────────────
     ##        variable missing complete     n min max empty n_unique
     ##     Android Ver       1    10840 10841   3  18     0       34
     ##             App       0    10841 10841   1 194     0     9660
@@ -79,7 +79,7 @@ the response variable.
     ##            Size       0    10841 10841   2  18     0      462
     ##            Type       0    10841 10841   1   4     0        4
     ## 
-    ## ── Variable type:numeric ──────────────────────────────────────────────────────────────────────────────────────────────────
+    ## ── Variable type:numeric ────────────────────────────────────────────────────────────────────
     ##  variable missing complete     n      mean         sd p0 p25    p50
     ##    Rating    1474     9367 10841      4.19       0.54  1   4    4.3
     ##   Reviews       1    10840 10841 444152.9  2927760.6   0  38 2094  
@@ -149,7 +149,7 @@ Between 0 and 4.99 dollars, and greater than 5 dollars.
     ##  n obs: 9365 
     ##  n variables: 15 
     ## 
-    ## ── Variable type:factor ───────────────────────────────────────────────────────────────────────────────────────────────────
+    ## ── Variable type:factor ─────────────────────────────────────────────────────────────────────
     ##  variable missing complete    n n_unique
     ##     Price       0     9365 9365        3
     ##                            top_counts ordered
@@ -167,7 +167,7 @@ Between 100 and 1,000, Between 1,000 and 10,000, Between 10,000 and
     ##  n obs: 9365 
     ##  n variables: 15 
     ## 
-    ## ── Variable type:factor ───────────────────────────────────────────────────────────────────────────────────────────────────
+    ## ── Variable type:factor ─────────────────────────────────────────────────────────────────────
     ##  variable missing complete    n n_unique
     ##  Installs       0     9365 9365        5
     ##                                 top_counts ordered
@@ -747,6 +747,56 @@ Second, we will perform both forward and backward selection using AIC:
 
 #### Final Model
 
+|                term                |  estimate   | std.error |  statistic   |  p.value  |
+| :--------------------------------: | :---------: | :-------: | :----------: | :-------: |
+|            (Intercept)             |  4.8261579  | 0.0931485 |  51.8114157  | 0.0000000 |
+|   InstallsBetween 100 and 1,000    | \-0.2289991 | 0.0477631 | \-4.7944785  | 0.0000017 |
+|  InstallsBetween 1,000 and 10,000  | \-0.4705197 | 0.0448987 | \-10.4795801 | 0.0000000 |
+| InstallsBetween 10,000 and 100,000 | \-0.4796423 | 0.0443657 | \-10.8111131 | 0.0000000 |
+|     Installs100,000 or Greater     | \-0.3395710 | 0.0431104 | \-7.8767848  | 0.0000000 |
+|    CategoryAUTO\_AND\_VEHICLES     | \-0.1874556 | 0.0855206 | \-2.1919364  | 0.0284088 |
+|           CategoryBEAUTY           | \-0.0796777 | 0.0989208 | \-0.8054692  | 0.4205696 |
+|   CategoryBOOKS\_AND\_REFERENCE    |  0.0163789  | 0.0731017 |  0.2240568   | 0.8227181 |
+|          CategoryBUSINESS          | \-0.2480206 | 0.0691157 | \-3.5884842  | 0.0003343 |
+|           CategoryCOMICS           | \-0.2088819 | 0.0904054 | \-2.3105032  | 0.0208821 |
+|       CategoryCOMMUNICATION        | \-0.2455364 | 0.0688300 | \-3.5672848  | 0.0003625 |
+|           CategoryDATING           | \-0.4255181 | 0.0722091 | \-5.8928573  | 0.0000000 |
+|         CategoryEDUCATION          | \-0.0081408 | 0.0745714 | \-0.1091679  | 0.9130717 |
+|       CategoryENTERTAINMENT        | \-0.3051132 | 0.0750845 | \-4.0635981  | 0.0000487 |
+|           CategoryEVENTS           |  0.0350443  | 0.0970953 |  0.3609268   | 0.7181623 |
+|           CategoryFAMILY           | \-0.1517179 | 0.0640344 | \-2.3693179  | 0.0178412 |
+|          CategoryFINANCE           | \-0.2276402 | 0.0687769 | \-3.3098332  | 0.0009371 |
+|      CategoryFOOD\_AND\_DRINK      | \-0.2414994 | 0.0789109 | \-3.0604066  | 0.0022167 |
+|            CategoryGAME            | \-0.0892518 | 0.0647868 | \-1.3776220  | 0.1683532 |
+|    CategoryHEALTH\_AND\_FITNESS    | \-0.1208424 | 0.0692948 | \-1.7438872  | 0.0812118 |
+|      CategoryHOUSE\_AND\_HOME      | \-0.1922732 | 0.0849001 | \-2.2646982  | 0.0235541 |
+|    CategoryLIBRARIES\_AND\_DEMO    | \-0.1212103 | 0.0904727 | \-1.3397445  | 0.1803612 |
+|         CategoryLIFESTYLE          | \-0.2461984 | 0.0688969 | \-3.5734342  | 0.0003541 |
+|   CategoryMAPS\_AND\_NAVIGATION    | \-0.3274633 | 0.0770605 | \-4.2494330  | 0.0000216 |
+|          CategoryMEDICAL           | \-0.1378188 | 0.0684605 | \-2.0131143  | 0.0441314 |
+|    CategoryNEWS\_AND\_MAGAZINES    | \-0.2549620 | 0.0708595 | \-3.5981341  | 0.0003222 |
+|         CategoryPARENTING          | \-0.0763369 | 0.0940828 | \-0.8113800  | 0.4171683 |
+|      CategoryPERSONALIZATION       |  0.0020479  | 0.0690963 |  0.0296386   | 0.9763559 |
+|        CategoryPHOTOGRAPHY         | \-0.1968676 | 0.0688719 | \-2.8584605  | 0.0042665 |
+|        CategoryPRODUCTIVITY        | \-0.1688838 | 0.0683981 | \-2.4691302  | 0.0135620 |
+|          CategorySHOPPING          | \-0.1669750 | 0.0707047 | \-2.3615812  | 0.0182177 |
+|           CategorySOCIAL           | \-0.1581922 | 0.0702154 | \-2.2529561  | 0.0242851 |
+|           CategorySPORTS           | \-0.1594587 | 0.0688370 | \-2.3164674  | 0.0205544 |
+|           CategoryTOOLS            | \-0.2895650 | 0.0656228 | \-4.4125701  | 0.0000103 |
+|     CategoryTRAVEL\_AND\_LOCAL     | \-0.2741509 | 0.0711146 | \-3.8550575  | 0.0001165 |
+|       CategoryVIDEO\_PLAYERS       | \-0.2923870 | 0.0741870 | \-3.9412179  | 0.0000817 |
+|          CategoryWEATHER           | \-0.1488894 | 0.0851544 | \-1.7484644  | 0.0804166 |
+|            date\_since             | \-0.0001564 | 0.0000163 | \-9.6180476  | 0.0000000 |
+|           `Android Ver`2           | \-0.0900782 | 0.0533611 | \-1.6880892  | 0.0914276 |
+|           `Android Ver`3           | \-0.0748078 | 0.0603652 | \-1.2392527  | 0.2152832 |
+|           `Android Ver`4           | \-0.0554221 | 0.0535656 | \-1.0346594  | 0.3008549 |
+|           `Android Ver`5           | \-0.0845289 | 0.0575571 | \-1.4686099  | 0.1419724 |
+|           `Android Ver`6           | \-0.2452176 | 0.0892732 | \-2.7468221  | 0.0060292 |
+|           `Android Ver`7           | \-0.1756351 | 0.0911630 | \-1.9266042  | 0.0540594 |
+|           `Android Ver`8           | \-0.2754779 | 0.2280736 | \-1.2078465  | 0.2271370 |
+|  `Android Ver`Varies with device   | \-0.0041972 | 0.0554211 | \-0.0757322  | 0.9396338 |
+|              Reviews               |  0.0000000  | 0.0000000 |  3.6560195   | 0.0002576 |
+
 The model which gave us the fewest predictors is
 
 ### Exploring Interactions
@@ -784,15 +834,91 @@ The Independence Assumption assumes that all observations in the data
 used to construct the model are independent of each other. Given that
 each observation and is not dependent on the time frame or location of
 collection for its mean rating. The observations are independent of each
-other and thus the Independence Assumption is maintained.
+other and thus the Independence Assumption is
+maintained.
 
 ### Model Assessment
 
-#### Standardized Residuals
-
 #### Cook’s Distance
 
-#### VIF
+    ## Warning: Removed 1 rows containing missing values (geom_point).
+
+    ## Warning: Removed 1 rows containing missing values (geom_text).
+
+![](regression-analysis_files/figure-gfm/cooks-distance-1.png)<!-- -->
+
+![](regression-analysis_files/figure-gfm/leverage-1.png)<!-- -->
+
+#### Standardized Residuals
+
+    ## Warning: Removed 1 rows containing missing values (geom_point).
+
+    ## Warning: Removed 1 rows containing missing values (geom_text).
+
+![](regression-analysis_files/figure-gfm/standardresid-predicted-1.png)<!-- -->
+
+    ## Warning: Removed 1 rows containing non-finite values (stat_boxplot).
+
+![](regression-analysis_files/figure-gfm/standardresd-predictors-1.png)<!-- -->
+
+    ## Warning: Removed 1 rows containing missing values (geom_point).
+
+![](regression-analysis_files/figure-gfm/standardresd-predictors-2.png)<!-- -->
+
+    ## Warning: Removed 1 rows containing non-finite values (stat_boxplot).
+
+![](regression-analysis_files/figure-gfm/standardresd-predictors-3.png)<!-- -->
+
+    ## Warning: Removed 1 rows containing non-finite values (stat_boxplot).
+
+![](regression-analysis_files/figure-gfm/standardresd-predictors-4.png)<!-- -->
+
+    ## Warning: Removed 1 rows containing non-finite values (stat_boxplot).
+
+![](regression-analysis_files/figure-gfm/standardresd-predictors-5.png)<!-- -->
+
+    ## Warning: Removed 1 rows containing non-finite values (stat_boxplot).
+
+![](regression-analysis_files/figure-gfm/standardresd-predictors-6.png)<!-- -->
+
+    ## Don't know how to automatically pick scale for object of type difftime. Defaulting to continuous.
+
+    ## Warning: Removed 1 rows containing missing values (geom_point).
+
+![](regression-analysis_files/figure-gfm/standardresd-predictors-7.png)<!-- -->
+
+    ## Warning: Removed 1 rows containing non-finite values (stat_boxplot).
+
+![](regression-analysis_files/figure-gfm/standardresd-predictors-8.png)<!-- -->
+
+    ## Warning: Removed 1 rows containing non-finite values (stat_boxplot).
+
+![](regression-analysis_files/figure-gfm/standardresd-predictors-9.png)<!-- -->
+
+### VIF
+
+    ## Warning: 'tidy.numeric' is deprecated.
+    ## See help("Deprecated")
+
+    ## # A tibble: 46 x 2
+    ##    names                                  x
+    ##    <chr>                              <dbl>
+    ##  1 InstallsBetween 100 and 1,000       4.49
+    ##  2 InstallsBetween 1,000 and 10,000    8.26
+    ##  3 InstallsBetween 10,000 and 100,000  9.99
+    ##  4 Installs100,000 or Greater         16.1 
+    ##  5 CategoryAUTO_AND_VEHICLES           2.16
+    ##  6 CategoryBEAUTY                      1.67
+    ##  7 CategoryBOOKS_AND_REFERENCE         3.81
+    ##  8 CategoryBUSINESS                    5.72
+    ##  9 CategoryCOMICS                      1.92
+    ## 10 CategoryCOMMUNICATION               6.13
+    ## # … with 36 more rows
+
+`CategoryAUTO_AND_VEHICLES`, `CategoryFAMILY`, `CategoryGAME`,
+`CategoryTOOLS`, `Android Ver2`, `Android Ver4`, & `Android Ver-Varies
+with device` all have VIF \> 10, indicating concern with
+multicollinearity.
 
 ### Interpretations and Findings
 

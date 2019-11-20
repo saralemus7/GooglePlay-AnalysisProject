@@ -42,6 +42,7 @@ library(lubridate)
 library(Sleuth3) 
 library(ISLR)
 library(leaps)
+library(rms)
 ```
 
 ```{r load-data, message=FALSE}
@@ -401,7 +402,14 @@ regfit_hybrid <- step(null_model, scope = formula(full_model),
                       direction = "both")
 ```
 
+
 #### Final Model
+
+```{r final-model}
+final_model <- lm(Rating ~ Installs + Category + date_since + `Android Ver` + Reviews, data = apps)
+kable(tidy(final_model),format="html",digits=3)
+```
+
 
 The model which gave us the fewest predictors is 
 
@@ -452,11 +460,62 @@ The Independence Assumption assumes that all observations in the data used to co
 
 ### Model Assessment
 
-#### Standardized Residuals
-
 #### Cook's Distance
 
-#### VIF
+```{r augment }
+apps_output <- augment(full_model) %>%
+  mutate(obs_num = row_number())
+```
+
+```{r cooks-distance}
+ggplot(data = apps_output, aes(x = obs_num, y = .cooksd)) + 
+  geom_point(alpha = 0.7) + 
+  geom_hline(yintercept=1,color = "red")+
+  labs(x= "Observation Number",y = "Cook's Distance",title = "Cook's Distance") +
+  geom_text(aes(label = ifelse(.hat>1,as.character(obs_num),"")))
+```
+
+
+```{r leverage}
+leverage_threshold <- 2*(9+1)/nrow(apps)
+ggplot(data = apps_output, aes(x = obs_num,y = .hat)) + 
+  geom_point(alpha = 0.3) + 
+  geom_hline(yintercept = leverage_threshold,color = "red")+
+  labs(x = "Observation Number",y = "Leverage",title = "Leverage") +
+  geom_text(aes(label=ifelse(.hat > leverage_threshold, as.character(obs_num), "")), nudge_x = 4)
+```
+
+#### Standardized Residuals
+
+```{r standardresid-predicted}
+ggplot(data = apps_output, aes(x = .fitted,y = .std.resid)) +
+  geom_point(alpha = 0.7) + 
+  geom_hline(yintercept = 0,color = "red") +
+  geom_hline(yintercept = -2,color = "red",linetype = "dotted") +
+  geom_hline(yintercept = 2,color = "red",linetype = "dotted") +
+  labs(x ="Predicted Value",y ="Standardized Residuals",title = "Standardized Residuals vs. Predicted") +
+  geom_text(aes(label = ifelse(abs(.std.resid) >2,as.character(obs_num),"")), nudge_x = 0.3)
+```
+
+```{r standardresd-predictors}
+ggplot(data = apps_output, aes(x = Category, y = .std.resid )) + geom_boxplot() + coord_flip()
+ggplot(data = apps_output, aes(x = Reviews, y = .std.resid )) + geom_point()
+ggplot(data = apps_output, aes(x = Size, y = .std.resid )) + geom_boxplot()
+ggplot(data = apps_output, aes(x = Installs, y = .std.resid )) + geom_boxplot()
+ggplot(data = apps_output, aes(x = Type, y = .std.resid )) + geom_boxplot()
+ggplot(data = apps_output, aes(x = Price, y = .std.resid )) + geom_boxplot()
+ggplot(data = apps_output, aes(x = date_since, y = .std.resid )) + geom_point()
+ggplot(data = apps_output, aes(x = Content.Rating, y = .std.resid )) + geom_boxplot()
+ggplot(data = apps_output, aes(x = Android.Ver, y = .std.resid )) + geom_boxplot()
+```
+ 
+
+### VIF
+
+```{r vif}
+tidy(vif(final_model))
+```
+`CategoryAUTO_AND_VEHICLES`, `CategoryFAMILY`, `CategoryGAME`, `CategoryTOOLS`, `Android Ver2`, `Android Ver4`, & `Android Ver-Varies with device` all have VIF > 10, indicating concern with multicollinearity. 
 
 ### Interpretations and Findings
 - Interpretations / interesting findings from the model coefficients
