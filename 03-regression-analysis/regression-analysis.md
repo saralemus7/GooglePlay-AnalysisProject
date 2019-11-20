@@ -4,15 +4,13 @@ RTime2Shine
 11/20/19
 
 To Do: - Edit current version (Lukengu) - Edit Date Since Update (Sara)
-- Size and Current verison should be in bins (lukengu) - Explain why we
-deleted genres (Zoe) - Make the model (sanjay) - Univariate Analysis
-(Zoe) - Explanation of Model Process (Sanjay)
+- Size and Current verison should be in bins (lukengu) - Make the model
+(sanjay) - Univariate Analysis (Zoe) - Explanation of Model Process
+(Sanjay)
 
 Your regression analysis results go here. At a minimum, the regression
 analysis should include the following:
 
-  - Statement of the research question and modeling obejctive
-    (prediction, inference, etc.)
   - Description of the response variable
   - Updated exploratory data analysis, incorporating any feedback from
     the proposal (Zoe, Sara, Lukengu)
@@ -35,10 +33,15 @@ analysis should include the following:
     ## 10473 Reviews no trailing characters M          '/cloud/project/02-data/googleplaystore.csv'
     ## 10473 NA      13 columns             12 columns '/cloud/project/02-data/googleplaystore.csv'
 
-### Research Question:
+### Research Question and Modelling Objective:
 
 What are the relevant factors that affect the rating given for apps in
 the Google Play store?
+
+Our ultimate goal is to create the model which most accurately and
+concisely predicts the Rating of an app given the predictors in the
+dataset. This will enable us to see which predictor variables interact
+with each other to effect the rating for a given app.
 
 ### Response Variable:
 
@@ -46,7 +49,7 @@ The response variable in our investigation is `Rating` which is the mean
 rating out of 5.0 for an application in the Google Play Store. This is a
 numeric variable.
 
-### Updated EDA
+### Updated Exploratory Data Analysis
 
 Below is some additional exploratory data analysis to further understand
 the response variable.
@@ -55,7 +58,7 @@ the response variable.
     ##  n obs: 10841 
     ##  n variables: 13 
     ## 
-    ## ── Variable type:character ───────────────────────────────────────────────────────────────────
+    ## ── Variable type:character ────────────────────────────────────────────────────────────────────────────
     ##        variable missing complete     n min max empty n_unique
     ##     Android Ver       1    10840 10841   3  18     0       34
     ##             App       0    10841 10841   1 194     0     9660
@@ -69,7 +72,7 @@ the response variable.
     ##            Size       0    10841 10841   2  18     0      462
     ##            Type       0    10841 10841   1   4     0        4
     ## 
-    ## ── Variable type:numeric ─────────────────────────────────────────────────────────────────────
+    ## ── Variable type:numeric ──────────────────────────────────────────────────────────────────────────────
     ##  variable missing complete     n      mean         sd p0 p25    p50
     ##    Rating    1474     9367 10841      4.19       0.54  1   4    4.3
     ##   Reviews       1    10840 10841 444152.9  2927760.6   0  38 2094  
@@ -86,13 +89,32 @@ not a mean rating value for that observation (app), thus we will omit
 all of the NA values as we are investigating the apps for which do have
 ratings.
 
+Furthermore, here it is worth noting that the variable, `Genres`
+contains the same information in the `category` variable, the data is
+just displaid a bit differently. Therefore, as to avoid being redundant,
+we will only be using `category` in our analysis from here on out. We
+are not deleting the variable from the dataset as to maintain integrity.
+
 We also have a lot of predictors that are characters, so we will recode
-them as factors.
+them as factors. We also have some variables that are characters due to
+a symbol, we will be editing these to be in the format we would like.
+
+Looking at the data, there are two variables related to the version, or
+iteration of the app as provided by the developers. Given that Google
+owns both Android and the Google Play Store, the company would likely be
+more interested in the Android version of the app. Furthermore, Android
+users would unlikely be using other app stores like Apples, so the
+developer who is interested in the Andriod using market would prefer the
+Andriod version of the app. Some data wrangling is necessary to make the
+variable suitable for analysis.
 
 Now, we’re going to create a variable called `date_since`, which marks
 the number of days that the app has been updated since the day that the
-data was scraped on August 8,
-2018.
+data was scraped on August 8, 2018.
+
+Now we are ready to do some preliminary analysis and vizualization to
+have a more complete idea of the data we are working
+with.
 
     ## Warning: Removed 2 rows containing missing values (geom_bar).
 
@@ -118,15 +140,49 @@ data was scraped on August 8,
     ## 10 LIFESTYLE       314
     ## # … with 23 more rows
 
-As shown above, qe determined median and IQR as our summary statistics
+As shown above, we determined median and IQR as our summary statistics
 because the distribution of `rating` appears to be slightly left-skewed.
 The median rating of an app is approximately **4.3** and the IQR is
 **0.5**.
+
+We will now conduct a univariate analysis of all the possible predictor
+variables.
+
+    ## Warning: Ignoring unknown parameters: binwidth, bins, pad
+
+![](regression-analysis_files/figure-gfm/univariate-1.png)<!-- -->
+
+    ## Warning: Ignoring unknown parameters: binwidth, bins, pad
+
+![](regression-analysis_files/figure-gfm/univariate-2.png)<!-- -->
+
+    ## Warning: Ignoring unknown parameters: binwidth, bins, pad
+
+![](regression-analysis_files/figure-gfm/univariate-3.png)<!-- -->
+
+    ## Warning: Ignoring unknown parameters: binwidth, bins, pad
+
+![](regression-analysis_files/figure-gfm/univariate-4.png)<!-- -->
+
+    ## Warning: Ignoring unknown parameters: binwidth, bins, pad
+
+![](regression-analysis_files/figure-gfm/univariate-5.png)<!-- -->
+
+    ## Warning: Ignoring unknown parameters: binwidth, bins, pad
+
+![](regression-analysis_files/figure-gfm/univariate-6.png)<!-- -->![](regression-analysis_files/figure-gfm/univariate-7.png)<!-- -->![](regression-analysis_files/figure-gfm/univariate-8.png)<!-- -->
+
+    ## Warning: Ignoring unknown parameters: binwidth, bins, pad
+
+    ## Don't know how to automatically pick scale for object of type difftime. Defaulting to continuous.
+
+![](regression-analysis_files/figure-gfm/univariate-9.png)<!-- -->
 
 To conduct a bivariate analysis, we will be making a pairs plot.
 
 Given the above pairs plot, we will be investigating some relationships
 more in depth:
+
 ![](regression-analysis_files/figure-gfm/category-rating-1.png)<!-- -->
 
 Although there is some variation in rating between app categories, the
@@ -171,7 +227,8 @@ and Independence.
 The Linearity Assumptions assumes that the response variable has a
 linear relationship with the predictor variables used in the final
 model. To assess linearity, we look at the plots created in the
-Exploratory Data Analysis. DID WE MAKE SINGLE VARIABLE DISTRIBUTIONS?
+Exploratory Data Analysis. None of these plots seem to have a non-linear
+relationship such as a polynomial, however, some are quite skewed.
 
 #### Constant Variance
 
@@ -188,7 +245,10 @@ its mean. To test this, we will make a Normal QQ plot.
 #### Independence
 
 The Independence Assumption assumes that all observations in the data
-used to construct the model are independent of each other.
+used to construct the model are independent of each other. Given that
+each observation and is not dependent on the time frame or location of
+collection for its mean rating. The observations are independent of each
+other and thus the Independence Assumption is maintained.
 
 ### Interpretations and Findings
 

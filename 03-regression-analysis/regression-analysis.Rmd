@@ -10,7 +10,6 @@ To Do:
 - Edit current version (Lukengu)
 - Edit Date Since Update (Sara)
 - Size and Current verison should be in bins (lukengu)
-- Explain why we deleted genres (Zoe)
 - Make the model (sanjay)
 - Univariate Analysis (Zoe)
 - Explanation of Model Process (Sanjay)
@@ -21,7 +20,6 @@ knitr::opts_chunk$set(echo = FALSE)
 
 Your regression analysis results go here. At a minimum, the regression analysis should include the following: 
 
-- Statement of the research question and modeling obejctive (prediction, inference, etc.)
 - Description of the response variable
 - Updated exploratory data analysis, incorporating any feedback from the proposal (Zoe, Sara, Lukengu)
   - Univariate analysis, include the changed variables, explain why we are taking out what we are taking out, response vs all predictor variables. 
@@ -51,15 +49,17 @@ apps$`Content Rating`<- str_replace(apps$`Content Rating`, "\\+", "")
 apps$`Content Rating`<- str_replace(apps$`Content Rating`, "[[:digit:]]+", "")
 ```
 
-### Research Question:
+### Research Question and Modelling Objective:
 
 What are the relevant factors that affect the rating given for apps in the Google Play store?
+
+Our ultimate goal is to create the model which most accurately and concisely predicts the Rating of an app given the predictors in the dataset. This will enable us to see which predictor variables interact with each other to effect the rating for a given app.
 
 ### Response Variable:
 
 The response variable in our investigation is `Rating` which is the mean rating out of 5.0 for an application in the Google Play Store. This is a numeric variable. 
 
-### Updated EDA
+### Updated Exploratory Data Analysis
 
 Below is some additional exploratory data analysis to further understand the response variable. 
 
@@ -69,12 +69,14 @@ skim(apps)
 
 For our predictor variables, it looks like there occasionally one or two observations missing, which does not raise lots of concern. It is worth noting, however, that 1474 of our response variable values are missing. This is roughly 10% of the data. Given that the data was web scrapped, we will assume that the reason behind the 10% missing is that there was not a mean rating value for that observation (app), thus we will omit all of the NA values as we are investigating the apps for which do have ratings. 
 
+Furthermore, here it is worth noting that the variable, `Genres` contains the same information in the `category` variable, the data is just displaid a bit differently. Therefore, as to avoid being redundant, we will only be using `category` in our analysis from here on out. We are not deleting the variable from the dataset as to maintain integrity.
+
 ```{r omit}
 apps <- apps %>%
   na.omit(apps)
 ```
 
-We also have a lot of predictors that are characters, so we will recode them as factors. 
+We also have a lot of predictors that are characters, so we will recode them as factors. We also have some variables that are characters due to a symbol, we will be editing these to be in the format we would like.  
 
 ```{r fact recode}
 apps <- apps %>%
@@ -85,9 +87,24 @@ apps <- apps %>%
   mutate(`Content Rating` = as.factor(`Content Rating`)) %>%
   mutate(Genres = as.factor(Genres)) %>%
   mutate(Category = as.factor(Category))
+
+apps$Price <- str_replace(apps$Price, "\\$", "")
+apps$Size <- str_replace(apps$Size, "\\M", "")
+apps$Installs <- str_replace(apps$Installs, "\\+", "")
+apps$`Content Rating`<- str_replace(apps$`Content Rating`, "\\+", "")
+apps$`Content Rating`<- str_replace(apps$`Content Rating`, "[[:digit:]]+", "")
+```
+
+Looking at the data, there are two variables related to the version, or iteration of the app as provided by the developers. Given that Google owns both Android and the Google Play Store, the company  would likely be more interested in the Android version of the app. Furthermore, Android users would unlikely be using other app stores like Apples, so the developer who is interested in the Andriod using market would prefer the Andriod version of the app. Some data wrangling is necessary to make the variable suitable for analysis.
+
+```{r version, results="hide"}
+apps$`Android Ver`<-gsub("\\..*","",apps$`Android Ver`)
+apps$`Android Ver`<-as.factor(apps$`Android Ver`)
+apps$`Android Ver`[apps$`Android Ver` == "NaN"] <- NA
 ```
 
 Now, we're going to create a variable called `date_since`, which marks the number of days that the app has been updated since the day that the data was scraped on August 8, 2018.
+
 ```{r dates}
 apps <- apps %>%
   mutate(date_new = mdy(`Last Updated`))
@@ -95,8 +112,12 @@ apps <- apps %>%
   mutate(date_since = mdy("August 8, 2018") - date_new)
 ```
 
-```{r rating-distribution}
-ggplot(data = apps, aes(x = Rating)) + geom_histogram(binwidth = 0.1, fill = "blue") + xlim(0,5) + labs(title = "Distribution of App Ratings")
+Now we are ready to do some preliminary analysis and vizualization to have a more complete idea of the data we are working with. 
+
+```{r rating-distribution, message=FALSE}
+ggplot(data = apps, aes(x = Rating)) + 
+  geom_histogram(binwidth = 0.1, fill = "blue") + 
+  xlim(0,5) + labs(title = "Distribution of App Ratings")
 ```
 
 ```{r summary-stats}
@@ -109,14 +130,60 @@ count(apps, Category) %>%
   arrange(desc(n)) 
 ```
 
-As shown above, qe determined median and IQR as our summary statistics because the distribution of `rating` appears to be slightly left-skewed. The median rating of an app is approximately **4.3** and the IQR is **0.5**.
+As shown above, we determined median and IQR as our summary statistics because the distribution of `rating` appears to be slightly left-skewed. The median rating of an app is approximately **4.3** and the IQR is **0.5**.
+
+We will now conduct a univariate analysis of all the possible predictor variables. 
+
+```{r univariate}
+ggplot(data = apps, aes(x = Category)) +
+  geom_histogram(stat="count") +
+  coord_flip()+
+  labs(title = "Frequency of Categories") 
+
+ggplot(data = apps, aes(x = Reviews)) +
+  geom_histogram(stat="count", binwidth = 1000) +
+  labs(title = "Frequency of Reviews")
+
+ggplot(data = apps, aes(x = Size)) +
+  geom_histogram(stat="count", binwidth = 0.00025) +
+  labs(title = "Frequency of App Sizes")
+
+ggplot(data = apps, aes(x = Installs)) +
+  geom_histogram(stat="count") +
+  coord_flip()+
+  labs(title = "Frequency of Installs")
+
+ggplot(data = apps, aes(x = Type)) +
+  geom_histogram(stat="count") +
+  labs(title = "Frequency of Type (Paid or Unpaid)")
+
+ggplot(data = apps, aes(x = Price)) +
+  geom_histogram(stat="count")+
+  coord_flip() +
+  labs(title = "Frequency of Price in usd")
+
+ggplot(data = apps, aes(x = `Content Rating`)) +
+  geom_bar() +
+  labs(title = "Frequency of Each Content Rating")
+
+ggplot(data = apps, aes(x = `Android Ver`)) +
+  geom_bar() +
+  labs(title = "Frequency of Adriod Version of the App")
+
+ggplot(data = apps, aes(x = apps$date_since)) +
+  geom_histogram(stat="count", binwidth = 3) +
+  labs(title = "Frequency of Date Since Scrapping")
+```
 
 To conduct a bivariate analysis, we will be making a pairs plot. 
+
 ```{r pairs-plot}
-#pairs(Rating ~  Reviews + Size + `Content Rating` + Genres + Category + Installs + Type + Price, data = apps, lower.panel = NULL)
+library(base)
+#pairs(Rating ~ Reviews + Size + Installs + Price + date_since, data = apps, lower.panel = NULL)
 ```
 
 Given the above pairs plot, we will be investigating some relationships more in depth: 
+
 ```{r category-rating}
 ggplot(data = apps, aes(x = Category, y = Rating)) + geom_boxplot() + coord_flip() +
   labs(title = "Relationship between Category and Rating") 
@@ -155,7 +222,7 @@ Becuase we have conducted Multipule Linear Regression, the model assumptions we 
 
 #### Linearity
 
-The Linearity Assumptions assumes that the response variable has a linear relationship with the predictor variables used in the final model. To assess linearity, we look at the plots created in the Exploratory Data Analysis. DID WE MAKE SINGLE VARIABLE DISTRIBUTIONS?
+The Linearity Assumptions assumes that the response variable has a linear relationship with the predictor variables used in the final model. To assess linearity, we look at the plots created in the Exploratory Data Analysis. None of these plots seem to have a non-linear relationship such as a polynomial, however, some are quite skewed.
 
 #### Constant Variance
 
@@ -187,11 +254,9 @@ The Normality Assumption assumes that for any given set of predictors, the respo
 #   labs(title = "Distribution of Residuals")
 ```
 
-
 #### Independence
 
-The Independence Assumption assumes that all observations in the data used to construct the model are independent of each other. 
-
+The Independence Assumption assumes that all observations in the data used to construct the model are independent of each other. Given that each observation and is not dependent on the time frame or location of collection for its mean rating. The observations are independent of each other and thus the Independence Assumption is maintained. 
 
 ### Interpretations and Findings
 - Interpretations / interesting findings from the model coefficients
