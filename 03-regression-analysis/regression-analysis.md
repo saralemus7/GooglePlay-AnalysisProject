@@ -396,6 +396,359 @@ too heavily correlated.
 
 ### Final Model
 
+#### Full Model
+
+We will attempt to use MLR to predict an app’s Rating given the
+afformentioned predictors. Here is the output of our initial
+model:
+
+|                term                |  estimate   | std.error |  statistic   |  p.value  |
+| :--------------------------------: | :---------: | :-------: | :----------: | :-------: |
+|            (Intercept)             |  4.8159591  | 0.3043497 |  15.8237658  | 0.0000000 |
+|    CategoryAUTO\_AND\_VEHICLES     | \-0.1821313 | 0.0853345 | \-2.1343217  | 0.0328426 |
+|           CategoryBEAUTY           | \-0.0712948 | 0.0987081 | \-0.7222787  | 0.4701413 |
+|   CategoryBOOKS\_AND\_REFERENCE    |  0.0216827  | 0.0729580 |  0.2971941   | 0.7663250 |
+|          CategoryBUSINESS          | \-0.2417363 | 0.0689890 | \-3.5039823  | 0.0004605 |
+|           CategoryCOMICS           | \-0.1985729 | 0.0910906 | \-2.1799502  | 0.0292862 |
+|       CategoryCOMMUNICATION        | \-0.2481569 | 0.0687226 | \-3.6109957  | 0.0003066 |
+|           CategoryDATING           | \-0.3950916 | 0.0773526 | \-5.1076717  | 0.0000003 |
+|         CategoryEDUCATION          | \-0.0074781 | 0.0744094 | \-0.1004989  | 0.9199505 |
+|       CategoryENTERTAINMENT        | \-0.3054110 | 0.0757039 | \-4.0342829  | 0.0000552 |
+|           CategoryEVENTS           |  0.0488606  | 0.0969238 |  0.5041138   | 0.6141934 |
+|           CategoryFAMILY           | \-0.1546144 | 0.0639499 | \-2.4177421  | 0.0156363 |
+|          CategoryFINANCE           | \-0.2223632 | 0.0686369 | \-3.2397024  | 0.0012008 |
+|      CategoryFOOD\_AND\_DRINK      | \-0.2401770 | 0.0787304 | \-3.0506261  | 0.0022901 |
+|            CategoryGAME            | \-0.0939377 | 0.0649329 | \-1.4466890  | 0.1480178 |
+|    CategoryHEALTH\_AND\_FITNESS    | \-0.1190098 | 0.0691396 | \-1.7212983  | 0.0852300 |
+|      CategoryHOUSE\_AND\_HOME      | \-0.1869549 | 0.0847127 | \-2.2069287  | 0.0273434 |
+|    CategoryLIBRARIES\_AND\_DEMO    | \-0.0988004 | 0.0907392 | \-1.0888396  | 0.2762529 |
+|         CategoryLIFESTYLE          | \-0.2404189 | 0.0687604 | \-3.4964721  | 0.0004737 |
+|   CategoryMAPS\_AND\_NAVIGATION    | \-0.3235334 | 0.0768947 | \-4.2074854  | 0.0000261 |
+|          CategoryMEDICAL           | \-0.1518055 | 0.0685809 | \-2.2135235  | 0.0268858 |
+|    CategoryNEWS\_AND\_MAGAZINES    | \-0.2473066 | 0.0711170 | \-3.4774618  | 0.0005085 |
+|         CategoryPARENTING          | \-0.0768815 | 0.0938740 | \-0.8189864  | 0.4128152 |
+|      CategoryPERSONALIZATION       | \-0.0150830 | 0.0690124 | \-0.2185549  | 0.8270016 |
+|        CategoryPHOTOGRAPHY         | \-0.2003004 | 0.0687415 | \-2.9138226  | 0.0035788 |
+|        CategoryPRODUCTIVITY        | \-0.1680089 | 0.0682704 | \-2.4609318  | 0.0138757 |
+|          CategorySHOPPING          | \-0.1634177 | 0.0706002 | \-2.3146920  | 0.0206515 |
+|           CategorySOCIAL           | \-0.1455733 | 0.0708918 | \-2.0534580  | 0.0400561 |
+|           CategorySPORTS           | \-0.1643422 | 0.0687108 | \-2.3917944  | 0.0167860 |
+|           CategoryTOOLS            | \-0.2903437 | 0.0655008 | \-4.4326773  | 0.0000094 |
+|     CategoryTRAVEL\_AND\_LOCAL     | \-0.2721171 | 0.0709638 | \-3.8345926  | 0.0001266 |
+|       CategoryVIDEO\_PLAYERS       | \-0.2889336 | 0.0740693 | \-3.9008561  | 0.0000965 |
+|          CategoryWEATHER           | \-0.1557409 | 0.0849714 | \-1.8328625  | 0.0668550 |
+|              Reviews               |  0.0000000  | 0.0000000 |  3.6856876   | 0.0002294 |
+|        SizeLess than 100 MB        |  0.0082981  | 0.0381802 |  0.2173401   | 0.8279481 |
+|       SizeVaries with device       |  0.0454229  | 0.0455824 |  0.9965018   | 0.3190323 |
+|   InstallsBetween 100 and 1,000    | \-0.2216490 | 0.0476788 | \-4.6487992  | 0.0000034 |
+|  InstallsBetween 1,000 and 10,000  | \-0.4595658 | 0.0448446 | \-10.2479701 | 0.0000000 |
+| InstallsBetween 10,000 and 100,000 | \-0.4602558 | 0.0443761 | \-10.3717125 | 0.0000000 |
+|     Installs100,000 or Greater     | \-0.3089959 | 0.0433235 | \-7.1322964  | 0.0000000 |
+|              TypePaid              |  0.1056340  | 0.0436598 |  2.4194792   | 0.0155618 |
+|     PriceBetween $0 and $4.99      |  0.0525784  | 0.0483457 |  1.0875506   | 0.2768218 |
+|      `Content Rating`Everyone      | \-0.0435530 | 0.2885895 | \-0.1509167  | 0.8800447 |
+|      `Content Rating`Everyone      | \-0.0386037 | 0.2896078 | \-0.1332965  | 0.8939618 |
+|       `Content Rating`Mature       | \-0.0726717 | 0.2897916 | \-0.2507723  | 0.8019957 |
+|        `Content Rating`Teen        | \-0.0424241 | 0.2887808 | \-0.1469076  | 0.8832082 |
+|      `Content Rating`Unrated       |  0.4922664  | 0.5730467 |  0.8590337   | 0.3903441 |
+|           `Android Ver`2           | \-0.0816476 | 0.0545446 | \-1.4968963  | 0.1344542 |
+|           `Android Ver`3           | \-0.0630387 | 0.0615867 | \-1.0235779  | 0.3060613 |
+|           `Android Ver`4           | \-0.0416205 | 0.0549414 | \-0.7575428  | 0.4487439 |
+|           `Android Ver`5           | \-0.0734740 | 0.0588364 | \-1.2487863  | 0.2117747 |
+|           `Android Ver`6           | \-0.2278209 | 0.0899831 | \-2.5318191  | 0.0113636 |
+|           `Android Ver`7           | \-0.1907661 | 0.0917748 | \-2.0786335  | 0.0376784 |
+|           `Android Ver`8           | \-0.2728152 | 0.2279401 | \-1.1968725  | 0.2313868 |
+|  `Android Ver`Varies with device   | \-0.0297084 | 0.0608137 | \-0.4885146  | 0.6251969 |
+|            date\_since             | \-0.0001632 | 0.0000167 | \-9.8022268  | 0.0000000 |
+
+The full model output is shown above.
+
+#### BIC
+
+First to select the correct model, we will perform both forward and
+backward selection using
+    BIC:
+
+    ## Warning in leaps.setup(x, y, wt = wt, nbest = nbest, nvmax = nvmax,
+    ## force.in = force.in, : 2 linear dependencies found
+
+    ## Reordering variables and trying again:
+
+    ##                        (Intercept)                     CategoryDATING 
+    ##                       4.527610e+00                      -2.261641e-01 
+    ##                      CategoryTOOLS                            Reviews 
+    ##                      -1.459422e-01                       8.680403e-09 
+    ##      InstallsBetween 100 and 1,000   InstallsBetween 1,000 and 10,000 
+    ##                      -2.429475e-01                      -4.817567e-01 
+    ## InstallsBetween 10,000 and 100,000         Installs100,000 or Greater 
+    ##                      -4.800877e-01                      -2.851041e-01 
+    ##                           TypePaid                   `Android Ver`NaN 
+    ##                       1.324406e-01                       0.000000e+00
+
+    ## Warning in leaps.setup(x, y, wt = wt, nbest = nbest, nvmax = nvmax,
+    ## force.in = force.in, : 2 linear dependencies found
+
+    ## Reordering variables and trying again:
+
+    ##                        (Intercept)        CategoryBOOKS_AND_REFERENCE 
+    ##                         4.32767831                         0.18167532 
+    ##                     CategoryDATING            CategoryPERSONALIZATION 
+    ##                        -0.22625882                         0.12243328 
+    ##                      CategoryTOOLS   InstallsBetween 1,000 and 10,000 
+    ##                        -0.13884257                        -0.29267230 
+    ## InstallsBetween 10,000 and 100,000         Installs100,000 or Greater 
+    ##                        -0.28924039                        -0.08503444 
+    ##                           TypePaid                   `Android Ver`NaN 
+    ##                         0.12671255                         0.00000000
+
+#### AIC
+
+Second, we will perform both forward and backward selection using AIC:
+
+    ## Start:  AIC=-13143.21
+    ## Rating ~ Category + Reviews + Size + Installs + Type + Price + 
+    ##     `Content Rating` + `Android Ver` + date_since
+    ## 
+    ## 
+    ## Step:  AIC=-13143.21
+    ## Rating ~ Category + Reviews + Size + Installs + Price + `Content Rating` + 
+    ##     `Android Ver` + date_since
+    ## 
+    ##                    Df Sum of Sq    RSS    AIC
+    ## - `Content Rating`  5     0.537 2264.1 -13151
+    ## - Size              2     0.557 2264.1 -13145
+    ## <none>                          2263.5 -13143
+    ## - `Android Ver`     8     4.741 2268.3 -13140
+    ## - Reviews           1     3.310 2266.8 -13132
+    ## - Price             2    11.582 2275.1 -13100
+    ## - date_since        1    23.409 2286.9 -13049
+    ## - Category         32    65.296 2328.8 -12941
+    ## - Installs          4    61.873 2325.4 -12899
+    ## 
+    ## Step:  AIC=-13150.99
+    ## Rating ~ Category + Reviews + Size + Installs + Price + `Android Ver` + 
+    ##     date_since
+    ## 
+    ##                 Df Sum of Sq    RSS    AIC
+    ## - Size           2     0.575 2264.7 -13153
+    ## <none>                       2264.1 -13151
+    ## - `Android Ver`  8     4.728 2268.8 -13148
+    ## - Reviews        1     3.424 2267.5 -13139
+    ## - Price          2    11.570 2275.7 -13107
+    ## - date_since     1    23.190 2287.3 -13058
+    ## - Category      32    70.016 2334.1 -12930
+    ## - Installs       4    61.746 2325.8 -12908
+    ## 
+    ## Step:  AIC=-13152.62
+    ## Rating ~ Category + Reviews + Installs + Price + `Android Ver` + 
+    ##     date_since
+    ## 
+    ##                 Df Sum of Sq    RSS    AIC
+    ## <none>                       2264.7 -13153
+    ## - Reviews        1     3.479 2268.1 -13140
+    ## - `Android Ver`  8     7.259 2271.9 -13139
+    ## - Price          2    11.651 2276.3 -13109
+    ## - date_since     1    24.754 2289.4 -13053
+    ## - Category      32    70.044 2334.7 -12932
+    ## - Installs       4    62.492 2327.2 -12906
+
+    ## Start:  AIC=-12384.79
+    ## Rating ~ 1
+    ## 
+    ##                    Df Sum of Sq    RSS    AIC
+    ## + Installs          4    90.251 2393.7 -12723
+    ## + Category         32    75.856 2408.1 -12611
+    ## + date_since        1    50.643 2433.3 -12575
+    ## + `Android Ver`     8    29.485 2454.4 -12480
+    ## + Size              2    21.170 2462.8 -12461
+    ## + Reviews           1    11.419 2472.5 -12426
+    ## + Price             2     4.315 2479.6 -12397
+    ## + Type              1     3.784 2480.1 -12397
+    ## + `Content Rating`  5     5.891 2478.0 -12397
+    ## <none>                          2483.9 -12385
+    ## 
+    ## Step:  AIC=-12722.73
+    ## Rating ~ Installs
+    ## 
+    ##                    Df Sum of Sq    RSS    AIC
+    ## + Category         32    66.838 2326.8 -12923
+    ## + date_since        1    32.161 2361.5 -12847
+    ## + `Android Ver`     8    17.628 2376.0 -12776
+    ## + Type              1     9.985 2383.7 -12760
+    ## + Price             2    10.165 2383.5 -12758
+    ## + Size              2     9.112 2384.6 -12754
+    ## + Reviews           1     7.135 2386.5 -12749
+    ## + `Content Rating`  5     4.889 2388.8 -12732
+    ## <none>                          2393.7 -12723
+    ## 
+    ## Step:  AIC=-12923.44
+    ## Rating ~ Installs + Category
+    ## 
+    ##                    Df Sum of Sq    RSS    AIC
+    ## + date_since        1    38.604 2288.2 -13078
+    ## + `Android Ver`     8    23.718 2303.1 -13003
+    ## + Size              2    10.939 2315.9 -12964
+    ## + Type              1     7.336 2319.5 -12951
+    ## + Price             2     7.430 2319.4 -12949
+    ## + Reviews           1     6.502 2320.3 -12948
+    ## <none>                          2326.8 -12923
+    ## + `Content Rating`  5     0.475 2326.4 -12915
+    ## 
+    ## Step:  AIC=-13077.81
+    ## Rating ~ Installs + Category + date_since
+    ## 
+    ##                    Df Sum of Sq    RSS    AIC
+    ## + Type              1   11.4924 2276.7 -13123
+    ## + Price             2   11.7234 2276.5 -13122
+    ## + `Android Ver`     8    8.6541 2279.6 -13097
+    ## + Reviews           1    4.4474 2283.8 -13094
+    ## + Size              2    4.7464 2283.5 -13093
+    ## <none>                          2288.2 -13078
+    ## + `Content Rating`  5    0.6327 2287.6 -13070
+    ## 
+    ## Step:  AIC=-13122.88
+    ## Rating ~ Installs + Category + date_since + Type
+    ## 
+    ##                    Df Sum of Sq    RSS    AIC
+    ## + `Android Ver`     8    8.3189 2268.4 -13141
+    ## + Reviews           1    4.5810 2272.2 -13140
+    ## + Size              2    4.0358 2272.7 -13136
+    ## <none>                          2276.7 -13123
+    ## + Price             1    0.2311 2276.5 -13122
+    ## + `Content Rating`  5    0.6258 2276.1 -13115
+    ## 
+    ## Step:  AIC=-13141.09
+    ## Rating ~ Installs + Category + date_since + Type + `Android Ver`
+    ## 
+    ##                    Df Sum of Sq    RSS    AIC
+    ## + Reviews           1    3.4661 2264.9 -13153
+    ## <none>                          2268.4 -13141
+    ## + Price             1    0.2870 2268.1 -13140
+    ## + Size              2    0.6388 2267.8 -13140
+    ## + `Content Rating`  5    0.6729 2267.8 -13134
+    ## 
+    ## Step:  AIC=-13153.38
+    ## Rating ~ Installs + Category + date_since + Type + `Android Ver` + 
+    ##     Reviews
+    ## 
+    ##                    Df Sum of Sq    RSS    AIC
+    ## <none>                          2264.9 -13153
+    ## + Price             1   0.29952 2264.7 -13153
+    ## + Size              2   0.58384 2264.4 -13152
+    ## + `Content Rating`  5   0.55720 2264.4 -13146
+
+    ## Start:  AIC=-12384.79
+    ## Rating ~ 1
+    ## 
+    ##                    Df Sum of Sq    RSS    AIC
+    ## + Installs          4    90.251 2393.7 -12723
+    ## + Category         32    75.856 2408.1 -12611
+    ## + date_since        1    50.643 2433.3 -12575
+    ## + `Android Ver`     8    29.485 2454.4 -12480
+    ## + Size              2    21.170 2462.8 -12461
+    ## + Reviews           1    11.419 2472.5 -12426
+    ## + Price             2     4.315 2479.6 -12397
+    ## + Type              1     3.784 2480.1 -12397
+    ## + `Content Rating`  5     5.891 2478.0 -12397
+    ## <none>                          2483.9 -12385
+    ## 
+    ## Step:  AIC=-12722.73
+    ## Rating ~ Installs
+    ## 
+    ##                    Df Sum of Sq    RSS    AIC
+    ## + Category         32    66.838 2326.8 -12923
+    ## + date_since        1    32.161 2361.5 -12847
+    ## + `Android Ver`     8    17.628 2376.0 -12776
+    ## + Type              1     9.985 2383.7 -12760
+    ## + Price             2    10.165 2383.5 -12758
+    ## + Size              2     9.112 2384.6 -12754
+    ## + Reviews           1     7.135 2386.5 -12749
+    ## + `Content Rating`  5     4.889 2388.8 -12732
+    ## <none>                          2393.7 -12723
+    ## - Installs          4    90.251 2483.9 -12385
+    ## 
+    ## Step:  AIC=-12923.44
+    ## Rating ~ Installs + Category
+    ## 
+    ##                    Df Sum of Sq    RSS    AIC
+    ## + date_since        1    38.604 2288.2 -13078
+    ## + `Android Ver`     8    23.718 2303.1 -13003
+    ## + Size              2    10.939 2315.9 -12964
+    ## + Type              1     7.336 2319.5 -12951
+    ## + Price             2     7.430 2319.4 -12949
+    ## + Reviews           1     6.502 2320.3 -12948
+    ## <none>                          2326.8 -12923
+    ## + `Content Rating`  5     0.475 2326.4 -12915
+    ## - Category         32    66.838 2393.7 -12723
+    ## - Installs          4    81.233 2408.1 -12611
+    ## 
+    ## Step:  AIC=-13077.81
+    ## Rating ~ Installs + Category + date_since
+    ## 
+    ##                    Df Sum of Sq    RSS    AIC
+    ## + Type              1    11.492 2276.7 -13123
+    ## + Price             2    11.723 2276.5 -13122
+    ## + `Android Ver`     8     8.654 2279.6 -13097
+    ## + Reviews           1     4.447 2283.8 -13094
+    ## + Size              2     4.746 2283.5 -13093
+    ## <none>                          2288.2 -13078
+    ## + `Content Rating`  5     0.633 2287.6 -13070
+    ## - date_since        1    38.604 2326.8 -12923
+    ## - Category         32    73.281 2361.5 -12847
+    ## - Installs          4    64.370 2352.6 -12826
+    ## 
+    ## Step:  AIC=-13122.88
+    ## Rating ~ Installs + Category + date_since + Type
+    ## 
+    ##                    Df Sum of Sq    RSS    AIC
+    ## + `Android Ver`     8     8.319 2268.4 -13141
+    ## + Reviews           1     4.581 2272.2 -13140
+    ## + Size              2     4.036 2272.7 -13136
+    ## <none>                          2276.7 -13123
+    ## + Price             1     0.231 2276.5 -13122
+    ## + `Content Rating`  5     0.626 2276.1 -13115
+    ## - Type              1    11.492 2288.2 -13078
+    ## - date_since        1    42.760 2319.5 -12951
+    ## - Category         32    69.571 2346.3 -12906
+    ## - Installs          4    67.216 2343.9 -12859
+    ## 
+    ## Step:  AIC=-13141.09
+    ## Rating ~ Installs + Category + date_since + Type + `Android Ver`
+    ## 
+    ##                    Df Sum of Sq    RSS    AIC
+    ## + Reviews           1     3.466 2264.9 -13153
+    ## <none>                          2268.4 -13141
+    ## + Price             1     0.287 2268.1 -13140
+    ## + Size              2     0.639 2267.8 -13140
+    ## + `Content Rating`  5     0.673 2267.8 -13134
+    ## - `Android Ver`     8     8.319 2276.7 -13123
+    ## - Type              1    11.157 2279.6 -13097
+    ## - date_since        1    25.622 2294.0 -13038
+    ## - Category         32    71.394 2339.8 -12915
+    ## - Installs          4    63.422 2331.8 -12891
+    ## 
+    ## Step:  AIC=-13153.38
+    ## Rating ~ Installs + Category + date_since + Type + `Android Ver` + 
+    ##     Reviews
+    ## 
+    ##                    Df Sum of Sq    RSS    AIC
+    ## <none>                          2264.9 -13153
+    ## + Price             1     0.300 2264.7 -13153
+    ## + Size              2     0.584 2264.4 -13152
+    ## + `Content Rating`  5     0.557 2264.4 -13146
+    ## - Reviews           1     3.466 2268.4 -13141
+    ## - `Android Ver`     8     7.204 2272.2 -13140
+    ## - Type              1    11.352 2276.3 -13109
+    ## - date_since        1    24.681 2289.6 -13054
+    ## - Category         32    70.236 2335.2 -12932
+    ## - Installs          4    62.787 2327.7 -12906
+
+#### Final Model
+
+The model which gave us the fewest predictors is
+
+### Exploring Interactions
+
 ### Final Model Assumptions
 
 Becuase we have conducted Multipule Linear Regression, the model
@@ -408,7 +761,8 @@ The Linearity Assumptions assumes that the response variable has a
 linear relationship with the predictor variables used in the final
 model. To assess linearity, we look at the plots created in the
 Exploratory Data Analysis. None of these plots seem to have a non-linear
-relationship such as a polynomial, however, some are quite skewed.
+relationship such as one that would be polynomial; however, some are
+quite skewed but this should not matter for the purposes of our model.
 
 #### Constant Variance
 
@@ -430,11 +784,19 @@ each observation and is not dependent on the time frame or location of
 collection for its mean rating. The observations are independent of each
 other and thus the Independence Assumption is maintained.
 
+### Model Assessment
+
+#### Standardized Residuals
+
+#### Cook’s Distance
+
+#### VIF
+
 ### Interpretations and Findings
 
   - Interpretations / interesting findings from the model coefficients
 
 ### Aditional Model Work
 
-  - Additional work of other models or analylsis not included in the
+  - Additional work of other models or analysis not included in the
     final model.

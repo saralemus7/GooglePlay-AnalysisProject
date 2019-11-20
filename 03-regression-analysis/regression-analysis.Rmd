@@ -38,6 +38,9 @@ library(readr)
 library(ggplot2)
 library(stringr)
 library(lubridate)
+library(Sleuth3) 
+library(ISLR)
+library(leaps)
 ```
 
 ```{r load-data, message=FALSE}
@@ -349,13 +352,68 @@ In order to find our final model, we will use a process of both forwards and bac
 
 ### Final Model
 
+#### Full Model
+
+We will attempt to use MLR to predict an app's Rating given the afformentioned predictors. Here is the output of our initial model:
+
+```{r full-model}
+full_model <- lm(Rating ~ Category + Reviews + Size + Installs + Type + Price + `Content Rating` + `Android Ver` + date_since, data = apps)
+kable(tidy(full_model),format="html",digits=4)
+```
+
+The full model output is shown above. 
+
+#### BIC
+
+First to select the correct model, we will perform both forward and backward selection using BIC:
+
+```{r bic-back}
+regfit_backward <- regsubsets(Rating ~ Category + Reviews + Size + Installs + Type + Price + `Content Rating` + `Android Ver` + date_since, data = apps, method="backward")
+sel_summary <- summary(regfit_backward)
+coef(regfit_backward, which.min(sel_summary$bic))
+```
+
+```{r bic-forward}
+regfit_forward <- regsubsets(Rating ~ Category + Reviews + Size + Installs + Type + Price + `Content Rating` + `Android Ver` + date_since, data = apps, method="forward")
+sel_summary <- summary(regfit_forward)
+coef(regfit_forward, which.min(sel_summary$bic))
+```
+
+#### AIC 
+
+Second, we will perform both forward and backward selection using AIC:
+
+```{r aic-back}
+apps <- apps %>%
+  na.omit(apps)
+null_model <- lm(Rating ~ 1, data = apps,)
+regfit_backward <- step(full_model, direction = "backward")
+```
+
+```{r aic-forward}
+regfit_forward <- step(null_model, scope = formula(full_model), 
+                       direction = "forward")
+```
+
+```{r hybrid}
+regfit_hybrid <- step(null_model, scope = formula(full_model), 
+                      direction = "both")
+```
+
+#### Final Model
+
+The model which gave us the fewest predictors is 
+
+### Exploring Interactions 
+
+
 ### Final Model Assumptions
 
 Becuase we have conducted Multipule Linear Regression, the model assumptions we will check are Linearity, Constant Variance, Normality, and Independence. 
 
 #### Linearity
 
-The Linearity Assumptions assumes that the response variable has a linear relationship with the predictor variables used in the final model. To assess linearity, we look at the plots created in the Exploratory Data Analysis. None of these plots seem to have a non-linear relationship such as a polynomial, however, some are quite skewed.
+The Linearity Assumptions assumes that the response variable has a linear relationship with the predictor variables used in the final model. To assess linearity, we look at the plots created in the Exploratory Data Analysis. None of these plots seem to have a non-linear relationship such as one that would be polynomial; however, some are quite skewed but this should not matter for the purposes of our model. 
 
 #### Constant Variance
 
@@ -391,8 +449,16 @@ The Normality Assumption assumes that for any given set of predictors, the respo
 
 The Independence Assumption assumes that all observations in the data used to construct the model are independent of each other. Given that each observation and is not dependent on the time frame or location of collection for its mean rating. The observations are independent of each other and thus the Independence Assumption is maintained. 
 
+### Model Assessment
+
+#### Standardized Residuals
+
+#### Cook's Distance
+
+#### VIF
+
 ### Interpretations and Findings
 - Interpretations / interesting findings from the model coefficients
 
 ### Aditional Model Work
-- Additional work of other models or analylsis not included in the final model.
+- Additional work of other models or analysis not included in the final model.
