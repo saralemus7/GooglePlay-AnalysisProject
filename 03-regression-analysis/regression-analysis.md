@@ -63,7 +63,7 @@ the response variable.
     ##  n obs: 10841 
     ##  n variables: 13 
     ## 
-    ## ── Variable type:character ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+    ## ── Variable type:character ────────────────────────────────────────────────────────────────────────────────────────────────
     ##        variable missing complete     n min max empty n_unique
     ##     Android Ver       1    10840 10841   3  18     0       34
     ##             App       0    10841 10841   1 194     0     9660
@@ -77,7 +77,7 @@ the response variable.
     ##            Size       0    10841 10841   2  18     0      462
     ##            Type       0    10841 10841   1   4     0        4
     ## 
-    ## ── Variable type:numeric ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+    ## ── Variable type:numeric ──────────────────────────────────────────────────────────────────────────────────────────────────
     ##  variable missing complete     n      mean         sd p0 p25    p50
     ##    Rating    1474     9367 10841      4.19       0.54  1   4    4.3
     ##   Reviews       1    10840 10841 444152.9  2927760.6   0  38 2094  
@@ -162,6 +162,19 @@ rating of an app is approximately **4.3** and the IQR is **0.5**.
 
 #### Univariate Analysis
 
+We will now conduct a univariate analysis of all the possible predictor
+variables. For the purposes of our regression, we will be examining the
+following variables: `Category`, `Reviews`, `Size`, `date_since`,
+`Installs`, `Type`, `Price`, `Content Rating`, and `Android Version`.
+
+We have decided to not consider the other predictors as they are either
+irrelevant to our analysis due to the fact that they are simply
+indicator variables to distinguish the observations in our dataset -
+such as with `App` , or for redundancy and clarity as mentioned in the
+above sections in regards to `Current Version` and `Genres`.
+
+##### Category
+
     ## # A tibble: 33 x 2
     ##    Category          n
     ##    <fct>         <int>
@@ -177,38 +190,41 @@ rating of an app is approximately **4.3** and the IQR is **0.5**.
     ## 10 LIFESTYLE       314
     ## # … with 23 more rows
 
-We will now conduct a univariate analysis of all the possible predictor
-variables.
+![](regression-analysis_files/figure-gfm/category-1.png)<!-- -->
 
-    ## Warning: Ignoring unknown parameters: binwidth, bins, pad
+##### Reviews
+
+![](regression-analysis_files/figure-gfm/Reviews-1.png)<!-- -->
+
+##### Size
+
+![](regression-analysis_files/figure-gfm/size-1.png)<!-- -->
+
+##### Installs
+
+![](regression-analysis_files/figure-gfm/installs-1.png)<!-- -->
+
+##### Type
+
+![](regression-analysis_files/figure-gfm/type-1.png)<!-- -->
+
+##### Price
+
+![](regression-analysis_files/figure-gfm/price-1.png)<!-- -->
+
+##### Content Rating
 
 ![](regression-analysis_files/figure-gfm/univariate-1.png)<!-- -->
 
-    ## Warning: Ignoring unknown parameters: binwidth, bins, pad
+##### Andriod Version
 
-![](regression-analysis_files/figure-gfm/univariate-2.png)<!-- -->
+![](regression-analysis_files/figure-gfm/android-1.png)<!-- -->
 
-    ## Warning: Ignoring unknown parameters: binwidth, bins, pad
+##### Date Since
 
-![](regression-analysis_files/figure-gfm/univariate-3.png)<!-- -->
+![](regression-analysis_files/figure-gfm/datesince-1.png)<!-- -->
 
-    ## Warning: Ignoring unknown parameters: binwidth, bins, pad
-
-![](regression-analysis_files/figure-gfm/univariate-4.png)<!-- -->
-
-    ## Warning: Ignoring unknown parameters: binwidth, bins, pad
-
-![](regression-analysis_files/figure-gfm/univariate-5.png)<!-- -->
-
-    ## Warning: Ignoring unknown parameters: binwidth, bins, pad
-
-![](regression-analysis_files/figure-gfm/univariate-6.png)<!-- -->![](regression-analysis_files/figure-gfm/univariate-7.png)<!-- -->![](regression-analysis_files/figure-gfm/univariate-8.png)<!-- -->
-
-    ## Warning: Ignoring unknown parameters: binwidth, bins, pad
-
-    ## Don't know how to automatically pick scale for object of type difftime. Defaulting to continuous.
-
-![](regression-analysis_files/figure-gfm/univariate-9.png)<!-- -->
+#### Bivariate Analysis
 
 To conduct a bivariate analysis, we will be making a pairs plot.
 
@@ -243,6 +259,10 @@ The boxplots for free and paid apps sport nearly identical median and
 IQR values. This tells us that whether an app is free or paid doesn’t
 appear to have a major impact on the rating. Further analysis into the
 variation of rating among apps of different price levels is needed.
+
+#### Possible Interactions
+
+#### Collinearity
 
 ### Explanation of the Model Process
 

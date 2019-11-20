@@ -143,55 +143,93 @@ As shown above, the distribution of our response variable, `rating` appears to b
 
 #### Univariate Analysis
 
+We will now conduct a univariate analysis of all the possible predictor variables. For the purposes of our regression, we will be examining the following variables: `Category`, `Reviews`, `Size`, `date_since`, `Installs`, `Type`, `Price`, `Content Rating`, and `Android Version`. 
+
+We have decided to not consider the other predictors as they are either irrelevant to our analysis due to the fact that they are simply indicator variables to distinguish the observations in our dataset - such as with `App` , or for redundancy and clarity as mentioned in the above sections in regards to `Current Version` and `Genres`.
+
+##### Category
+
 ```{r count}
 count(apps, Category) %>% 
   arrange(desc(n)) 
 ```
 
-
-
-We will now conduct a univariate analysis of all the possible predictor variables. 
-
-```{r univariate}
+```{r category, echo=FALSE,warning=FALSE,message=FALSE,error=FALSE}
 ggplot(data = apps, aes(x = Category)) +
   geom_histogram(stat="count") +
   coord_flip()+
   labs(title = "Frequency of Categories") 
+```
 
+##### Reviews
+
+```{r Reviews, echo=FALSE,warning=FALSE,message=FALSE,error=FALSE}
 ggplot(data = apps, aes(x = Reviews)) +
-  geom_histogram(stat="count", binwidth = 1000) +
-  labs(title = "Frequency of Reviews")
+  geom_histogram(binwidth = 1000000) +
+  labs(title = "Distribution of Reviews")
+```
+
+##### Size
+
+```{r size, echo=FALSE,warning=FALSE,message=FALSE,error=FALSE}
 
 ggplot(data = apps, aes(x = Size)) +
   geom_histogram(stat="count", binwidth = 0.00025) +
-  labs(title = "Frequency of App Sizes")
+  labs(title = "Distribution of App Sizes")
+```
 
+##### Installs
+
+```{r installs, echo=FALSE,warning=FALSE,message=FALSE,error=FALSE}
 ggplot(data = apps, aes(x = Installs)) +
   geom_histogram(stat="count") +
   coord_flip()+
-  labs(title = "Frequency of Installs")
+  labs(title = "Distribution of Installs")
+```
 
+
+##### Type
+
+```{r type, echo=FALSE,warning=FALSE,message=FALSE,error=FALSE}
 ggplot(data = apps, aes(x = Type)) +
   geom_histogram(stat="count") +
-  labs(title = "Frequency of Type (Paid or Unpaid)")
+  labs(title = "Distribution of Type (Paid or Unpaid)")
+```
 
+##### Price
+
+```{r price, echo=FALSE,warning=FALSE,message=FALSE,error=FALSE}
 ggplot(data = apps, aes(x = Price)) +
   geom_histogram(stat="count")+
   coord_flip() +
-  labs(title = "Frequency of Price in usd")
+  labs(title = "Distribution of Price (in USD)")
+```
 
+##### Content Rating
+
+```{r univariate, echo=FALSE,warning=FALSE,message=FALSE,error=FALSE}
 ggplot(data = apps, aes(x = `Content Rating`)) +
   geom_bar() +
   labs(title = "Frequency of Each Content Rating")
+```
 
+##### Andriod Version
+
+```{r android, echo=FALSE,warning=FALSE,message=FALSE,error=FALSE}
 ggplot(data = apps, aes(x = `Android Ver`)) +
   geom_bar() +
-  labs(title = "Frequency of Adriod Version of the App")
+  labs(title = "Dsitribution of Latest Compatible Andriod Version of App")
+```
 
-ggplot(data = apps, aes(x = apps$date_since)) +
-  geom_histogram(stat="count", binwidth = 3) +
+##### Date Since
+
+```{r datesince, echo=FALSE,warning=FALSE,message=FALSE,error=FALSE}
+ggplot(data = apps, aes(x = date_since)) +
+  geom_histogram(stat= "count", binwidth = 3) +
   labs(title = "Frequency of Date Since Scrapping")
 ```
+
+#### Bivariate Analysis
 
 To conduct a bivariate analysis, we will be making a pairs plot. 
 
@@ -229,6 +267,10 @@ ggplot(data = apps, aes(x = Type, y = Rating)) + geom_boxplot() +
 ```
 
 The boxplots for free and paid apps sport nearly identical median and IQR values. This tells us that whether an app is free or paid doesn't appear to have a major impact on the rating. Further analysis into the variation of rating among apps of different price levels is needed. 
+
+#### Possible Interactions 
+
+#### Collinearity 
 
 ### Explanation of the Model Process
 
