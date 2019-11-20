@@ -211,7 +211,13 @@ ggplot(data = apps, aes(x = Category)) +
 ggplot(data = apps, aes(x = Reviews)) +
   geom_histogram(binwidth = 1000000) +
   labs(title = "Distribution of Reviews")
+
+apps %>%
+  summarise(median(Reviews)) 
+apps %>%
+  summarise(max(Reviews))
 ```
+Reviews is definetley one of our most skewed predictors, as shown by the strong right skew in this histogram. This is because the median number of reviews is about 6,000, while we have a max review number of 78158306, which partially explains the skew. 
 
 ##### Size
 
@@ -220,6 +226,7 @@ ggplot(data = apps, aes(x = Size)) +
   geom_histogram(stat="count", binwidth = 0.00025) +
   labs(title = "Distribution of App Sizes")
 ```
+As shown by the distribution of app sizes, it is clear that most of our apps are less than 100MB, and there are also some that vary with device (meaning that nbo specific size information was availiable). There are very few apps that have sizes greater than 100 MB.
 
 ##### Installs
 
@@ -229,7 +236,7 @@ ggplot(data = apps, aes(x = Installs)) +
   coord_flip()+
   labs(title = "Distribution of Installs")
 ```
-
+The distribution for number of installs is also left skewed but not particularly abnormal. The majority of reviews have 100k installs or more, and then from there on, the number of observations for each level of installs decreases more than the previous one. Few apps have less than 100 installs.
 
 ##### Type
 
@@ -237,7 +244,12 @@ ggplot(data = apps, aes(x = Installs)) +
 ggplot(data = apps, aes(x = Type)) +
   geom_histogram(stat="count") +
   labs(title = "Distribution of Type (Paid or Unpaid)")
+
+apps %>%
+  count(Type) %>%
+  mutate(proportion = n/sum(n))
 ```
+The vast majority (93%) of apps on the Google Play store are free, while about 7% of the apps on the Google play store are paid. 
 
 ##### Price
 
@@ -247,6 +259,7 @@ ggplot(data = apps, aes(x = Price)) +
   coord_flip() +
   labs(title = "Distribution of Price (in USD)")
 ```
+The distribution of price is, as expected, pretty similar to the distribution of `Type`. We see a right skewed distribution, with the majority of apps being free, while the ones that are paid are between 0 and 4.99, and a very small proportion of apps being greater than 5 dollars.
 
 ##### Content Rating
 
@@ -255,7 +268,7 @@ ggplot(data = apps, aes(x = `Content Rating`)) +
   geom_bar() +
   labs(title = "Frequency of Each Content Rating")
 ```
-
+The distribution for content rating is pretty left skewed. The majorty of apps are rated Everyone, while the next most occuring category is Teen. After that, we see even less apps that are rated mature.
 ##### Andriod Version
 
 ```{r android, echo=FALSE,warning=FALSE,message=FALSE,error=FALSE}
@@ -263,14 +276,16 @@ ggplot(data = apps, aes(x = `Android Ver`)) +
   geom_bar() +
   labs(title = "Dsitribution of Latest Compatible Andriod Version of App")
 ```
+The distribution of Andriod version has a somewhat normal and unimodal shape. We can see that most of the apps are on version 4 , while there are also a significnat number of apps that are on version 2. It is also imporant to note that there are a pretty good amount of apps whose andriod version varies with device. 
 
 ##### Date Since
 
 ```{r datesince, echo=FALSE,warning=FALSE,message=FALSE,error=FALSE}
 ggplot(data = apps, aes(x = date_since)) +
   geom_histogram(stat= "count", binwidth = 3) +
-  labs(title = "Frequency of Date Since Scrapping")
+  labs(title = "Frequency of Date Since Last Updated", subtitle = "Based off of number of days since August 1, 2018")
 ```
+This is also another very right skewed variable. We can see that the majorty of apps are last updated within 500 days of the scrape date, however there are some outliers that go up to even 3000 days since the scrape date. The plot is still unimodal.
 
 #### Bivariate Analysis
 

@@ -65,7 +65,7 @@ the response variable.
     ##  n obs: 10841 
     ##  n variables: 13 
     ## 
-    ## ── Variable type:character ────────────────────────────────────────────────────────────────────────────────────────────────
+    ## ── Variable type:character ───────────────────────────────────────────────────────────────────────────
     ##        variable missing complete     n min max empty n_unique
     ##     Android Ver       1    10840 10841   3  18     0       34
     ##             App       0    10841 10841   1 194     0     9660
@@ -79,7 +79,7 @@ the response variable.
     ##            Size       0    10841 10841   2  18     0      462
     ##            Type       0    10841 10841   1   4     0        4
     ## 
-    ## ── Variable type:numeric ──────────────────────────────────────────────────────────────────────────────────────────────────
+    ## ── Variable type:numeric ─────────────────────────────────────────────────────────────────────────────
     ##  variable missing complete     n      mean         sd p0 p25    p50
     ##    Rating    1474     9367 10841      4.19       0.54  1   4    4.3
     ##   Reviews       1    10840 10841 444152.9  2927760.6   0  38 2094  
@@ -149,7 +149,7 @@ Between 0 and 4.99 dollars, and greater than 5 dollars.
     ##  n obs: 9365 
     ##  n variables: 15 
     ## 
-    ## ── Variable type:factor ───────────────────────────────────────────────────────────────────────────────────────────────────
+    ## ── Variable type:factor ──────────────────────────────────────────────────────────────────────────────
     ##  variable missing complete    n n_unique
     ##     Price       0     9365 9365        3
     ##                            top_counts ordered
@@ -167,7 +167,7 @@ Between 100 and 1,000, Between 1,000 and 10,000, Between 10,000 and
     ##  n obs: 9365 
     ##  n variables: 15 
     ## 
-    ## ── Variable type:factor ───────────────────────────────────────────────────────────────────────────────────────────────────
+    ## ── Variable type:factor ──────────────────────────────────────────────────────────────────────────────
     ##  variable missing complete    n n_unique
     ##  Installs       0     9365 9365        5
     ##                                 top_counts ordered
@@ -236,33 +236,82 @@ above sections in regards to `Current Version` and `Genres`.
 
 ![](regression-analysis_files/figure-gfm/Reviews-1.png)<!-- -->
 
+    ## # A tibble: 1 x 1
+    ##   `median(Reviews)`
+    ##               <dbl>
+    ## 1              5928
+
+    ## # A tibble: 1 x 1
+    ##   `max(Reviews)`
+    ##            <dbl>
+    ## 1       78158306
+
+Reviews is definetley one of our most skewed predictors, as shown by the
+strong right skew in this histogram. This is because the median number
+of reviews is about 6,000, while we have a max review number of
+78158306, which partially explains the skew.
+
 ##### Size
 
-![](regression-analysis_files/figure-gfm/size-1.png)<!-- -->
+![](regression-analysis_files/figure-gfm/size-1.png)<!-- --> As shown by
+the distribution of app sizes, it is clear that most of our apps are
+less than 100MB, and there are also some that vary with device (meaning
+that nbo specific size information was availiable). There are very few
+apps that have sizes greater than 100 MB.
 
 ##### Installs
 
-![](regression-analysis_files/figure-gfm/installs-1.png)<!-- -->
+![](regression-analysis_files/figure-gfm/installs-1.png)<!-- --> The
+distribution for number of installs is also left skewed but not
+particularly abnormal. The majority of reviews have 100k installs or
+more, and then from there on, the number of observations for each level
+of installs decreases more than the previous one. Few apps have less
+than 100 installs.
 
 ##### Type
 
 ![](regression-analysis_files/figure-gfm/type-1.png)<!-- -->
 
+    ## # A tibble: 2 x 3
+    ##   Type      n proportion
+    ##   <fct> <int>      <dbl>
+    ## 1 Free   8718     0.931 
+    ## 2 Paid    647     0.0691
+
+The vast majority (93%) of apps on the Google Play store are free, while
+about 7% of the apps on the Google play store are paid.
+
 ##### Price
 
-![](regression-analysis_files/figure-gfm/price-1.png)<!-- -->
+![](regression-analysis_files/figure-gfm/price-1.png)<!-- --> The
+distribution of price is, as expected, pretty similar to the
+distribution of `Type`. We see a right skewed distribution, with the
+majority of apps being free, while the ones that are paid are between 0
+and 4.99, and a very small proportion of apps being greater than 5
+dollars.
 
 ##### Content Rating
 
-![](regression-analysis_files/figure-gfm/univariate-1.png)<!-- -->
+![](regression-analysis_files/figure-gfm/univariate-1.png)<!-- --> The
+distribution for content rating is pretty left skewed. The majorty of
+apps are rated Everyone, while the next most occuring category is Teen.
+After that, we see even less apps that are rated mature. \#\#\#\#\#
+Andriod Version
 
-##### Andriod Version
-
-![](regression-analysis_files/figure-gfm/android-1.png)<!-- -->
+![](regression-analysis_files/figure-gfm/android-1.png)<!-- --> The
+distribution of Andriod version has a somewhat normal and unimodal
+shape. We can see that most of the apps are on version 4 , while there
+are also a significnat number of apps that are on version 2. It is also
+imporant to note that there are a pretty good amount of apps whose
+andriod version varies with device.
 
 ##### Date Since
 
-![](regression-analysis_files/figure-gfm/datesince-1.png)<!-- -->
+![](regression-analysis_files/figure-gfm/datesince-1.png)<!-- --> This
+is also another very right skewed variable. We can see that the majorty
+of apps are last updated within 500 days of the scrape date, however
+there are some outliers that go up to even 3000 days since the scrape
+date. The plot is still unimodal.
 
 #### Bivariate Analysis
 
