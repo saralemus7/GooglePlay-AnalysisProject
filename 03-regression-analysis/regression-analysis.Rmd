@@ -7,28 +7,13 @@ output: github_document
 ---
 
 To Do:
-- add explanations for univariate plots  (Zoe)
-- fix model
-- check all possible interactions
-- finish assumptions 
-- add model assessment (cooks distance, standard resid, VIF)
-- finish interpretation (ask Tackett if we need to interpret every level bc we have a lot of categorical vars)
+- Check Bivaiate Plots
+- finish interpretation interpret a few things
 - final edits
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 ```
-
-Your regression analysis results go here. At a minimum, the regression analysis should include the following: 
-
-- Description of the response variable
-- Updated exploratory data analysis, incorporating any feedback from the proposal (Zoe, Sara, Lukengu)
-  - Univariate analysis, include the changed variables, explain why we are taking out what we are taking out, response vs all predictor variables. 
-- Explanation of the modeling process and why you chose those metohds, incorporating any feedback from the proposal (Sanjay)
-- Output of the final model (Sanjay)
-- Discussion of the assumptions for the final model (Zoe)
-- Interpretations / interesting findings from the model coefficients (Sara and Sanjay)
-- Additional work of other models or analylsis not included in the final model.(Sanjay)
 
 ```{r load-packages, message=FALSE}
 library(tidyverse)
@@ -270,6 +255,7 @@ ggplot(data = apps, aes(x = `Content Rating`)) +
   labs(title = "Frequency of Each Content Rating")
 ```
 The distribution for content rating is pretty left skewed. The majorty of apps are rated Everyone, while the next most occuring category is Teen. After that, we see even less apps that are rated mature.
+
 ##### Andriod Version
 
 ```{r android, echo=FALSE,warning=FALSE,message=FALSE,error=FALSE}
@@ -425,11 +411,67 @@ final_model <- lm(Rating ~ Installs + Category + date_since + `Android Ver` + Re
 kable(tidy(final_model),format="html",digits=3)
 ```
 
-
-The model which gave us the fewest predictors is 
+The model which gave us the fewest predictors is Backwards AIC. We felt that this model had the fewest predictors as compared to the others and provided us with the mose economical and concise model. This model uses the predictors `Installs`, `Category`, `date_since`, `Android Ver`, and `Reviews` to predict our response: `Rating`.
 
 ### Exploring Interactions 
 
+Now, we will conduct an f-test including the possible interaction effects in our model to determine if there are any interaction effects which are significant.
+
+```{r interactions1}
+reduced <- final_model
+full  <- lm(Rating ~ Installs + Category + date_since + `Android Ver` + Reviews + Installs*Category + Installs*`Android Ver` + Category*`Android Ver` + Category*Reviews + date_since*`Android Ver` + date_since*Reviews + `Android Ver`*Reviews, data = apps)
+kable(anova(reduced, full), format="markdown", digits = 3)
+```
+
+Our hypotheses for this F-test is as follows:
+
+Since the number of levels of our categorical variables are k > 2 we can use a nested F test to determine if any of these interaction effects are significant. 
+
+Ho: B(1) = B(2) = ... = 0
+
+Ha: Atleast one Beta_j is not equal to 0
+
+In this case, our null hypothesis can essentially be read as there are no interactions between any of the variables in our model and our alternative can be read as that there is a significant interaction effect in the model. 
+
+Since our p-value of 0 is less than our significance level of 0.05, we do have evidence that there is a statistically significant interaction present in the model. 
+
+We will now test each individual variable's interaction effects to determine which are significant. Again, the hypotheses are consistent with the ones outlined above.
+
+```{r int-installs}
+reduced <- final_model
+full  <- lm(Rating ~ Installs + Category + date_since + `Android Ver` + Reviews + Installs*Category + Installs*`Android Ver`, data = apps)
+kable(anova(reduced, full), format="markdown", digits = 3)
+```
+Since our p-value of 0 is less than our significance level of 0.05, we do have evidence that there is a statistically significant interaction between both Installs and Category and Installs and Android Version. 
+
+
+```{r int-category}
+reduced <- final_model
+full  <- lm(Rating ~ Installs + Category + date_since + `Android Ver` + Reviews + Category*`Android Ver` + Category*Reviews, data = apps)
+kable(anova(reduced, full), format="markdown", digits = 3)
+```
+Since our p-value of 0 is less than our significance level of 0.05, we do have evidence that there is a statistically significant interaction between both Category and Reviews and Category and Android Version. 
+
+```{r int-date_since}
+reduced <- final_model
+full  <- lm(Rating ~ Installs + Category + date_since + `Android Ver` + Reviews + date_since*`Android Ver` + date_since*Reviews, data = apps)
+kable(anova(reduced, full), format="markdown", digits = 3)
+```
+Since our p-value of 0 is less than our significance level of 0.05, we do have evidence that there is a statistically significant interaction between both date_since and Reviews and date_since and Android Version. 
+
+```{r int-androidver}
+reduced <- final_model
+full  <- lm(Rating ~ Installs + Category + date_since + `Android Ver` + Reviews + `Android Ver`*Reviews, data = apps)
+kable(anova(reduced, full), format="markdown", digits = 3)
+```
+Since our p-value of 0 is less than our significance level of 0.05, we do have evidence that there is a statistically significant interaction between Reviews and Android Version. 
+
+Since we found all these interactions to be significant, our new final model is as follows:
+
+```{r finalmodel2}
+final_model2 <- lm(Rating ~ Installs + Category + date_since + `Android Ver` + Reviews + Installs*Category + Installs*`Android Ver` + Category*`Android Ver` + Category*Reviews + date_since*`Android Ver` + date_since*Reviews + `Android Ver`*Reviews, data = apps)
+kable(tidy(final_model2),format="html",digits=3)
+```
 
 ### Final Model Assumptions
 
@@ -437,37 +479,58 @@ Becuase we have conducted Multipule Linear Regression, the model assumptions we 
 
 #### Linearity
 
-The Linearity Assumptions assumes that the response variable has a linear relationship with the predictor variables used in the final model. To assess linearity, we look at the plots created in the Exploratory Data Analysis. None of these plots seem to have a non-linear relationship such as one that would be polynomial; however, some are quite skewed but this should not matter for the purposes of our model. 
+The Linearity Assumptions assumes that the response variable has a linear relationship with the predictor variables used in the final model. To assess linearity, we look at the plots created in the Exploratory Data Analysis. None of these plots seem to have a non-linear relationship such as one that would be polynomial; however, some are quite skewed but this should not matter for the purposes of our model. To illustrate this, we will re-display the bivariate plots with our final predictor variables. 
+
+```{r linearity}
+ggplot(data = apps, aes(x = Installs, y = Rating)) + geom_boxplot() +
+  labs(title = "Relationship between Installs and Rating")
+
+ggplot(data = apps, aes(x = Category, y = Rating)) + geom_boxplot() +
+  labs(title = "Relationship between Category and Rating")
+
+ggplot(data = apps, aes(x = `Android Ver`, y = Rating)) + geom_boxplot() +
+  labs(title = "Relationship between Android Version and Rating")
+
+ggplot(apps, aes(x = date_since, y = Rating)) + geom_point() +
+labs(title = "Relationship between Date Since Last Update and Rating", x ="Date Since Last Update", y = "Rating")
+
+ggplot(apps, aes(x = Reviews, y = Rating)) + geom_point() +
+labs(title = "Relationship between # of Reviews and Rating", x ="# of Reviews", y = "Rating")
+```
+
+As shown in the plots above, almost all the variables appear to satisfy the linearity assumption. `Installs` is the only variable that appears to have somewhat of a parabolic, or non-linear relationship with Rating; however, due to the fact that we have included interaction effects between it and other predictors in our model it is most likely the case that this is insignificant. Otherwise, all of our predictors appear to have strong and non-curvilinear relationships clearly visible throuh the plot. 
 
 #### Constant Variance
 
-The Constant Variance Assumption assumges that the regression variance is the same for all of the predictor variables in the model. To test this assumption, we will plot the residual values against predictors.
+The Constant Variance Assumption assumes that the regression variance is the same for all of the predictor variables in the model. To test this assumption, we will plot the residual values against predictors.
 
 ```{r resid-plots}
-#apps <- apps %>% 
-  #mutate(predicted = predict.lm(model), residuals = resid(model)) #mutates residuals to the model
-#ggplot(data=apps,aes(x=predicted, y=residuals)) + #plots residuals vs predictors
-  #geom_point() + 
- # geom_hline(yintercept=0,color="red") +
-  #labs(title="Residuals vs. Predicted Values")
-
-#make plots with resid as the y and the predictor values as the x. 
+apps <- apps %>% 
+  mutate(predicted = predict.lm(final_model2), residuals = resid(final_model2)) #mutates residuals to the model
+ggplot(data=apps,aes(x=predicted, y=residuals)) + #plots residuals vs predictors
+  geom_point() + 
+  geom_hline(yintercept=0,color="red") +
+  labs(title="Residuals vs. Predicted Values")
 ```
+
+As shown, it appears that the constant variance assumption is violated. There appears to be a clear pattern in our residuals. Since our response was normally distributed at the beginning of our EDA, we did not see the need for a transformation of our response; however, it may be the case that there is a need for more, higher-order interaction terms. Since our model satisfies the linearity assumption and also realtively satisfies our normality assumption it is reasonable to assume that this is not a great cause for concern. 
 
 #### Normality
 
 The Normality Assumption assumes that for any given set of predictors, the response variable, `ratings`, follows a Normal distribution around its mean. To test this, we will make a Normal QQ plot. 
 
 ```{r norm-qq}
-# ggplot(data = apps, mapping = aes(sample = resid)) + 
-#   stat_qq() + 
-#   stat_qq_line() +
-#   labs(title = "Normal QQ Plot of Residuals")
-# 
-# ggplot(data = apps, mapping = aes(x = resid)) + 
-#   geom_histogram()+
-#   labs(title = "Distribution of Residuals")
+ ggplot(data = apps, mapping = aes(sample = residuals)) + 
+   stat_qq() + 
+   stat_qq_line() +
+   labs(title = "Normal QQ Plot of Residuals")
+ 
+ ggplot(data = apps, mapping = aes(x = residuals)) + 
+   geom_histogram()+
+   labs(title = "Distribution of Residuals")
 ```
+
+As shown, our residuals are relatively normally distributed in our histogram. The center is around 0 which is good; however there is a slight left skew. As well, our Normal-QQ plot doesn't closeley match the idea line at the beginning of the more negative values. It may be the case that there are many outliers or high leverage points in our model that are causing this skew and if they were removed then we wouldn't see this. However, since our distribution of residuals is relatively normal and the Normal QQ Plot is mostly following the trendline it is reasonable to assume that this assumption is satisfied due to the robustness f our model. In our model Assessment, we can further fix these issues and improve our model. 
 
 #### Independence
 
@@ -475,12 +538,34 @@ The Independence Assumption assumes that all observations in the data used to co
 
 ### Model Assessment
 
+#### Leverage
+
+According to lecture, the threshold we should use for determining if observations are high leverage points is: hi > (2(p+1))/n
+
+```{r leverage}
+apps_output <- augment(final_model2) %>%
+  mutate(obs_num = row_number())
+
+leverage_threshold <- (2*(12+1))/nrow(apps)
+ggplot(data = apps_output, aes(x = obs_num,y = .hat)) + 
+  geom_point(alpha = 0.3) + 
+  geom_hline(yintercept = leverage_threshold,color = "red")+
+  labs(x = "Observation Number",y = "Leverage",title = "Leverage") +
+  geom_text(aes(label=ifelse(.hat > leverage_threshold, as.character(obs_num), "")), nudge_x = 4)
+```
+
+Let’s filter to see the total # of points that crossed the threshold.
+
+```{r filterlev}
+apps_output %>% filter(.hat > leverage_threshold) %>%
+  select(Installs, Category, date_since, Android.Ver, Reviews)
+```
+
+As shown, there are 8,134 high leverage points. This is problematic but before we assess our model's strength we should check cook's distance. 
+
 #### Cook's Distance
 
-```{r augment }
-apps_output <- augment(full_model) %>%
-  mutate(obs_num = row_number())
-```
+Now let’s check how many of these points cross our threshold for Cook’s Distance (Di > 1) to determine if these high leverage points do in fact have a significant influence on our model coefficients.
 
 ```{r cooks-distance}
 ggplot(data = apps_output, aes(x = obs_num, y = .cooksd)) + 
@@ -490,17 +575,17 @@ ggplot(data = apps_output, aes(x = obs_num, y = .cooksd)) +
   geom_text(aes(label = ifelse(.hat>1,as.character(obs_num),"")))
 ```
 
+Let's check to see the number of points that violated this threshold. 
 
-```{r leverage}
-leverage_threshold <- 2*(9+1)/nrow(apps)
-ggplot(data = apps_output, aes(x = obs_num,y = .hat)) + 
-  geom_point(alpha = 0.3) + 
-  geom_hline(yintercept = leverage_threshold,color = "red")+
-  labs(x = "Observation Number",y = "Leverage",title = "Leverage") +
-  geom_text(aes(label=ifelse(.hat > leverage_threshold, as.character(obs_num), "")), nudge_x = 4)
+```{r filtercook}
+apps_output %>% filter(.cooksd > 1) %>%
+  select(Installs, Category, date_since, Android.Ver, Reviews)
 ```
 
+As shown, only one of these high leverage points violated Cook's Distance - so it is most likely the case that although outliers are present, our model still is relatively strong in predicting Rating and that there isn't a cause for concern. It is likely that none of these high leverage points have a significant influence on the model coefficients.
+
 #### Standardized Residuals
+Now, let’s plot our standardized residuals to see if there are any points which break the threshold |resid std.| > 2.
 
 ```{r standardresid-predicted}
 ggplot(data = apps_output, aes(x = .fitted,y = .std.resid)) +
@@ -509,28 +594,43 @@ ggplot(data = apps_output, aes(x = .fitted,y = .std.resid)) +
   geom_hline(yintercept = -2,color = "red",linetype = "dotted") +
   geom_hline(yintercept = 2,color = "red",linetype = "dotted") +
   labs(x ="Predicted Value",y ="Standardized Residuals",title = "Standardized Residuals vs. Predicted") +
-  geom_text(aes(label = ifelse(abs(.std.resid) >2,as.character(obs_num),"")), nudge_x = 0.3)
+  geom_text(aes(label = ifelse(abs(.std.resid) >2,as.character(obs_num),"")), nudge_x = 0.08)
 ```
 
-```{r standardresd-predictors}
-ggplot(data = apps_output, aes(x = Category, y = .std.resid )) + geom_boxplot() + coord_flip()
-ggplot(data = apps_output, aes(x = Reviews, y = .std.resid )) + geom_point()
-ggplot(data = apps_output, aes(x = Size, y = .std.resid )) + geom_boxplot()
-ggplot(data = apps_output, aes(x = Installs, y = .std.resid )) + geom_boxplot()
-ggplot(data = apps_output, aes(x = Type, y = .std.resid )) + geom_boxplot()
-ggplot(data = apps_output, aes(x = Price, y = .std.resid )) + geom_boxplot()
-ggplot(data = apps_output, aes(x = date_since, y = .std.resid )) + geom_point()
-ggplot(data = apps_output, aes(x = Content.Rating, y = .std.resid )) + geom_boxplot()
-ggplot(data = apps_output, aes(x = Android.Ver, y = .std.resid )) + geom_boxplot()
+As depicted the plot, there are a number of points which violate this threshold, so let’s filter the data to get an exact number.
+
+```{r filtersd}
+apps_output %>% filter(abs(.std.resid) > 2) %>%
+  select(Installs, Category, date_since, Android.Ver, Reviews)
 ```
- 
+
+As illustrated, there are 474 observations with a standardized residual greater than +/- 2. These observations are considered to have standardized residuals with large magnitude.
+
+```{r residgram}
+ggplot(data = apps_output, aes(x = .std.resid)) +
+  geom_vline(xintercept = 2,color = "red") +
+  geom_vline(xintercept = -2,color = "red") +
+  geom_histogram() +
+  labs(x = "Residuals")
+```
+
+```{r percent}
+percentage <- (474/nrow(apps)) * 100
+print(percentage)
+```
+
+The proportion of observations that have standardized residuals with magnitude > 2 is about 0.50711, or 5.071% of the observations. Since this proportion is almost less than 5%, it is most likely the case that it is not statistically significant and is relatively small. Therefore, there is most likely not a concern with the number of observations flagged as having standardized residuals with large magnitude as the proportion of these residuals is relatively small. Although our proportion is somewhat greater than 5% it is still most likely the case that these flagged residuals are a relatively small proportion of the data, as well since only 1 of our leverage points was cause for concern, it is most likely the case that our model is sound. As well, it is most likely these 5% of observations which may have casued the skew in our residual variance. 
 
 ### VIF
 
+We will check the VIF of our model without interactions:
 ```{r vif}
 tidy(vif(final_model))
 ```
+
 `CategoryAUTO_AND_VEHICLES`, `CategoryFAMILY`, `CategoryGAME`, `CategoryTOOLS`, `Android Ver2`, `Android Ver4`, & `Android Ver-Varies with device` all have VIF > 10, indicating concern with multicollinearity. 
+
+Since these two terms were interacted in our final model with interactions, there are no longer any concerns with highly correlated variables in our model. 
 
 ### Interpretations and Findings
 - Interpretations / interesting findings from the model coefficients
