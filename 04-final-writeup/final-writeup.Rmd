@@ -1,7 +1,7 @@
 ---
-title: "PROJECT TITLE"
-author: "NAME HERE"
-date: "TODAY'S DATE"
+title: "Understanding Google Play Application Reviews"
+author: "RTime2Shine"
+date: "12/7/19"
 output: github_document
 ---
 
@@ -9,11 +9,128 @@ output: github_document
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-Your project goes here! Before you submit, make sure your chunks are turned off with `echo = FALSE`. 
+```{r load-packages, message=FALSE}
+library(tidyverse)
+library(broom)
+library(knitr) 
+library(skimr)
+library(readr)
+library(ggplot2)
+library(stringr)
+library(lubridate)
+library(Sleuth3) 
+library(ISLR)
+library(leaps)
+```
 
-You can add sections as you see fit. At a minimum, you should have the following sections: 
+```{r load-data, message=FALSE}
+apps <- read_csv("/cloud/project/02-data/googleplaystore.csv")
+levels(apps$`Content Rating`) <- c("Adults Only","Everyone","Mature", "Teen", "Unrated")
+apps <- filter(apps, Reviews <= 203579)
+apps$`Rating` <- as.numeric(apps$`Rating`)
+apps <- apps %>%
+  na.omit(apps)
+```
+
+```{r fact recode}
+apps <- apps %>%
+  mutate(Category = as.factor(Category)) %>%
+  mutate(Size = as.factor(Size)) %>%
+  mutate(Installs = as.factor(Installs)) %>%
+  mutate(Type = as.factor(Type)) %>%
+  mutate(`Content Rating` = as.factor(`Content Rating`)) %>%
+  mutate(Genres = as.factor(Genres)) %>%
+  mutate(Category = as.factor(Category))
+
+apps$Price <- str_replace(apps$Price, "\\$", "")
+apps$Size <- str_replace(apps$Size, "\\M", "")
+apps$Installs <- str_replace(apps$Installs, "\\+", "")
+apps$`Content Rating`<- str_replace(apps$`Content Rating`, "\\+", "")
+apps$`Content Rating`<- str_replace(apps$`Content Rating`, "[[:digit:]]+", "")
+apps$Price <- as.numeric(gsub('[$.]', '', apps$Price))
+apps$`Android Ver`<-gsub("\\..*","",apps$`Android Ver`)
+apps$`Android Ver`<-as.factor(apps$`Android Ver`)
+apps$`Android Ver`[apps$`Android Ver` == "NaN"] <- NA
+```
+
+```{r dates}
+apps <- apps %>%
+  mutate(date_new = mdy(`Last Updated`))
+apps <- apps %>%
+  mutate(date_since = mdy("August 8, 2018") - date_new)
+```
+
+```{r price-relevel}
+apps <- apps %>%
+  mutate(Price = case_when(Price == 0 ~ "Free", Price < 500 & Price > 0 ~ "Between $0 and $4.99", Price > 500 ~ "Greater than $5"))
+
+apps <- apps %>%
+  mutate(Price = fct_relevel(Price, "Free", "Between $0 and $4.99", "Greater than $5"))
+```
+
+```{r installs-relevel}
+apps$`Installs`<- as.numeric(gsub(",", "", apps$`Installs`))
+
+apps <- apps %>%
+  mutate(Installs = case_when(Installs < 100 ~ "Less than 100", Installs < 1000 & Installs >= 100 ~ "Between 100 and 1,000", Installs < 10000 & Installs >= 1000 ~ "Between 1,000 and 10,000", Installs < 100000 & Installs >= 10000 ~ "Between 10,000 and 100,000", Installs >= 100000 ~ "100,000 or Greater"))
+
+
+apps <- apps %>%
+  mutate(Installs = fct_relevel(Installs, "Less than 100", "Between 100 and 1,000", "Between 1,000 and 10,000", "Between 10,000 and 100,000", "100,000 or Greater"))
+
+skim(apps, Installs)
+```
+
+```{r sizerelevel}
+apps$`Size`<- sub('k$', '', apps$`Size`)
+apps$`Size`<- as.numeric(gsub("Varies with device", 0.001 , apps$`Size`))
+apps <- apps %>%
+  mutate(Size = case_when(Size == 0.001 ~ "Varies with device", Size < 100 ~ "Less than 100 MB", Size > 100 ~ "Greater than 100 MB"))
+
+```
+
+```{r rating-distribution, message=FALSE}
+ggplot(data = apps, aes(x = Rating)) + 
+  geom_histogram(binwidth = 0.1, fill = "blue") + 
+  xlim(0,5) + labs(title = "Distribution of App Ratings")
+```
+
+
+```{r log reviews}
+apps <- apps %>% 
+  mutate(log_reviews = log(Reviews)) 
+ggplot(apps, aes(x = log_reviews)) + geom_histogram(binwidth = 0.5)
+apps %>%
+  summarise(median(log_reviews), max(log_reviews), IQR(log_reviews))
+```
+
+```{r category pop}
+apps %>%
+  count(Category) %>%
+  arrange(-n) %>%
+  mutate(freq = n/sum(n))
+```
+
+```{r relevel cat}
+apps <- apps %>%
+  mutate(category_simp = case_when( 
+    Category %in% c("FAMILY","GAME", "TOOLS","MEDICAL", "LIFESTYLE", "FINANCE") ~ Category, 
+    TRUE ~ "Other"))
+
+apps %>%
+  count(Category, category_simp) %>%
+  arrange(desc(n))
+```
+
+
 
 ## Section 1: Introduction (includes introduction and exploratory data analysis)
+
+
+Lukengu: relevel categories, log transform and remove the outliers of reviews
+
+
+
 ## Section 2: Regression Analysis (includes the final model and discussion of assumptions)
 ## Section 3: Discussion and Limitations 
 ## Section 4: Conclusion
