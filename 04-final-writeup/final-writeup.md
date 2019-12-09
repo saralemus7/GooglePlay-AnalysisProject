@@ -198,10 +198,48 @@ determined by variables like content rating and categories in how people
 may be drawn to an app) as well as its accessibility (price).
 Furthermore, once we test our hypothesis and determine which factors are
 relevant, we will attempt to use that information to predict the success
-of an app as measured by its
-rating.
+of an app as measured by its rating.
+
+### The Data
+
+The dataset was obtained from Kaggle. According to Kaggle, the dataset
+was scraped directly from the Google Play Store in August 2018. Each
+observation represents one individual app on the Google Play Store. This
+particular dataset has 13 variables with 9660 observations. The
+variables consist of various information collected about each
+application (which represents a row) in the dataset. This information
+includes the apps category in the app store, its average rating, price,
+content rating, the number of installs, among other metrics. In our
+Exploratory Data Analysis, we will further explain the use of each of
+these variables and determine which of these may be significant for and
+relevant in our analysis. The response variable in our investigation is
+`Rating` which is the mean rating out of 5.0 for an application in the
+Google Play Store. This is a numeric
+variable.
+
+### Exploratory Data Analysis
+
+#### Data Wrangling
+
+#### Univariate Analysis
+
+#### Bivariate Analysis
+
+#### Possible Interactions
 
 ## Section 2: Regression Analysis (includes the final model and discussion of assumptions)
+
+### Model Process
+
+### Model Selection
+
+### Interactions & Our Updated Model
+
+### Assumptions
+
+### Model Assesment
+
+### Model Interpretation
 
 ## Section 3: Discussion and Limitations
 
