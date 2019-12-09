@@ -499,7 +499,6 @@ labs(title = "Relationship between # of Reviews and Rating", x ="# of Reviews", 
 ```
 
 As shown in the plots above, almost all the variables appear to satisfy the linearity assumption. `Installs` is the only variable that appears to have somewhat of a parabolic, or non-linear relationship with Rating; however, due to the fact that we have included interaction effects between it and other predictors in our model it is most likely the case that this is insignificant. Otherwise, all of our predictors appear to have strong and non-curvilinear relationships clearly visible throuh the plot. 
-
 #### Constant Variance
 
 The Constant Variance Assumption assumes that the regression variance is the same for all of the predictor variables in the model. To test this assumption, we will plot the residual values against predictors.
@@ -514,7 +513,6 @@ ggplot(data=apps,aes(x=predicted, y=residuals)) + #plots residuals vs predictors
 ```
 
 As shown, it appears that the constant variance assumption is violated. There appears to be a clear pattern in our residuals. Since our response was normally distributed at the beginning of our EDA, we did not see the need for a transformation of our response; however, it may be the case that there is a need for more, higher-order interaction terms. Since our model satisfies the linearity assumption and also realtively satisfies our normality assumption it is reasonable to assume that this is not a great cause for concern. 
-
 #### Normality
 
 The Normality Assumption assumes that for any given set of predictors, the response variable, `ratings`, follows a Normal distribution around its mean. To test this, we will make a Normal QQ plot. 
