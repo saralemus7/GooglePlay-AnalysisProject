@@ -21,6 +21,7 @@ library(lubridate)
 library(Sleuth3) 
 library(ISLR)
 library(leaps)
+library(dplyr)
 library(rms)
 ```
 
@@ -158,7 +159,9 @@ apps %>%
 # Model Selection
 
 ```{r full-model}
-full_model <- lm(Rating ~ category_simp + log_reviews + Size + Installs + Type + Price + `Content Rating` + androidver_simp + date_since, data = apps)
+apps <- apps %>%
+  na.omit(apps)
+full_model <- lm(Rating ~ category_simp + log_reviews + Size + Installs + Price + `Content Rating` + androidver_simp + date_since, data = apps)
 kable(tidy(full_model),format="html",digits=4)
 ```
 
@@ -168,13 +171,13 @@ tidy(vif(full_model))
 
 
 ```{r bic-back}
-regfit_backward <- regsubsets(Rating ~ category_simp + log_reviews + Size + Installs + Type + Price + `Content Rating` + androidver_simp + date_since, data = apps, method="backward")
+regfit_backward <- regsubsets(Rating ~ category_simp + log_reviews + Size + Installs + Price + `Content Rating` + androidver_simp + date_since, data = apps, method="backward")
 sel_summary <- summary(regfit_backward)
 coef(regfit_backward, which.min(sel_summary$bic))
 ```
 
 ```{r bic-forward}
-regfit_forward <- regsubsets(Rating ~ category_simp + log_reviews + Size + Installs + Type + Price + `Content Rating` + androidver_simp + date_since, data = apps, method="forward")
+regfit_forward <- regsubsets(Rating ~ category_simp + log_reviews + Size + Installs + Price + `Content Rating` + androidver_simp + date_since, data = apps, method="forward")
 sel_summary <- summary(regfit_forward)
 coef(regfit_forward, which.min(sel_summary$bic))
 ```
@@ -182,7 +185,6 @@ coef(regfit_forward, which.min(sel_summary$bic))
 
 
 ## Section 1: Introduction (includes introduction and exploratory data analysis)
-
 
 Lukengu: relevel categories, log transform and remove the outliers of reviews
 

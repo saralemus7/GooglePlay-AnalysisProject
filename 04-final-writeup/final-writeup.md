@@ -7,7 +7,7 @@ RTime2Shine
     ##  n obs: 7731 
     ##  n variables: 15 
     ## 
-    ## ── Variable type:factor ──────────────────────────────────────────────────────────────────────────────
+    ## ── Variable type:factor ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
     ##  variable missing complete    n n_unique
     ##  Installs       0     7731 7731        5
     ##                                 top_counts ordered
@@ -96,83 +96,62 @@ RTime2Shine
 
 |                term                |  estimate   | std.error |  statistic   |  p.value  |
 | :--------------------------------: | :---------: | :-------: | :----------: | :-------: |
-|            (Intercept)             |  4.5292030  | 0.3096396 |  14.6273362  | 0.0000000 |
-|   category\_simpTop 6 Categories   | \-0.0159527 | 0.0123302 | \-1.2937976  | 0.1957741 |
-|            log\_reviews            |  0.0778565  | 0.0041904 |  18.5796391  | 0.0000000 |
-|        SizeLess than 100 MB        |  0.0284119  | 0.0386195 |  0.7356863   | 0.4619440 |
-|       SizeVaries with device       | \-0.0157805 | 0.0516131 | \-0.3057456  | 0.7598066 |
-|   InstallsBetween 100 and 1,000    | \-0.3192573 | 0.0508854 | \-6.2740419  | 0.0000000 |
-|  InstallsBetween 1,000 and 10,000  | \-0.6745975 | 0.0488864 | \-13.7992792 | 0.0000000 |
-| InstallsBetween 10,000 and 100,000 | \-0.8324958 | 0.0510458 | \-16.3087943 | 0.0000000 |
-|     Installs100,000 or Greater     | \-1.0058440 | 0.0582761 | \-17.2599790 | 0.0000000 |
-|              TypePaid              |  0.0741875  | 0.0461754 |  1.6066454   | 0.1081732 |
-|     PriceBetween $0 and $4.99      |  0.0370657  | 0.0510218 |  0.7264680   | 0.4675740 |
-|      `Content Rating`Everyone      | \-0.0548353 | 0.3039831 | \-0.1803892  | 0.8568518 |
-|      `Content Rating`Everyone      | \-0.0677175 | 0.3055862 | \-0.2215989  | 0.8246321 |
-|       `Content Rating`Mature       | \-0.1521919 | 0.3051383 | \-0.4987637  | 0.6179601 |
-|        `Content Rating`Teen        | \-0.0740591 | 0.3044898 | \-0.2432235  | 0.8078387 |
-|      `Content Rating`Unrated       |  0.1279921  | 0.6088736 |  0.2102113   | 0.8335083 |
-|        androidver\_simp5-8         | \-0.0572665 | 0.0227200 | \-2.5205266  | 0.0117380 |
-| androidver\_simpVaries with Device | \-0.0249248 | 0.0378446 | \-0.6586090  | 0.5101666 |
-|            date\_since             | \-0.0001225 | 0.0000159 | \-7.7033322  | 0.0000000 |
+|            (Intercept)             |  4.5102346  | 0.0610922 |  73.8267328  | 0.0000000 |
+|   category\_simpTop 6 Categories   | \-0.0251939 | 0.0128826 | \-1.9556589  | 0.0505447 |
+|            log\_reviews            |  0.0762331  | 0.0044198 |  17.2479395  | 0.0000000 |
+|        SizeLess than 100 MB        |  0.0177410  | 0.0391701 |  0.4529227   | 0.6506183 |
+|       SizeVaries with device       | \-0.0300761 | 0.0530362 | \-0.5670858  | 0.5706739 |
+|   InstallsBetween 100 and 1,000    | \-0.3458200 | 0.0522721 | \-6.6157667  | 0.0000000 |
+|  InstallsBetween 1,000 and 10,000  | \-0.6921395 | 0.0501573 | \-13.7993746 | 0.0000000 |
+| InstallsBetween 10,000 and 100,000 | \-0.8444331 | 0.0525226 | \-16.0775220 | 0.0000000 |
+|     Installs100,000 or Greater     | \-1.0113334 | 0.0603295 | \-16.7634839 | 0.0000000 |
+|     PriceBetween $0 and $4.99      |  0.1038402  | 0.0266711 |  3.8933537   | 0.0000998 |
+|        PriceGreater than $5        |  0.0667458  | 0.0485501 |  1.3747826   | 0.1692424 |
+|        `Content Rating`Teen        | \-0.0175642 | 0.0204726 | \-0.8579400  | 0.3909547 |
+|      `Content Rating`Unrated       |  0.1946908  | 0.5318177 |  0.3660856   | 0.7143122 |
+|        androidver\_simp5-8         | \-0.0389748 | 0.0236899 | \-1.6452092  | 0.0999711 |
+| androidver\_simpVaries with Device | \-0.0195554 | 0.0395636 | \-0.4942787  | 0.6211247 |
+|            date\_since             | \-0.0001243 | 0.0000166 | \-7.5107911  | 0.0000000 |
 
     ## Warning: 'tidy.numeric' is deprecated.
     ## See help("Deprecated")
 
-    ## # A tibble: 19 x 2
+    ## # A tibble: 15 x 2
     ##    names                                  x
     ##    <chr>                              <dbl>
-    ##  1 category_simpTop 6 Categories         NA
-    ##  2 log_reviews                           NA
-    ##  3 SizeLess than 100 MB                  NA
-    ##  4 SizeVaries with device                NA
-    ##  5 InstallsBetween 100 and 1,000         NA
-    ##  6 InstallsBetween 1,000 and 10,000      NA
-    ##  7 InstallsBetween 10,000 and 100,000    NA
-    ##  8 Installs100,000 or Greater            NA
-    ##  9 TypePaid                              NA
-    ## 10 PriceBetween $0 and $4.99             NA
-    ## 11 PriceGreater than $5                  NA
-    ## 12 `Content Rating`Everyone              NA
-    ## 13 "`Content Rating`Everyone "           NA
-    ## 14 "`Content Rating`Mature "             NA
-    ## 15 `Content Rating`Teen                  NA
-    ## 16 `Content Rating`Unrated               NA
-    ## 17 androidver_simp5-8                    NA
-    ## 18 androidver_simpVaries with Device     NA
-    ## 19 date_since                            NA
-
-    ## Warning in leaps.setup(x, y, wt = wt, nbest = nbest, nvmax = nvmax,
-    ## force.in = force.in, : 1 linear dependencies found
-
-    ## Reordering variables and trying again:
+    ##  1 category_simpTop 6 Categories       1.05
+    ##  2 log_reviews                         5.07
+    ##  3 SizeLess than 100 MB                4.84
+    ##  4 SizeVaries with device              7.30
+    ##  5 InstallsBetween 100 and 1,000       4.33
+    ##  6 InstallsBetween 1,000 and 10,000    8.26
+    ##  7 InstallsBetween 10,000 and 100,000 10.9 
+    ##  8 Installs100,000 or Greater         22.5 
+    ##  9 PriceBetween $0 and $4.99           1.11
+    ## 10 PriceGreater than $5                1.03
+    ## 11 `Content Rating`Teen                1.02
+    ## 12 `Content Rating`Unrated             1.00
+    ## 13 androidver_simp5-8                  1.04
+    ## 14 androidver_simpVaries with Device   3.37
+    ## 15 date_since                          1.22
 
     ##                        (Intercept)                        log_reviews 
-    ##                        4.452498547                        0.079337732 
+    ##                       4.5124715854                       0.0744108983 
     ##      InstallsBetween 100 and 1,000   InstallsBetween 1,000 and 10,000 
-    ##                       -0.333550472                       -0.692616919 
+    ##                      -0.3447278672                      -0.6891663588 
     ## InstallsBetween 10,000 and 100,000         Installs100,000 or Greater 
-    ##                       -0.856770609                       -1.025709369 
-    ##                           TypePaid               `Content Rating`Teen 
-    ##                        0.079420275                       -0.009976861 
-    ##               PriceGreater than $5 
-    ##                       -0.022538797
-
-    ## Warning in leaps.setup(x, y, wt = wt, nbest = nbest, nvmax = nvmax,
-    ## force.in = force.in, : 1 linear dependencies found
-
-    ## Reordering variables and trying again:
+    ##                      -0.8405412693                      -1.0072240860 
+    ##          PriceBetween $0 and $4.99                         date_since 
+    ##                       0.0978316624                      -0.0001211124
 
     ##                        (Intercept)                        log_reviews 
-    ##                        4.452498547                        0.079337732 
+    ##                       4.5124715854                       0.0744108983 
     ##      InstallsBetween 100 and 1,000   InstallsBetween 1,000 and 10,000 
-    ##                       -0.333550472                       -0.692616919 
+    ##                      -0.3447278672                      -0.6891663588 
     ## InstallsBetween 10,000 and 100,000         Installs100,000 or Greater 
-    ##                       -0.856770609                       -1.025709369 
-    ##                           TypePaid               `Content Rating`Teen 
-    ##                        0.079420275                       -0.009976861 
-    ##               PriceGreater than $5 
-    ##                       -0.022538797
+    ##                      -0.8405412693                      -1.0072240860 
+    ##          PriceBetween $0 and $4.99                         date_since 
+    ##                       0.0978316624                      -0.0001211124
 
 ## Section 1: Introduction (includes introduction and exploratory data analysis)
 
