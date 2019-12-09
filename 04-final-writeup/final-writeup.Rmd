@@ -197,3 +197,9 @@ This leads us to introduce our main research question: What are the relevant fac
 ## Section 3: Discussion and Limitations 
 ## Section 4: Conclusion
 ## Section 5: Additional Work
+
+### References
+
+Gupta, Lavanya. Kaggle. Jan. 2019, www.kaggle.com/lava18/google-play-store-apps?fbclid=IwAR36EMS2jg5fhPi-BQlX6Mv4MCk8YUm2XmyOLt0zsKkNyc9JK-JD7aLy-6I. Accessed 30 Oct. 2019. 
+
+Dignan, Larry. “App Economy Expected to Be $120 Billion in 2019 as Small Screen Leads Digital Transformation Efforts.” ZDNet, ZDNet, 16 Jan. 2019, www.zdnet.com/article/app-economy-expected-to-be-120-billion-in-2019-as-small-screen-leads-digital-transformation-efforts/
