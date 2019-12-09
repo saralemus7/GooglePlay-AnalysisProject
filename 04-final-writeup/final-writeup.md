@@ -3,6 +3,132 @@ Understanding Google Play Application Reviews
 RTime2Shine
 12/7/19
 
+## Section 1: Introduction (includes introduction and exploratory data analysis)
+
+### Motivaton
+
+As technology has become increasingly prevalent around the world, there
+has been a change in the consumption of media. One of these ways is via
+the purchase of applications (apps) for various smartphones and other
+devices. Several technology companies, including Apple and Google, run
+virtual stores for these apps in which a person can download an app for
+their device. These apps can be for various purposes like socializing,
+playing games, or watching television and movies, among others. While
+any user of a phone can agree that apps hold an important effect on how
+one interacts with technology on a daily basis, the weight of the impact
+becomes even more shocking when one looks at the figures- in 2018,
+global app downloads topped 194 billion (Dignan).
+
+Our motivation for this project is to understand what makes apps (from
+the Google Play store specifically) have favorable ratings.
+Understanding the ratings of an app is important for several reasons.
+First, ratings can be important to the provider- in this case Google-
+who can decide whether an app should continue to be sold to maintain
+their quality standards. Ratings are additionally useful as a direct
+line of communication between the user and the developers- often,
+developers are made aware of changes that need to be made to their apps
+through user feedback. Lastly, reviews serve to inform potential users
+of an app whether or not it is worth their time and can affect future
+downloads. Considering that app users are predicted to spend about $120
+billion in app stores in 2019, understanding which apps do well on the
+Play Store and what factors affect app performance is an immensely
+important question to gain more insight into.
+
+### Research Question & Hypothesis
+
+Our ultimate goal is to create a model which most accurately and
+concisely predicts the Rating of an app given the predictors in the
+dataset. This will enable us to see which predictor variables interact
+with each other to effect the rating for a given app. We posit that
+examining such relationships will help developers understand what
+factors may influence an app’s rating and use that information to create
+better applications for consumers. As well, conglomerates such as Google
+(whom this dataset is from) can use this information to more accurately
+display or promote apps that meet these characteristics or promote ads
+related to these apps and generate revenue.
+
+This leads us to introduce our main research question: What are the
+relevant factors that affect the rating given for apps in the Google
+Play store? Although this project will give a detailed attempt to answer
+this question, our preliminary hypothesis is that the variables
+Category, Price, Installs, and Content Rating are the predictor
+variables that will most affect a given app rating and popularity, as
+measured by the number of installs of the app. We believe that these
+variables are indicative of an apps useability and likeness (as
+determined by variables like content rating and categories in how people
+may be drawn to an app) as well as its accessibility (price).
+Furthermore, once we test our hypothesis and determine which factors are
+relevant, we will attempt to use that information to predict the success
+of an app as measured by its rating.
+
+### The Data
+
+The dataset was obtained from Kaggle. According to Kaggle, the dataset
+was scraped directly from the Google Play Store in August 2018. Each
+observation represents one individual app on the Google Play Store. This
+particular dataset has 13 variables with 10841 observations. The
+variables consist of various information collected about each
+application (which represents a row) in the dataset. This information
+includes the apps category in the app store, its average rating, price,
+content rating, the number of installs, among other metrics. In our
+Exploratory Data Analysis, we will further explain the use of each of
+these variables and determine which of these may be significant for and
+relevant in our analysis. The response variable in our investigation is
+`Rating` which is the mean rating out of 5.0 for an application in the
+Google Play Store. This is a numeric variable.
+
+### Exploratory Data Analysis
+
+    ## Skim summary statistics
+    ##  n obs: 10841 
+    ##  n variables: 13 
+    ## 
+    ## ── Variable type:character ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+    ##        variable missing complete     n min max empty n_unique
+    ##     Android Ver       1    10840 10841   3  18     0       34
+    ##             App       0    10841 10841   1 194     0     9660
+    ##        Category       0    10841 10841   3  19     0       34
+    ##  Content Rating       1    10840 10841   4  15     0        6
+    ##     Current Ver       1    10840 10841   1  50     0     2833
+    ##          Genres       0    10841 10841   4  37     0      120
+    ##        Installs       0    10841 10841   1  14     0       22
+    ##    Last Updated       0    10841 10841   6  18     0     1378
+    ##           Price       0    10841 10841   1   8     0       93
+    ##            Size       0    10841 10841   3  18     0      462
+    ##            Type       0    10841 10841   1   4     0        4
+    ## 
+    ## ── Variable type:numeric ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+    ##  variable missing complete     n      mean         sd p0 p25    p50
+    ##    Rating    1474     9367 10841      4.19       0.54  1   4    4.3
+    ##   Reviews       1    10840 10841 444152.9  2927760.6   0  38 2094  
+    ##      p75     p100     hist
+    ##      4.5 19       ▁▇▁▁▁▁▁▁
+    ##  54775.5  7.8e+07 ▇▁▁▁▁▁▁▁
+
+#### Data Wrangling
+
+Upon examining our predictor variables, it looks like there are
+occasionally one or two observations missing in the dataset, which does
+not raise lots of concern. It is worth noting, however, that 1474 of our
+response variable values are missing. This is roughly 10% of the data.
+Given that the data was web scraped, we will assume that the reason
+behind these missing values is that there was not a mean rating value
+for those particular observations (app). Thus, we will omit all of the
+NA values and continue to investigate only those apps for which we have
+ratings.
+
+Furthermore, here it is worth noting that the variable, `Genres`
+contains the same information in the `category` variable - the only
+difference being that the data is just displayed a bit differently.
+Therefore, as to avoid being redundant, we will only be using `category`
+in our analysis. As well, the information contained in the variable
+`Type` is also contained in `Price`. Since `Price` provides the prices
+of an app and `Type` simply denotes wether or not an app is paid or
+free. There is mostly likely a large linear dependency between these two
+variables as they measure the same thing, so we will use `Price` instead
+of `Type.` We will not deleting theese variables from the dataset as to
+maintain integrity, but will not examine them in our analysis.
+
     ## Skim summary statistics
     ##  n obs: 7731 
     ##  n variables: 15 
@@ -152,74 +278,6 @@ RTime2Shine
     ##                      -0.8405412693                      -1.0072240860 
     ##          PriceBetween $0 and $4.99                         date_since 
     ##                       0.0978316624                      -0.0001211124
-
-## Section 1: Introduction (includes introduction and exploratory data analysis)
-
-### Motivaton
-
-As technology has become increasingly prevalent around the world, there
-has been a change in the consumption of media. One of these ways is via
-the purchase of applications (apps) for various smartphones and other
-devices. Several technology companies, including Apple and Google, run
-virtual stores for these apps in which a person can download an app for
-their device. These apps can be for various purposes like socializing,
-playing games, or watching television and movies, among others. While
-any user of a phone can agree that apps hold an important effect on how
-one interacts with technology on a daily basis, the weight of the impact
-becomes even more shocking when one looks at the figures- in 2018,
-global app downloads topped 194 billion (Dignan).
-
-Our motivation for this project is to understand what makes apps (from
-the Google Play store specifically) have favorable ratings.
-Understanding the ratings of an app is important for several reasons.
-First, ratings can be important to the provider- in this case Google-
-who can decide whether an app should continue to be sold to maintain
-their quality standards. Ratings are additionally useful as a direct
-line of communication between the user and the developers- often,
-developers are made aware of changes that need to be made to their apps
-through user feedback. Lastly, reviews serve to inform potential users
-of an app whether or not it is worth their time and can affect future
-downloads. Considering that app users are predicted to spend about $120
-billion in app stores in 2019, understanding which apps do well on the
-Play Store and what factors affect app performance is an immensely
-important question to gain more insight into.
-
-### Research Question & Hypothesis
-
-This leads us to introduce our main research question: What are the
-relevant factors that affect the rating given for apps in the Google
-Play store? Although this project will give a detailed attempt to answer
-this question, our preliminary hypothesis is that the variables
-Category, Price, Installs, and Content Rating are the predictor
-variables that will most affect a given app rating and popularity, as
-measured by the number of installs of the app. We believe that these
-variables are indicative of an apps useability and likeness (as
-determined by variables like content rating and categories in how people
-may be drawn to an app) as well as its accessibility (price).
-Furthermore, once we test our hypothesis and determine which factors are
-relevant, we will attempt to use that information to predict the success
-of an app as measured by its rating.
-
-### The Data
-
-The dataset was obtained from Kaggle. According to Kaggle, the dataset
-was scraped directly from the Google Play Store in August 2018. Each
-observation represents one individual app on the Google Play Store. This
-particular dataset has 13 variables with 9660 observations. The
-variables consist of various information collected about each
-application (which represents a row) in the dataset. This information
-includes the apps category in the app store, its average rating, price,
-content rating, the number of installs, among other metrics. In our
-Exploratory Data Analysis, we will further explain the use of each of
-these variables and determine which of these may be significant for and
-relevant in our analysis. The response variable in our investigation is
-`Rating` which is the mean rating out of 5.0 for an application in the
-Google Play Store. This is a numeric
-variable.
-
-### Exploratory Data Analysis
-
-#### Data Wrangling
 
 #### Univariate Analysis
 
