@@ -9,7 +9,7 @@ output: github_document
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-```{r load-packages, message=FALSE}
+```{r load-packages, warning = FALSE, message=FALSE}
 library(tidyverse)
 library(broom)
 library(knitr) 
@@ -23,7 +23,7 @@ library(ISLR)
 library(leaps)
 ```
 
-```{r load-data, message=FALSE}
+```{r load-data, warning = FALSE, message=FALSE}
 apps <- read_csv("/cloud/project/02-data/googleplaystore.csv")
 levels(apps$`Content Rating`) <- c("Adults Only","Everyone","Mature", "Teen", "Unrated")
 apps <- filter(apps, Reviews <= 203579)
@@ -32,7 +32,7 @@ apps <- apps %>%
   na.omit(apps)
 ```
 
-```{r fact recode}
+```{r fact recode, warning = FALSE, message = FALSE}
 apps <- apps %>%
   mutate(Category = as.factor(Category)) %>%
   mutate(Size = as.factor(Size)) %>%
@@ -53,14 +53,14 @@ apps$`Android Ver`<-as.factor(apps$`Android Ver`)
 apps$`Android Ver`[apps$`Android Ver` == "NaN"] <- NA
 ```
 
-```{r dates}
+```{r dates, warning = FALSE, message = FALSE}
 apps <- apps %>%
   mutate(date_new = mdy(`Last Updated`))
 apps <- apps %>%
   mutate(date_since = mdy("August 8, 2018") - date_new)
 ```
 
-```{r price-relevel}
+```{r price-relevel, warning = FALSE, message = FALSE}
 apps <- apps %>%
   mutate(Price = case_when(Price == 0 ~ "Free", Price < 500 & Price > 0 ~ "Between $0 and $4.99", Price > 500 ~ "Greater than $5"))
 
@@ -68,7 +68,7 @@ apps <- apps %>%
   mutate(Price = fct_relevel(Price, "Free", "Between $0 and $4.99", "Greater than $5"))
 ```
 
-```{r installs-relevel}
+```{r installs-relevel, warning = FALSE, message = FALSE}
 apps$`Installs`<- as.numeric(gsub(",", "", apps$`Installs`))
 
 apps <- apps %>%
@@ -81,7 +81,7 @@ apps <- apps %>%
 skim(apps, Installs)
 ```
 
-```{r sizerelevel}
+```{r sizerelevel, warning = FALSE, message = FALSE}
 apps$`Size`<- sub('k$', '', apps$`Size`)
 apps$`Size`<- as.numeric(gsub("Varies with device", 0.001 , apps$`Size`))
 apps <- apps %>%
@@ -89,14 +89,14 @@ apps <- apps %>%
 
 ```
 
-```{r rating-distribution, message=FALSE}
+```{r rating-distribution, warning = FALSE, message = FALSE}
 ggplot(data = apps, aes(x = Rating)) + 
   geom_histogram(binwidth = 0.1, fill = "blue") + 
   xlim(0,5) + labs(title = "Distribution of App Ratings")
 ```
 
 
-```{r log reviews}
+```{r log reviews, warning = FALSE, message = FALSE}
 apps <- apps %>% 
   mutate(log_reviews = log(Reviews)) 
 ggplot(apps, aes(x = log_reviews)) + geom_histogram(binwidth = 0.5)
@@ -104,18 +104,18 @@ apps %>%
   summarise(median(log_reviews), max(log_reviews), IQR(log_reviews))
 ```
 
-```{r category pop}
+```{r category pop, warning = FALSE, message = FALSE}
 apps %>%
   count(Category) %>%
   arrange(-n) %>%
   mutate(freq = n/sum(n))
 ```
 
-```{r relevel cat}
+```{r relevel cat, warning = FALSE, message = FALSE}
 apps <- apps %>%
   mutate(category_simp = case_when( 
-    Category %in% c("FAMILY","GAME", "TOOLS","MEDICAL", "LIFESTYLE", "FINANCE") ~ Category, 
-    TRUE ~ "Other"))
+    apps$Category %in% c("FAMILY","GAME", "TOOLS","MEDICAL", "LIFESTYLE", "FINANCE") ~ "Top 6 Categories", 
+    TRUE ~ "Others"))
 
 apps %>%
   count(Category, category_simp) %>%
