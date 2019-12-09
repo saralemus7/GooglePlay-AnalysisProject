@@ -258,7 +258,11 @@ Content rating
 #### Univariate Analysis
 
 ![](final-writeup_files/figure-gfm/rating-distribution-1.png)<!-- -->
-response
+
+    ## # A tibble: 1 x 2
+    ##   `median(Rating)` `IQR(Rating)`
+    ##              <dbl>         <dbl>
+    ## 1              4.2           0.6
 
 ![](final-writeup_files/figure-gfm/log%20reviews-1.png)<!-- -->
 
@@ -267,14 +271,84 @@ response
     ##                   <dbl>              <dbl>              <dbl>
     ## 1                  7.55               12.2               5.44
 
-log reviews explain why \#\#\#\# Bivariate
-Analysis
+log reviews explain why
+
+FOR OTHER UNIVARIATE PLOTS ONLY INCLUDE THOSE IN FULL MODEL
+
+Arrange the bars in the barplot of Categories in order of frequency.
+This will help the reader more easily distinguish which categories are
+the most common.
+
+Which app has 78 million reviews?
+
+Change the bin width on the histogram of date\_since. It should be fine
+to just use the default bin width by R.
+
+#### Bivariate Analysis
+
+ONLY INCLUDE THOSE IN FULL MODEL
 
 #### Possible Interactions
+
+ONLY INCLUDE THOSE IN FULL
+MODEL
 
 ## Section 2: Regression Analysis (includes the final model and discussion of assumptions)
 
 ### Model Process
+
+The regression modeling technique we will use will be Multiple Linear
+Regression (MLR). Since we are exploring the effect of multiple
+predictor variables on our response, `rating`, it is apt that we use MLR
+to model our data. MLR allows us to see the effect of multiple
+predictors on a response and explore both the significance of each
+predictor on the response as well as the effect of each predictor on the
+response. As opposed to Simple Linear Regression, MLR allows us to
+measure the effect of multiple predictors on your response in one model
+- SLR only allows us to measure the effect of one predictor on the
+response in one model. This is very taxing and inefficient for the
+number of predictors we want to measure. As well, there may be
+interactions between these predictors that we will be unable to view
+using SLR. MLR allows us to both model and view the amalgamation of
+these predictors in their effects on the response variable. MLR from
+both an efficiency and relevancy perspective is much better suited to
+model our data as opposed to other methods.
+
+Our ultimate goal is to create the model which most accurately and
+concisely predicts the Rating of an app given the predictors in the
+dataset. We will attempt to choose a model using a minimization of both
+BIC and AIC as our criteria as this will allow us to calculate a precise
+prediction of our response variable while also removing extraneous
+predictors. We will use BIC and AIC as our selection criteria as it
+penalizes more for erroneous predictors as compared to adj. R-Squared.
+We will not use R-squared as a criteria for model selection. R squared
+increases strictly as the number of predictors increases and does not
+tell us if these additional predictors are significant or not. If we
+used r-squared we would always choose models with the largest numbers of
+predictors, which would not always produce the simplest, most accurate
+model. Unlike R squared, AIC, BIC, and adjusted R squared do penalize
+for insignificant predictors and can give us a better idea of which
+predictors actually contribute to the response variable.
+
+In order to find our final model, we will use a process of both forwards
+and backwards selection slowly adding a combination of relevant
+predictors into our model. We will then check the BIC and AIC values for
+each of these models and find the model with the lowest value overall,
+or the fewest predictors - this will be the model that most accurately
+predicts our response with the fewest number of predictors. We will then
+plot each predictor on the response to determine if the effect is
+relevant or if there are possible interactions between other variables.
+As well, we will need to consider potential outliers and extraneous
+values in our model. Using the distributions of standardized residuals
+and a calculation of Cook’s distance, we will attempt to determine those
+observations with high standardized residuals or cook’s distance and
+determine if those observations have a significant effect on our model.
+Lastly, we will need to find the VIF factor for each of our final
+predictors to see if there is any collinearity between them. A VIF
+greater than 10 would require us to explore possible ways to mitigate
+interactions between variables or consider dropping predictors are are
+too heavily
+correlated.
 
 ### Model Selection
 
@@ -315,19 +389,20 @@ Analysis
     ##          PriceBetween $0 and $4.99                         date_since 
     ##                       0.0978316624                      -0.0001211124
 
+(Just show final model w/ AIC/Bic and everything)
+
 ### Interactions & Our Updated Model
 
-### Assumptions
-
-### Model Assesment
+(finish this) \#\#\# Assumptions (finish this) \#\#\# Model Assesment
+(c/p code from regressions wehn we finish stuff)
 
 ### Model Interpretation
 
+Will finish after we get model
+
 ## Section 3: Discussion and Limitations
 
-## Section 4: Conclusion
-
-## Section 5: Additional Work
+Zoe \#\# Section 4: Conclusion Zoe \#\# Section 5: Additional Work
 
 ### References
 
