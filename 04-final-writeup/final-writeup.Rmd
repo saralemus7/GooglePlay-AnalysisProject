@@ -129,7 +129,7 @@ apps %>%
 
 Lukengu: relevel categories, log transform and remove the outliers of reviews
 
-
+Sanjay: finish EDA, etc. 
 
 ## Section 2: Regression Analysis (includes the final model and discussion of assumptions)
 ## Section 3: Discussion and Limitations 
