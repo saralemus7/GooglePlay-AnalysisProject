@@ -64,7 +64,7 @@ skim(apps)
 
 Upon examining our predictor variables, it looks like there are occasionally one or two observations missing in the dataset, which does not raise lots of concern. It is worth noting, however, that 1474 of our response variable values are missing. This is roughly 10% of the data. Given that the data was web scraped, we will assume that the reason behind these missing values is that there was not a mean rating value for those particular observations (app). Thus, we will omit all of the NA values and continue to investigate only those apps for which we have ratings. 
 
-Furthermore, here it is worth noting that the variable, `Genres` contains the same information in the `category` variable - the only difference being that the data is just displaid a bit differently. Therefore, as to avoid being redundant, we will only be using `category` in our analysis. We will not deleting the variable from the dataset as to maintain integrity.
+Furthermore, here it is worth noting that the variable, `Genres` contains the same information in the `category` variable - the only difference being that the data is just displayed a bit differently. Therefore, as to avoid being redundant, we will only be using `category` in our analysis. We will not deleting the variable from the dataset as to maintain integrity.
 
 ```{r omit}
 apps <- apps %>%
@@ -73,7 +73,7 @@ apps <- apps %>%
 
 ##### Recoding Variables
 
-We also have a lot of predictors that are coded as characters in the dataset, so we will recode them as factors. We also have some variables that are coded as characters due to the existence of a particular a symbol (ex. $), we will also recode these inot a format which will be useable for our analysis. 
+We also have a lot of predictors that are coded as characters in the dataset, so we will recode them as factors. We also have some variables that are coded as characters due to the existence of a particular a symbol (ex. $), we will also recode these into a format which will be usable for our analysis. 
 
 ```{r fact recode}
 apps <- apps %>%
@@ -93,7 +93,7 @@ apps$`Content Rating`<- str_replace(apps$`Content Rating`, "[[:digit:]]+", "")
 apps$Price <- as.numeric(gsub('[$.]', '', apps$Price))
 ```
 
-Looking at the data, there are two variables related to the version, or iteration of the app as provided by the developers. Given that Google owns both Android and the Google Play Store, the company would likely be more interested in the Android version of the app. Furthermore, Android users are unlikely to be using other operating system's application stores, so a developer who is interested in creating apps for the Andriod market would gain more information through an examination of the compatibility of certain apps with a particular version of Android. Some data wrangling is necessary to make this variable suitable for analysis.
+Looking at the data, there are two variables related to the version, or iteration of the app as provided by the developers. Given that Google owns both Android and the Google Play Store, the company would likely be more interested in the Android version of the app. Furthermore, Android users are unlikely to be using other operating system's application stores, so a developer who is interested in creating apps for the Android market would gain more information through an examination of the compatibility of certain apps with a particular version of Android. Some data wrangling is necessary to make this variable suitable for analysis.
 
 ```{r version, results="hide"}
 apps$`Android Ver`<-gsub("\\..*","",apps$`Android Ver`)
@@ -112,7 +112,7 @@ apps <- apps %>%
   mutate(date_since = mdy("August 8, 2018") - date_new)
 ```
 
-Now we are ready to do some preliminary analysis and vizualization to have a more complete idea of the data we are working with. 
+Now we are ready to do some preliminary analysis and visualization to have a more complete idea of the data we are working with. 
 
 ##### Releveling `Price`
 
@@ -212,7 +212,7 @@ ggplot(data = apps, aes(x = Size)) +
   geom_histogram(stat="count", binwidth = 0.00025) +
   labs(title = "Distribution of App Sizes")
 ```
-As shown by the distribution of app sizes, it is clear that most of our apps are less than 100MB, and there are also some that vary with device (meaning that nbo specific size information was availiable). There are very few apps that have sizes greater than 100 MB.
+As shown by the distribution of app sizes, it is clear that most of our apps are less than 100MB, and there are also some that vary with device (meaning that no specific size information was available). There are very few apps that have sizes greater than 100 MB.
 
 ##### Installs
 
@@ -254,16 +254,16 @@ ggplot(data = apps, aes(x = `Content Rating`)) +
   geom_bar() +
   labs(title = "Frequency of Each Content Rating")
 ```
-The distribution for content rating is pretty left skewed. The majorty of apps are rated Everyone, while the next most occuring category is Teen. After that, we see even less apps that are rated mature.
+The distribution for content rating is pretty left skewed. The majority of apps are rated Everyone, while the next most occurring category is Teen. After that, we see even less apps that are rated mature.
 
-##### Andriod Version
+##### Android Version
 
 ```{r android, echo=FALSE,warning=FALSE,message=FALSE,error=FALSE}
 ggplot(data = apps, aes(x = `Android Ver`)) +
   geom_bar() +
-  labs(title = "Dsitribution of Latest Compatible Andriod Version of App")
+  labs(title = "Distribution of Latest Compatible Android Version of App")
 ```
-The distribution of Andriod version has a somewhat normal and unimodal shape. We can see that most of the apps are on version 4 , while there are also a significnat number of apps that are on version 2. It is also imporant to note that there are a pretty good amount of apps whose andriod version varies with device. 
+The distribution of Android version has a somewhat normal and unimodal shape. We can see that most of the apps are on version 4 , while there are also a significant number of apps that are on version 2. It is also important to note that there are a pretty good amount of apps whose android version varies with device. 
 
 ##### Date Since
 
@@ -272,7 +272,7 @@ ggplot(data = apps, aes(x = date_since)) +
   geom_histogram(stat= "count", binwidth = 3) +
   labs(title = "Frequency of Date Since Last Updated", subtitle = "Based off of number of days since August 1, 2018")
 ```
-This is also another very right skewed variable. We can see that the majorty of apps are last updated within 500 days of the scrape date, however there are some outliers that go up to even 3000 days since the scrape date. The plot is still unimodal.
+This is also another very right skewed variable. We can see that the majority of apps are last updated within 500 days of the scrape date, however there are some outliers that go up to even 3000 days since the scrape date. The plot is still unimodal.
 
 #### Bivariate Analysis
 
@@ -290,7 +290,7 @@ ggplot(data = apps, aes(x = Category, y = Rating)) + geom_boxplot() + coord_flip
   labs(title = "Relationship between Category and Rating") 
 ```
 
-Although there is some variation in rating between app categories, the most telling aspect of this exploratory model is the outliers. It appears that some categories are more suspectible to outliers with low ratings. More over there are notable discrepancies between minimum boxplot rating among categories. 
+Although there is some variation in rating between app categories, the most telling aspect of this exploratory model is the outliers. It appears that some categories are more susceptible to outliers with low ratings. More over there are notable discrepancies between minimum boxplot rating among categories. 
 
 ```{r reviews-rating}
 ggplot(data = apps, aes(x = Reviews, y = Rating)) + geom_point() +
@@ -331,7 +331,7 @@ ggplot(apps, aes(x = Reviews, y = Rating, color = Reviews)) +
   labs( title = "Relationship between Reviews and Rating", x ="# of Reviews ", y = "Rating out of 5")
 ```
 
-As shown in this plot, as the number of reviews for an app increases, so does the rating generally. This is indicative of an app being popular so as there are more reviews there is most likely more polarization in the ratings. There is most likely some interaction between these two variables in the dataset. Thirdly, there may be an interaction between Type and Price. Since Type is an indicator measuring wether an app is paid or free, all apps that are free will be correlated with apps that have a price = 0 and apps that are paid will be correlated with apps that have a price greater than 0. 
+As shown in this plot, as the number of reviews for an app increases, so does the rating generally. This is indicative of an app being popular so as there are more reviews there is most likely more polarization in the ratings. There is most likely some interaction between these two variables in the dataset. Thirdly, there may be an interaction between Type and Price. Since Type is an indicator measuring whether an app is paid or free, all apps that are free will be correlated with apps that have a price = 0 and apps that are paid will be correlated with apps that have a price greater than 0. 
 
 ```{r int-type}
 ggplot(apps, aes(x = Type, y = Rating, color = Price)) + 
@@ -343,7 +343,7 @@ This is further illustrated through the above plot, which clearly shows this int
 
 #### Correlation 
 
-Since our variables are mostly categorial, we will not need to check a correlation matrix to determine if we need to remove any highly correlated variables. Instead, our preliminary analysis of interactions should suffice.  
+Since our variables are mostly categorical, we will not need to check a correlation matrix to determine if we need to remove any highly correlated variables. Instead, our preliminary analysis of interactions should suffice.  
 
 ### Explanation of the Model Process
 
@@ -357,7 +357,7 @@ In order to find our final model, we will use a process of both forwards and bac
 
 #### Full Model
 
-We will attempt to use MLR to predict an app's Rating given the afformentioned predictors. Here is the output of our initial model:
+We will attempt to use MLR to predict an app's Rating given the aforementioned predictors. Here is the output of our initial model:
 
 ```{r full-model}
 full_model <- lm(Rating ~ Category + Reviews + Size + Installs + Type + Price + `Content Rating` + `Android Ver` + date_since, data = apps)
@@ -411,7 +411,7 @@ final_model <- lm(Rating ~ Installs + Category + date_since + `Android Ver` + Re
 kable(tidy(final_model),format="html",digits=3)
 ```
 
-The model which gave us the fewest predictors is Backwards AIC. We felt that this model had the fewest predictors as compared to the others and provided us with the mose economical and concise model. This model uses the predictors `Installs`, `Category`, `date_since`, `Android Ver`, and `Reviews` to predict our response: `Rating`.
+The model which gave us the fewest predictors is Backwards AIC. We felt that this model had the fewest predictors as compared to the others and provided us with the most economical and concise model. This model uses the predictors `Installs`, `Category`, `date_since`, `Android Ver`, and `Reviews` to predict our response: `Rating`.
 
 ### Exploring Interactions 
 
@@ -475,7 +475,7 @@ kable(tidy(final_model2),format="html",digits=3)
 
 ### Final Model Assumptions
 
-Becuase we have conducted Multipule Linear Regression, the model assumptions we will check are Linearity, Constant Variance, Normality, and Independence. 
+Because we have conducted Multiple Linear Regression, the model assumptions we will check are Linearity, Constant Variance, Normality, and Independence. 
 
 #### Linearity
 
@@ -498,7 +498,12 @@ ggplot(apps, aes(x = Reviews, y = Rating)) + geom_point() +
 labs(title = "Relationship between # of Reviews and Rating", x ="# of Reviews", y = "Rating")
 ```
 
+<<<<<<< HEAD
 As shown in the plots above, almost all the variables appear to satisfy the linearity assumption. `Installs` is the only variable that appears to have somewhat of a parabolic, or non-linear relationship with Rating; however, due to the fact that we have included interaction effects between it and other predictors in our model it is most likely the case that this is insignificant. Otherwise, all of our predictors appear to have strong and non-curvilinear relationships clearly visible throuh the plot. 
+=======
+As shown in the plots above, almost all the variables appear to satisfy the linearity assumption. `Installs` is the only variable that appears to have somewhat of a parabolic, or non-linear relationship with Rating; however, due to the fact that we have included interaction effects between it and other predictors in our model it is most likely the case that this is insignificant. Otherwise, all of our predictors appear to have strong and non-curvilinear relationships clearly visible through the plot. 
+
+>>>>>>> 4411fb0f6834ddea0c66dd10121f55c436a65f0e
 #### Constant Variance
 
 The Constant Variance Assumption assumes that the regression variance is the same for all of the predictor variables in the model. To test this assumption, we will plot the residual values against predictors.
@@ -512,7 +517,12 @@ ggplot(data=apps,aes(x=predicted, y=residuals)) + #plots residuals vs predictors
   labs(title="Residuals vs. Predicted Values")
 ```
 
+<<<<<<< HEAD
 As shown, it appears that the constant variance assumption is violated. There appears to be a clear pattern in our residuals. Since our response was normally distributed at the beginning of our EDA, we did not see the need for a transformation of our response; however, it may be the case that there is a need for more, higher-order interaction terms. Since our model satisfies the linearity assumption and also realtively satisfies our normality assumption it is reasonable to assume that this is not a great cause for concern. 
+=======
+As shown, it appears that the constant variance assumption is violated. There appears to be a clear pattern in our residuals. Since our response was normally distributed at the beginning of our EDA, we did not see the need for a transformation of our response; however, it may be the case that there is a need for more, higher-order interaction terms. Since our model satisfies the linearity assumption and also relatively satisfies our normality assumption it is reasonable to assume that this is not a great cause for concern. 
+
+>>>>>>> 4411fb0f6834ddea0c66dd10121f55c436a65f0e
 #### Normality
 
 The Normality Assumption assumes that for any given set of predictors, the response variable, `ratings`, follows a Normal distribution around its mean. To test this, we will make a Normal QQ plot. 
@@ -528,7 +538,7 @@ The Normality Assumption assumes that for any given set of predictors, the respo
    labs(title = "Distribution of Residuals")
 ```
 
-As shown, our residuals are relatively normally distributed in our histogram. The center is around 0 which is good; however there is a slight left skew. As well, our Normal-QQ plot doesn't closeley match the idea line at the beginning of the more negative values. It may be the case that there are many outliers or high leverage points in our model that are causing this skew and if they were removed then we wouldn't see this. However, since our distribution of residuals is relatively normal and the Normal QQ Plot is mostly following the trendline it is reasonable to assume that this assumption is satisfied due to the robustness f our model. In our model Assessment, we can further fix these issues and improve our model. 
+As shown, our residuals are relatively normally distributed in our histogram. The center is around 0 which is good; however there is a slight left skew. As well, our Normal-QQ plot doesn't closely match the idea line at the beginning of the more negative values. It may be the case that there are many outliers or high leverage points in our model that are causing this skew and if they were removed then we wouldn't see this. However, since our distribution of residuals is relatively normal and the Normal QQ Plot is mostly following the trend line it is reasonable to assume that this assumption is satisfied due to the robustness f our model. In our model Assessment, we can further fix these issues and improve our model. 
 
 #### Independence
 
@@ -617,7 +627,7 @@ percentage <- (474/nrow(apps)) * 100
 print(percentage)
 ```
 
-The proportion of observations that have standardized residuals with magnitude > 2 is about 0.50711, or 5.071% of the observations. Since this proportion is almost less than 5%, it is most likely the case that it is not statistically significant and is relatively small. Therefore, there is most likely not a concern with the number of observations flagged as having standardized residuals with large magnitude as the proportion of these residuals is relatively small. Although our proportion is somewhat greater than 5% it is still most likely the case that these flagged residuals are a relatively small proportion of the data, as well since only 1 of our leverage points was cause for concern, it is most likely the case that our model is sound. As well, it is most likely these 5% of observations which may have casued the skew in our residual variance. 
+The proportion of observations that have standardized residuals with magnitude > 2 is about 0.50711, or 5.071% of the observations. Since this proportion is almost less than 5%, it is most likely the case that it is not statistically significant and is relatively small. Therefore, there is most likely not a concern with the number of observations flagged as having standardized residuals with large magnitude as the proportion of these residuals is relatively small. Although our proportion is somewhat greater than 5% it is still most likely the case that these flagged residuals are a relatively small proportion of the data, as well since only 1 of our leverage points was cause for concern, it is most likely the case that our model is sound. As well, it is most likely these 5% of observations which may have caused the skew in our residual variance. 
 
 ### VIF
 
@@ -631,7 +641,15 @@ tidy(vif(final_model))
 Since these two terms were interacted in our final model with interactions, there are no longer any concerns with highly correlated variables in our model. 
 
 ### Interpretations and Findings
-- Interpretations / interesting findings from the model coefficients
 
-### Aditional Model Work
-- Additional work of other models or analysis not included in the final model.
+
+In looking at the models and exploratory data analysis in the above sections, there are some interesting findings worth noting.
+
+For instance, the plot of the response variable, `rating`, is incredibly skewed with a peak centered between a mean rating of 4 and 4.5. It would be incredibly interesting to research if people tend to under vote or if people who don't like an app just don't vote. Exploring the human decision making element in the reviewing process would aide in the understanding of this material. 
+
+It is also worth noting the high intercept values (4.8261579 and 4.7270722) in the final model (with and without interaction terms). Given that a rating, and therefore the mean value of rating, can be no higher than 5, these intercept values are incredibly high.
+
+There are some coefficients in our model that seem to make the ratings really high. A change in 1 unit of rating is quite a lot, so the coefficient of categoryHealth_and_Fitness is quite large at 1.4202378. This means that if an app is health and fitness, we expect the ratings to increase by 1.420 on average, holding all else constant. There are a few others like this like categoryFOOD_AND_DRINK and cateoryLIFESTYLE. For categoryFOOD_AND_DRINK, if an app is a food and drink app we expect the ratings to increase by 1.0244280 on average, holding all else constant. If an app is in the health and lifestyle category, we expect the ratings to increase by 1.1011342, holding all else constant.
+
+Additionally, there are some factors that make the ratings decrease. The coefficient for InstallsBetween 1,000 and 10,000 leads to a -0.858 decrease in expected rating, on average, holding all else constant. Additionally, another aspect that seems to really affect rating is if an app is in the dating category- if it is, we expect the rating to decrease by 3.622, holding all else constant.
+

@@ -42,7 +42,7 @@ the response variable.
     ##  n obs: 10841 
     ##  n variables: 13 
     ## 
-    ## ── Variable type:character ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+    ## ── Variable type:character ─────────────────────────────────────────────────────────────
     ##        variable missing complete     n min max empty n_unique
     ##     Android Ver       1    10840 10841   3  18     0       34
     ##             App       0    10841 10841   1 194     0     9660
@@ -56,7 +56,7 @@ the response variable.
     ##            Size       0    10841 10841   2  18     0      462
     ##            Type       0    10841 10841   1   4     0        4
     ## 
-    ## ── Variable type:numeric ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+    ## ── Variable type:numeric ───────────────────────────────────────────────────────────────
     ##  variable missing complete     n      mean         sd p0 p25    p50
     ##    Rating    1474     9367 10841      4.19       0.54  1   4    4.3
     ##   Reviews       1    10840 10841 444152.9  2927760.6   0  38 2094  
@@ -80,7 +80,7 @@ ratings.
 
 Furthermore, here it is worth noting that the variable, `Genres`
 contains the same information in the `category` variable - the only
-difference being that the data is just displaid a bit differently.
+difference being that the data is just displayed a bit differently.
 Therefore, as to avoid being redundant, we will only be using `category`
 in our analysis. We will not deleting the variable from the dataset as
 to maintain integrity.
@@ -90,8 +90,8 @@ to maintain integrity.
 We also have a lot of predictors that are coded as characters in the
 dataset, so we will recode them as factors. We also have some variables
 that are coded as characters due to the existence of a particular a
-symbol (ex. $), we will also recode these inot a format which will be
-useable for our analysis.
+symbol (ex. $), we will also recode these into a format which will be
+usable for our analysis.
 
 Looking at the data, there are two variables related to the version, or
 iteration of the app as provided by the developers. Given that Google
@@ -99,7 +99,7 @@ owns both Android and the Google Play Store, the company would likely be
 more interested in the Android version of the app. Furthermore, Android
 users are unlikely to be using other operating system’s application
 stores, so a developer who is interested in creating apps for the
-Andriod market would gain more information through an examination of the
+Android market would gain more information through an examination of the
 compatibility of certain apps with a particular version of Android. Some
 data wrangling is necessary to make this variable suitable for analysis.
 
@@ -112,7 +112,7 @@ recent the last update was for a particular app and provides some
 information related to the relative frequency of updates and how that
 may affect an app’s rating.
 
-Now we are ready to do some preliminary analysis and vizualization to
+Now we are ready to do some preliminary analysis and visualization to
 have a more complete idea of the data we are working with.
 
 ##### Releveling `Price`
@@ -126,7 +126,7 @@ Between 0 and 4.99 dollars, and greater than 5 dollars.
     ##  n obs: 9365 
     ##  n variables: 15 
     ## 
-    ## ── Variable type:factor ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+    ## ── Variable type:factor ────────────────────────────────────────────────────────────────
     ##  variable missing complete    n n_unique
     ##     Price       0     9365 9365        3
     ##                            top_counts ordered
@@ -144,7 +144,7 @@ Between 100 and 1,000, Between 1,000 and 10,000, Between 10,000 and
     ##  n obs: 9365 
     ##  n variables: 15 
     ## 
-    ## ── Variable type:factor ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+    ## ── Variable type:factor ────────────────────────────────────────────────────────────────
     ##  variable missing complete    n n_unique
     ##  Installs       0     9365 9365        5
     ##                                 top_counts ordered
@@ -233,7 +233,7 @@ of reviews is about 6,000, while we have a max review number of
 ![](regression-analysis_files/figure-gfm/size-1.png)<!-- --> As shown by
 the distribution of app sizes, it is clear that most of our apps are
 less than 100MB, and there are also some that vary with device (meaning
-that nbo specific size information was availiable). There are very few
+that no specific size information was available). There are very few
 apps that have sizes greater than 100 MB.
 
 ##### Installs
@@ -270,23 +270,23 @@ dollars.
 ##### Content Rating
 
 ![](regression-analysis_files/figure-gfm/univariate-1.png)<!-- --> The
-distribution for content rating is pretty left skewed. The majorty of
-apps are rated Everyone, while the next most occuring category is Teen.
+distribution for content rating is pretty left skewed. The majority of
+apps are rated Everyone, while the next most occurring category is Teen.
 After that, we see even less apps that are rated mature.
 
-##### Andriod Version
+##### Android Version
 
 ![](regression-analysis_files/figure-gfm/android-1.png)<!-- --> The
-distribution of Andriod version has a somewhat normal and unimodal
+distribution of Android version has a somewhat normal and unimodal
 shape. We can see that most of the apps are on version 4 , while there
-are also a significnat number of apps that are on version 2. It is also
-imporant to note that there are a pretty good amount of apps whose
-andriod version varies with device.
+are also a significant number of apps that are on version 2. It is also
+important to note that there are a pretty good amount of apps whose
+android version varies with device.
 
 ##### Date Since
 
 ![](regression-analysis_files/figure-gfm/datesince-1.png)<!-- --> This
-is also another very right skewed variable. We can see that the majorty
+is also another very right skewed variable. We can see that the majority
 of apps are last updated within 500 days of the scrape date, however
 there are some outliers that go up to even 3000 days since the scrape
 date. The plot is still unimodal.
@@ -302,7 +302,7 @@ more in depth:
 
 Although there is some variation in rating between app categories, the
 most telling aspect of this exploratory model is the outliers. It
-appears that some categories are more suspectible to outliers with low
+appears that some categories are more susceptible to outliers with low
 ratings. More over there are notable discrepancies between minimum
 boxplot rating among categories.
 
@@ -350,7 +350,7 @@ does the rating generally. This is indicative of an app being popular so
 as there are more reviews there is most likely more polarization in the
 ratings. There is most likely some interaction between these two
 variables in the dataset. Thirdly, there may be an interaction between
-Type and Price. Since Type is an indicator measuring wether an app is
+Type and Price. Since Type is an indicator measuring whether an app is
 paid or free, all apps that are free will be correlated with apps that
 have a price = 0 and apps that are paid will be correlated with apps
 that have a price greater than 0.
@@ -364,7 +364,7 @@ considered when building our model.
 
 #### Correlation
 
-Since our variables are mostly categorial, we will not need to check a
+Since our variables are mostly categorical, we will not need to check a
 correlation matrix to determine if we need to remove any highly
 correlated variables. Instead, our preliminary analysis of interactions
 should suffice.
@@ -428,7 +428,7 @@ too heavily correlated.
 #### Full Model
 
 We will attempt to use MLR to predict an app’s Rating given the
-afformentioned predictors. Here is the output of our initial
+aforementioned predictors. Here is the output of our initial
 model:
 
 |                term                |  estimate   | std.error |  statistic   |  p.value  |
@@ -826,7 +826,7 @@ Second, we will perform both forward and backward selection using AIC:
 
 The model which gave us the fewest predictors is Backwards AIC. We felt
 that this model had the fewest predictors as compared to the others and
-provided us with the mose economical and concise model. This model uses
+provided us with the most economical and concise model. This model uses
 the predictors `Installs`, `Category`, `date_since`, `Android Ver`, and
 `Reviews` to predict our response: `Rating`.
 
@@ -1303,7 +1303,7 @@ follows:
 
 ### Final Model Assumptions
 
-Becuase we have conducted Multipule Linear Regression, the model
+Because we have conducted Multiple Linear Regression, the model
 assumptions we will check are Linearity, Constant Variance, Normality,
 and Independence.
 
@@ -1331,8 +1331,8 @@ to have somewhat of a parabolic, or non-linear relationship with Rating;
 however, due to the fact that we have included interaction effects
 between it and other predictors in our model it is most likely the case
 that this is insignificant. Otherwise, all of our predictors appear to
-have strong and non-curvilinear relationships clearly visible throuh the
-plot.
+have strong and non-curvilinear relationships clearly visible through
+the plot.
 
 #### Constant Variance
 
@@ -1347,7 +1347,7 @@ There appears to be a clear pattern in our residuals. Since our response
 was normally distributed at the beginning of our EDA, we did not see the
 need for a transformation of our response; however, it may be the case
 that there is a need for more, higher-order interaction terms. Since our
-model satisfies the linearity assumption and also realtively satisfies
+model satisfies the linearity assumption and also relatively satisfies
 our normality assumption it is reasonable to assume that this is not a
 great cause for concern.
 
@@ -1366,12 +1366,12 @@ its mean. To test this, we will make a Normal QQ
 
 As shown, our residuals are relatively normally distributed in our
 histogram. The center is around 0 which is good; however there is a
-slight left skew. As well, our Normal-QQ plot doesn’t closeley match the
+slight left skew. As well, our Normal-QQ plot doesn’t closely match the
 idea line at the beginning of the more negative values. It may be the
 case that there are many outliers or high leverage points in our model
 that are causing this skew and if they were removed then we wouldn’t see
 this. However, since our distribution of residuals is relatively normal
-and the Normal QQ Plot is mostly following the trendline it is
+and the Normal QQ Plot is mostly following the trend line it is
 reasonable to assume that this assumption is satisfied due to the
 robustness f our model. In our model Assessment, we can further fix
 these issues and improve our model.
@@ -1493,7 +1493,7 @@ proportion is somewhat greater than 5% it is still most likely the case
 that these flagged residuals are a relatively small proportion of the
 data, as well since only 1 of our leverage points was cause for concern,
 it is most likely the case that our model is sound. As well, it is most
-likely these 5% of observations which may have casued the skew in our
+likely these 5% of observations which may have caused the skew in our
 residual variance.
 
 ### VIF
@@ -1529,9 +1529,35 @@ variables in our model.
 
 ### Interpretations and Findings
 
-  - Interpretations / interesting findings from the model coefficients
+In looking at the models and exploratory data analysis in the above
+sections, there are some interesting findings worth noting.
 
-### Aditional Model Work
+For instance, the plot of the response variable, `rating`, is incredibly
+skewed with a peak centered between a mean rating of 4 and 4.5. It would
+be incredibly interesting to research if people tend to under vote or if
+people who don’t like an app just don’t vote. Exploring the human
+decision making element in the reviewing process would aide in the
+understanding of this material.
 
-  - Additional work of other models or analysis not included in the
-    final model.
+It is also worth noting the high intercept values (4.8261579 and
+4.7270722) in the final model (with and without interaction terms).
+Given that a rating, and therefore the mean value of rating, can be no
+higher than 5, these intercept values are incredibly high.
+
+There are some coefficients in our model that seem to make the ratings
+really high. A change in 1 unit of rating is quite a lot, so the
+coefficient of categoryHealth\_and\_Fitness is quite large at 1.4202378.
+This means that if an app is health and fitness, we expect the ratings
+to increase by 1.420 on average, holding all else constant. There are a
+few others like this like categoryFOOD\_AND\_DRINK and cateoryLIFESTYLE.
+For categoryFOOD\_AND\_DRINK, if an app is a food and drink app we
+expect the ratings to increase by 1.0244280 on average, holding all else
+constant. If an app is in the health and lifestyle category, we expect
+the ratings to increase by 1.1011342, holding all else constant.
+
+Additionally, there are some factors that make the ratings decrease. The
+coefficient for InstallsBetween 1,000 and 10,000 leads to a -0.858
+decrease in expected rating, on average, holding all else constant.
+Additionally, another aspect that seems to really affect rating is if an
+app is in the dating category- if it is, we expect the rating to
+decrease by 3.622, holding all else constant.
