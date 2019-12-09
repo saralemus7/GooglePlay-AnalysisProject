@@ -81,12 +81,22 @@ Upon examining our predictor variables, it looks like there are occasionally one
 
 Furthermore, here it is worth noting that the variable, `Genres` contains the same information in the `category` variable - the only difference being that the data is just displayed a bit differently. Therefore, as to avoid being redundant, we will only be using `category` in our analysis. As well, the information contained in the variable `Type` is also contained in `Price`. Since `Price` provides the prices of an app and `Type` simply denotes wether or not an app is paid or free. There is mostly likely a large linear dependency between these two variables as they measure the same thing, so we will use `Price` instead of `Type.` We will not deleting theese variables from the dataset as to maintain integrity, but will not examine them in our analysis.
 
+As well, we also have many of predictors that are coded as characters in the dataset, so we decided to recode them as factors. We also have some variables that are coded as characters due to the existence of a particular a symbol (ex. $), we will recoded these into a format which will be usable for our analysis. 
+
+Looking at the data, there are two variables related to the version, or iteration of the app as provided by the developers: `Current Ver` and `Android Ver`. Given that Google owns both Android and the Google Play Store, the company would likely be more interested in the Android version of the app. Furthermore, Android users are unlikely to be using other operating system's application stores, so a developer who is interested in creating apps for the Android market would gain more information through an examination of the compatibility of certain apps with a particular version of Android. Some data wrangling was necessary to make this variable suitable for analysis.
+
+We also created a variable called `date_since`, which marks the number of days that the app has been updated since the day that the data was scraped on August 8, 2018. This will allow us to determine how recent the last update was for a particular app and provides some information related to the relative frequency of updates and how that may affect an app's rating.
+
 ```{r dates, warning = FALSE, message = FALSE}
 apps <- apps %>%
   mutate(date_new = mdy(`Last Updated`))
 apps <- apps %>%
   mutate(date_since = mdy("August 8, 2018") - date_new)
 ```
+
+There are also a number of variables which required releveling. Many of our predictors have multiple levels and these may have made our model too complicated. To reduce the probabiltiy that the model overfits the data and is too complicated, we will relevel our variables as follows:
+
+Since our variable `Price` is currently not numeric and isn't coded into categories, we will relevel price into 3 categories: Free, Between 0 and 4.99 dollars, and greater than 5 dollars. 
 
 ```{r price-relevel, warning = FALSE, message = FALSE}
 apps <- apps %>%
@@ -95,6 +105,17 @@ apps <- apps %>%
 apps <- apps %>%
   mutate(Price = fct_relevel(Price, "Free", "Between $0 and $4.99", "Greater than $5"))
 ```
+
+Since our variable `Size` is currently very widely distributed, we will relevel size into 3 categories: Varies with Device, Less than 100, and Greater than 100.
+
+```{r sizerelevel, warning = FALSE, message = FALSE}
+apps$`Size`<- sub('k$', '', apps$`Size`)
+apps$`Size`<- as.numeric(gsub("Varies with device", 0.001 , apps$`Size`))
+apps <- apps %>%
+  mutate(Size = case_when(Size == 0.001 ~ "Varies with device", Size < 100 ~ "Less than 100 MB", Size > 100 ~ "Greater than 100 MB"))
+```
+
+Since our variable `Installs` is currently very widely distributed, we will relevel installs into 3 categories: Less than 100, Between 100 and 1,000, Between 1,000 and 10,000, Between 10,000 and 100,000, and 100,000 or Greater.
 
 ```{r installs-relevel, warning = FALSE, message = FALSE}
 apps$`Installs`<- as.numeric(gsub(",", "", apps$`Installs`))
@@ -106,31 +127,9 @@ apps <- apps %>%
 apps <- apps %>%
   mutate(Installs = fct_relevel(Installs, "Less than 100", "Between 100 and 1,000", "Between 1,000 and 10,000", "Between 10,000 and 100,000", "100,000 or Greater"))
 
-skim(apps, Installs)
 ```
 
-```{r sizerelevel, warning = FALSE, message = FALSE}
-apps$`Size`<- sub('k$', '', apps$`Size`)
-apps$`Size`<- as.numeric(gsub("Varies with device", 0.001 , apps$`Size`))
-apps <- apps %>%
-  mutate(Size = case_when(Size == 0.001 ~ "Varies with device", Size < 100 ~ "Less than 100 MB", Size > 100 ~ "Greater than 100 MB"))
-
-```
-
-```{r rating-distribution, warning = FALSE, message = FALSE}
-ggplot(data = apps, aes(x = Rating)) + 
-  geom_histogram(binwidth = 0.1, fill = "blue") + 
-  xlim(0,5) + labs(title = "Distribution of App Ratings")
-```
-
-
-```{r log reviews, warning = FALSE, message = FALSE}
-apps <- apps %>% 
-  mutate(log_reviews = log(Reviews)) 
-ggplot(apps, aes(x = log_reviews)) + geom_histogram(binwidth = 0.5)
-apps %>%
-  summarise(median(log_reviews), max(log_reviews), IQR(log_reviews))
-```
+Our variable `Category` is extremely large and has many levels as shown in the graphiic below. To simplify this, we will create a new variable called `category_simp` with two levels: one for the top 6 categories ("FAMILY","GAME", "TOOLS","MEDICAL", "LIFESTYLE", and "FINANCE") and another for all the other categories. 
 
 ```{r category pop, warning = FALSE, message = FALSE}
 apps %>%
@@ -150,6 +149,8 @@ apps %>%
   arrange(desc(n))
 ```
 
+As shown in the above table, we can see that the top 6 cateogies are in one level and the others are stored in another level. 
+
 ```{r relevel andriod ver}
 apps %>%
   count(`Android Ver`) %>%
@@ -167,6 +168,9 @@ apps %>%
   arrange(desc(n))
 ```
 
+Android Ver
+
+
 ```{r}
 apps <- apps %>%
   mutate(content_simp = case_when( 
@@ -181,8 +185,34 @@ apps %>%
   arrange(desc(n))
 ```
 
+Content rating
 
-# Model Selection
+#### Univariate Analysis
+
+```{r rating-distribution, warning = FALSE, message = FALSE}
+ggplot(data = apps, aes(x = Rating)) + 
+  geom_histogram(binwidth = 0.1, fill = "blue") + 
+  xlim(0,5) + labs(title = "Distribution of App Ratings")
+```
+response
+
+```{r log reviews, warning = FALSE, message = FALSE}
+apps <- apps %>% 
+  mutate(log_reviews = log(Reviews)) 
+ggplot(apps, aes(x = log_reviews)) + geom_histogram(binwidth = 0.5)
+apps %>%
+  summarise(median(log_reviews), max(log_reviews), IQR(log_reviews))
+```
+
+log reviews explain why
+#### Bivariate Analysis
+
+#### Possible Interactions
+
+## Section 2: Regression Analysis (includes the final model and discussion of assumptions)
+
+### Model Process
+### Model Selection
 
 ```{r full-model}
 apps <- apps %>%
@@ -190,11 +220,6 @@ apps <- apps %>%
 full_model <- lm(Rating ~ category_simp + log_reviews + Size + Installs + Price + `Content Rating` + androidver_simp + date_since, data = apps)
 kable(tidy(full_model),format="html",digits=4)
 ```
-
-```{r vif}
-tidy(vif(full_model))
-```
-
 
 ```{r bic-back}
 regfit_backward <- regsubsets(Rating ~ category_simp + log_reviews + Size + Installs + Price + `Content Rating` + androidver_simp + date_since, data = apps, method="backward")
@@ -208,17 +233,6 @@ sel_summary <- summary(regfit_forward)
 coef(regfit_forward, which.min(sel_summary$bic))
 ```
 
-
-#### Univariate Analysis
-
-#### Bivariate Analysis
-
-#### Possible Interactions
-
-## Section 2: Regression Analysis (includes the final model and discussion of assumptions)
-
-### Model Process
-### Model Selection
 ### Interactions & Our Updated Model
 ### Assumptions
 ### Model Assesment

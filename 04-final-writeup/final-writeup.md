@@ -129,24 +129,53 @@ variables as they measure the same thing, so we will use `Price` instead
 of `Type.` We will not deleting theese variables from the dataset as to
 maintain integrity, but will not examine them in our analysis.
 
-    ## Skim summary statistics
-    ##  n obs: 7731 
-    ##  n variables: 15 
-    ## 
-    ## ── Variable type:factor ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-    ##  variable missing complete    n n_unique
-    ##  Installs       0     7731 7731        5
-    ##                                 top_counts ordered
-    ##  100: 4462, Bet: 1477, Bet: 1145, Bet: 510   FALSE
+As well, we also have many of predictors that are coded as characters in
+the dataset, so we decided to recode them as factors. We also have some
+variables that are coded as characters due to the existence of a
+particular a symbol (ex. $), we will recoded these into a format which
+will be usable for our analysis.
 
-![](final-writeup_files/figure-gfm/rating-distribution-1.png)<!-- -->
+Looking at the data, there are two variables related to the version, or
+iteration of the app as provided by the developers: `Current Ver` and
+`Android Ver`. Given that Google owns both Android and the Google Play
+Store, the company would likely be more interested in the Android
+version of the app. Furthermore, Android users are unlikely to be using
+other operating system’s application stores, so a developer who is
+interested in creating apps for the Android market would gain more
+information through an examination of the compatibility of certain apps
+with a particular version of Android. Some data wrangling was necessary
+to make this variable suitable for analysis.
 
-![](final-writeup_files/figure-gfm/log%20reviews-1.png)<!-- -->
+We also created a variable called `date_since`, which marks the number
+of days that the app has been updated since the day that the data was
+scraped on August 8, 2018. This will allow us to determine how recent
+the last update was for a particular app and provides some information
+related to the relative frequency of updates and how that may affect an
+app’s rating.
 
-    ## # A tibble: 1 x 3
-    ##   `median(log_reviews)` `max(log_reviews)` `IQR(log_reviews)`
-    ##                   <dbl>              <dbl>              <dbl>
-    ## 1                  7.55               12.2               5.44
+There are also a number of variables which required releveling. Many of
+our predictors have multiple levels and these may have made our model
+too complicated. To reduce the probabiltiy that the model overfits the
+data and is too complicated, we will relevel our variables as follows:
+
+Since our variable `Price` is currently not numeric and isn’t coded into
+categories, we will relevel price into 3 categories: Free, Between 0 and
+4.99 dollars, and greater than 5 dollars.
+
+Since our variable `Size` is currently very widely distributed, we will
+relevel size into 3 categories: Varies with Device, Less than 100, and
+Greater than 100.
+
+Since our variable `Installs` is currently very widely distributed, we
+will relevel installs into 3 categories: Less than 100, Between 100 and
+1,000, Between 1,000 and 10,000, Between 10,000 and 100,000, and 100,000
+or Greater.
+
+Our variable `Category` is extremely large and has many levels as shown
+in the graphiic below. To simplify this, we will create a new variable
+called `category_simp` with two levels: one for the top 6 categories
+(“FAMILY”,“GAME”, “TOOLS”,“MEDICAL”, “LIFESTYLE”, and “FINANCE”) and
+another for all the other categories.
 
     ## # A tibble: 33 x 3
     ##    Category            n   freq
@@ -178,6 +207,10 @@ maintain integrity, but will not examine them in our analysis.
     ## 10 PRODUCTIVITY    Others             262
     ## # … with 23 more rows
 
+As shown in the above table, we can see that the top 6 cateogies are in
+one level and the others are stored in another
+    level.
+
     ## Warning: Factor `Android Ver` contains implicit NA, consider using
     ## `forcats::fct_explicit_na`
 
@@ -208,6 +241,8 @@ maintain integrity, but will not examine them in our analysis.
     ## 8 6                  5-8                   43
     ## 9 8                  5-8                    5
 
+Android Ver
+
     ## # A tibble: 6 x 3
     ##   `Content Rating` content_simp     n
     ##   <chr>            <chr>        <int>
@@ -218,7 +253,30 @@ maintain integrity, but will not examine them in our analysis.
     ## 5 "Adults only "   <NA>             3
     ## 6 Unrated          Unrated          1
 
-# Model Selection
+Content rating
+
+#### Univariate Analysis
+
+![](final-writeup_files/figure-gfm/rating-distribution-1.png)<!-- -->
+response
+
+![](final-writeup_files/figure-gfm/log%20reviews-1.png)<!-- -->
+
+    ## # A tibble: 1 x 3
+    ##   `median(log_reviews)` `max(log_reviews)` `IQR(log_reviews)`
+    ##                   <dbl>              <dbl>              <dbl>
+    ## 1                  7.55               12.2               5.44
+
+log reviews explain why \#\#\#\# Bivariate
+Analysis
+
+#### Possible Interactions
+
+## Section 2: Regression Analysis (includes the final model and discussion of assumptions)
+
+### Model Process
+
+### Model Selection
 
 |                term                |  estimate   | std.error |  statistic   |  p.value  |
 | :--------------------------------: | :---------: | :-------: | :----------: | :-------: |
@@ -239,28 +297,6 @@ maintain integrity, but will not examine them in our analysis.
 | androidver\_simpVaries with Device | \-0.0195554 | 0.0395636 | \-0.4942787  | 0.6211247 |
 |            date\_since             | \-0.0001243 | 0.0000166 | \-7.5107911  | 0.0000000 |
 
-    ## Warning: 'tidy.numeric' is deprecated.
-    ## See help("Deprecated")
-
-    ## # A tibble: 15 x 2
-    ##    names                                  x
-    ##    <chr>                              <dbl>
-    ##  1 category_simpTop 6 Categories       1.05
-    ##  2 log_reviews                         5.07
-    ##  3 SizeLess than 100 MB                4.84
-    ##  4 SizeVaries with device              7.30
-    ##  5 InstallsBetween 100 and 1,000       4.33
-    ##  6 InstallsBetween 1,000 and 10,000    8.26
-    ##  7 InstallsBetween 10,000 and 100,000 10.9 
-    ##  8 Installs100,000 or Greater         22.5 
-    ##  9 PriceBetween $0 and $4.99           1.11
-    ## 10 PriceGreater than $5                1.03
-    ## 11 `Content Rating`Teen                1.02
-    ## 12 `Content Rating`Unrated             1.00
-    ## 13 androidver_simp5-8                  1.04
-    ## 14 androidver_simpVaries with Device   3.37
-    ## 15 date_since                          1.22
-
     ##                        (Intercept)                        log_reviews 
     ##                       4.5124715854                       0.0744108983 
     ##      InstallsBetween 100 and 1,000   InstallsBetween 1,000 and 10,000 
@@ -278,18 +314,6 @@ maintain integrity, but will not examine them in our analysis.
     ##                      -0.8405412693                      -1.0072240860 
     ##          PriceBetween $0 and $4.99                         date_since 
     ##                       0.0978316624                      -0.0001211124
-
-#### Univariate Analysis
-
-#### Bivariate Analysis
-
-#### Possible Interactions
-
-## Section 2: Regression Analysis (includes the final model and discussion of assumptions)
-
-### Model Process
-
-### Model Selection
 
 ### Interactions & Our Updated Model
 
