@@ -155,11 +155,51 @@ RTime2Shine
 
 ## Section 1: Introduction (includes introduction and exploratory data analysis)
 
-Lukengu: relevel categories, log transform and remove the outliers of
-reviews
+### Motivaton
 
-Sanjay: finish EDA,
-etc.
+As technology has become increasingly prevalent around the world, there
+has been a change in the consumption of media. One of these ways is via
+the purchase of applications (apps) for various smartphones and other
+devices. Several technology companies, including Apple and Google, run
+virtual stores for these apps in which a person can download an app for
+their device. These apps can be for various purposes like socializing,
+playing games, or watching television and movies, among others. While
+any user of a phone can agree that apps hold an important effect on how
+one interacts with technology on a daily basis, the weight of the impact
+becomes even more shocking when one looks at the figures- in 2018,
+global app downloads topped 194 billion (Dignan).
+
+Our motivation for this project is to understand what makes apps (from
+the Google Play store specifically) have favorable ratings.
+Understanding the ratings of an app is important for several reasons.
+First, ratings can be important to the provider- in this case Google-
+who can decide whether an app should continue to be sold to maintain
+their quality standards. Ratings are additionally useful as a direct
+line of communication between the user and the developers- often,
+developers are made aware of changes that need to be made to their apps
+through user feedback. Lastly, reviews serve to inform potential users
+of an app whether or not it is worth their time and can affect future
+downloads. Considering that app users are predicted to spend about $120
+billion in app stores in 2019, understanding which apps do well on the
+Play Store and what factors affect app performance is an immensely
+important question to gain more insight into.
+
+### Research Question & Hypothesis
+
+This leads us to introduce our main research question: What are the
+relevant factors that affect the rating given for apps in the Google
+Play store? Although this project will give a detailed attempt to answer
+this question, our preliminary hypothesis is that the variables
+Category, Price, Installs, and Content Rating are the predictor
+variables that will most affect a given app rating and popularity, as
+measured by the number of installs of the app. We believe that these
+variables are indicative of an apps useability and likeness (as
+determined by variables like content rating and categories in how people
+may be drawn to an app) as well as its accessibility (price).
+Furthermore, once we test our hypothesis and determine which factors are
+relevant, we will attempt to use that information to predict the success
+of an app as measured by its
+rating.
 
 ## Section 2: Regression Analysis (includes the final model and discussion of assumptions)
 
