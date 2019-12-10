@@ -615,6 +615,13 @@ ggplot(data=apps,aes(x=predicted, y=residuals)) + #plots residuals vs predictors
 
 As shown there is a sigificantly visible pattern in this model's residuals, far worse than our current model. 
 
+These are the VIFs for our full model:
+```{r vif2, warning = FALSE, message=FALSE}
+tidy(vif(full_model))
+```
+
+As shown many of our variables had multicollinearity issues, which is why we removed them at the beginning as shown in the Data Wrangling. 
+
 ### References
 
 Gupta, Lavanya. Kaggle. Jan. 2019, www.kaggle.com/lava18/google-play-store-apps?fbclid=IwAR36EMS2jg5fhPi-BQlX6Mv4MCk8YUm2XmyOLt0zsKkNyc9JK-JD7aLy-6I. Accessed 30 Oct. 2019. 
