@@ -83,7 +83,7 @@ Google Play Store. This is a numeric variable.
     ##  n obs: 10841 
     ##  n variables: 13 
     ## 
-    ## ── Variable type:character ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+    ## ── Variable type:character ───────────────────────────────────────────────────────────────────────────
     ##        variable missing complete     n min max empty n_unique
     ##     Android Ver       1    10840 10841   3  18     0       34
     ##             App       0    10841 10841   1 194     0     9660
@@ -97,7 +97,7 @@ Google Play Store. This is a numeric variable.
     ##            Size       0    10841 10841   3  18     0      462
     ##            Type       0    10841 10841   1   4     0        4
     ## 
-    ## ── Variable type:numeric ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+    ## ── Variable type:numeric ─────────────────────────────────────────────────────────────────────────────
     ##  variable missing complete     n      mean         sd p0 p25    p50
     ##    Rating    1474     9367 10841      4.19       0.54  1   4    4.3
     ##   Reviews       1    10840 10841 444152.9  2927760.6   0  38 2094  
@@ -208,11 +208,7 @@ another for all the other categories.
     ## # … with 23 more rows
 
 As shown in the above table, we can see that the top 6 categories are in
-one level and the others are stored in another
-    level.
-
-    ## Warning: Factor `Android Ver` contains implicit NA, consider using
-    ## `forcats::fct_explicit_na`
+one level and the others are stored in another level.
 
     ## # A tibble: 10 x 2
     ##    `Android Ver`          n
@@ -265,7 +261,11 @@ particular variable had two categories for the rating “Everyone,” one of
 which happend to be coded with a space (“Everyone”) in the dataset.
 Knowing that content ratings are finite, we decided to combine these
 categories together as to reduce the number of levels in this variable
-and its redundancy. \#\#\#\# Univariate Analysis
+and its redundancy.
+
+#### Univariate Analysis
+
+##### Ratings
 
 ![](final-writeup_files/figure-gfm/rating-distribution-1.png)<!-- -->
 
@@ -274,27 +274,61 @@ and its redundancy. \#\#\#\# Univariate Analysis
     ##              <dbl>         <dbl>
     ## 1              4.2           0.6
 
-![](final-writeup_files/figure-gfm/log%20reviews-1.png)<!-- -->
+##### Reviews
+
+![](final-writeup_files/figure-gfm/Reviews-1.png)<!-- -->
+
+    ## # A tibble: 1 x 1
+    ##   `median(Reviews)`
+    ##               <dbl>
+    ## 1              1902
+
+    ## # A tibble: 1 x 1
+    ##   `max(Reviews)`
+    ##            <dbl>
+    ## 1         203130
+
+![](final-writeup_files/figure-gfm/log-reviews-1-1.png)<!-- -->
 
     ## # A tibble: 1 x 3
     ##   `median(log_reviews)` `max(log_reviews)` `IQR(log_reviews)`
     ##                   <dbl>              <dbl>              <dbl>
     ## 1                  7.55               12.2               5.44
 
-Above is the plot of the logged number of reviews for each application.
-We decided to log, due to an extreme skew seen in the plot of the
-original variable.
+Reviews is definetley one of our most skewed predictors, as shown by the
+strong right skew in this histogram. Originally, the skew was even more
+extreme, since there was one outlier that had 78 million reviews.
+Therefore, to correct this issue, we removed the outlier from the
+variable as well as log transformed it in order to make it easier to see
+trends as well as make the variable less skewed.
 
-FOR OTHER UNIVARIATE PLOTS ONLY INCLUDE THOSE IN FULL MODEL
+##### Category
 
-Arrange the bars in the barplot of Categories in order of frequency.
-This will help the reader more easily distinguish which categories are
-the most common.
+![](final-writeup_files/figure-gfm/category-1.png)<!-- -->
 
-Which app has 78 million reviews?
+![](final-writeup_files/figure-gfm/log%20reviews-1.png)<!-- -->
 
-Change the bin width on the histogram of date\_since. It should be fine
-to just use the default bin width by R.
+##### Size
+
+![](final-writeup_files/figure-gfm/size-1.png)<!-- -->
+
+##### Installs
+
+![](final-writeup_files/figure-gfm/installs-1.png)<!-- -->
+
+##### Price
+
+![](final-writeup_files/figure-gfm/price-1.png)<!-- -->
+
+##### Content Rating
+
+![](final-writeup_files/figure-gfm/cr-1.png)<!-- -->
+
+##### Android Version
+
+![](final-writeup_files/figure-gfm/and-plot-1.png)<!-- -->
+
+![](final-writeup_files/figure-gfm/datesince-plot-1.png)<!-- -->
 
 #### Bivariate Analysis
 
@@ -307,7 +341,8 @@ Although there is some variation in rating between app categories, the
 most telling aspect of this exploratory model is the outliers. It
 appears that some categories are more susceptible to outliers with low
 ratings. More over there are notable discrepancies between minimum
-boxplot rating among categories.
+boxplot rating among categories. \*\*NOTE THIS NEEDS TO BE FIXED this
+was copy pasted from the old one i think
 
 ![](final-writeup_files/figure-gfm/reviews-rating-1.png)<!-- -->
 
@@ -316,20 +351,23 @@ number of reviews and app rating. As the number of reviews increased the
 app rating was concentrated at approximately 4.5 - which was consistent
 with apps holding smaller number of reviews. IS THIS RIGHT??
 
+![](final-writeup_files/figure-gfm/size-rating-1.png)<!-- -->
+
 ![](final-writeup_files/figure-gfm/installs-rating-1.png)<!-- -->
 
 The boxplot above clearly shows a significant relationship between
 number of installs and rating. As the number of installs increases the
 IQR appears to decrease in conjunction. Moreover median rating also
-increases with number of installs.
+increases with number of
+installs.
 
 ![](final-writeup_files/figure-gfm/type-rating-1.png)<!-- -->
 
-The boxplots for free and paid apps sport nearly identical median and
-IQR values. This tells us that whether an app is free or paid doesn’t
-appear to have a major impact on the rating. Further analysis into the
-variation of rating among apps of different price levels is
-needed.
+![](final-writeup_files/figure-gfm/content-rating-1.png)<!-- -->
+
+![](final-writeup_files/figure-gfm/andsimp-rating-1.png)<!-- -->
+
+![](final-writeup_files/figure-gfm/datesince-rating-1.png)<!-- -->
 
 ## Section 2: Regression Analysis (includes the final model and discussion of assumptions)
 
@@ -591,8 +629,6 @@ The Constant Variance Assumption assumes that the regression variance is
 the same for all of the predictor variables in the model. To test this
 assumption, we will plot the residual values against predictors.
 
-    ## Warning: Continuous x aesthetic -- did you forget aes(group=...)?
-
 ![](final-writeup_files/figure-gfm/resid-plots-1.png)<!-- -->
 
 As shown, it appears that the constant variance assumption is violated.
@@ -615,13 +651,9 @@ majority of applications given our dataset.
 The Normality Assumption assumes that for any given set of predictors,
 the response variable, `ratings`, follows a Normal distribution around
 its mean. To test this, we will make a Normal QQ
-    plot.
+plot.
 
-![](final-writeup_files/figure-gfm/norm-qq-1.png)<!-- -->
-
-    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-
-![](final-writeup_files/figure-gfm/norm-qq-2.png)<!-- -->
+![](final-writeup_files/figure-gfm/norm-qq-1.png)<!-- -->![](final-writeup_files/figure-gfm/norm-qq-2.png)<!-- -->
 
 As shown, our residuals are relatively normally distributed in our
 histogram. The center is around 0 which is good; however there is a
@@ -726,8 +758,6 @@ standardized residuals with large magnitude. This us much better than
 our previous model which had greater than 470 points that violated this
 threshold
 
-    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-
 ![](final-writeup_files/figure-gfm/residgram-1.png)<!-- -->
 
     ## [1] 4.702682
@@ -748,9 +778,6 @@ observations which may have caused the skew in our residual variance.
 ### VIF
 
 We will check the VIF of our model without interactions:
-
-    ## Warning: 'tidy.numeric' is deprecated.
-    ## See help("Deprecated")
 
     ## # A tibble: 3 x 2
     ##   names                             x

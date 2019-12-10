@@ -152,7 +152,7 @@ apps %>%
 
 As shown in the above table, we can see that the top 6 categories are in one level and the others are stored in another level. 
 
-```{r relevel-andriod-ver}
+```{r relevel-andriod-ver, warning = FALSE, message=FALSE}
 apps %>%
   count(`Android Ver`) %>%
   arrange(desc(n))
@@ -171,7 +171,7 @@ apps %>%
 
 As well, the variable `Android Ver` is quite complicated. To simplify our analysis we decided to bin this variable into two levels, one for apps that support the first "generation" of Android, versions 1-4, and another for apps that support the second generation, 5-8. For apps that vary with device, we kept those observations as is. As shown in the final graphic, our new variable, `androidver_simp` reduces some of the complexity in the previous variable while retaining ease of use for analysis. 
 
-```{r relevel-content}
+```{r relevel-content, warning = FALSE, message=FALSE}
 apps <- apps %>%
   mutate(content_simp = case_when( 
     `Content Rating` == "Everyone" ~ "Everyone",
@@ -187,7 +187,10 @@ apps %>%
 ```
 
 Lastly, there were also issues with our variable `Content Rating`. This particular variable had two categories for the rating "Everyone," one of which happend to be coded with a space ("Everyone ") in the dataset. Knowing that content ratings are finite, we decided to combine these categories together as to reduce the number of levels in this variable and its redundancy. 
+
 #### Univariate Analysis
+
+##### Ratings
 
 ```{r rating-distribution, warning = FALSE, message = FALSE}
 ggplot(data = apps, aes(x = Rating)) + 
@@ -200,56 +203,139 @@ apps %>%
   summarise(median(Rating), IQR(Rating))
 ```
 
+##### Reviews
 
-```{r log reviews, warning = FALSE, message = FALSE}
+```{r Reviews, echo=FALSE,warning=FALSE,message=FALSE,error=FALSE}
+ggplot(data = apps, aes(x = Reviews)) +
+  geom_histogram() +
+  labs(title = "Distribution of Reviews")
+
+apps %>%
+  summarise(median(Reviews)) 
+apps %>%
+  summarise(max(Reviews))
+```
+
+```{r log-reviews-1, warning = FALSE, message = FALSE}
 apps <- apps %>% 
   mutate(log_reviews = log(Reviews)) 
-ggplot(apps, aes(x = log_reviews)) + geom_histogram(binwidth = 0.5)
+ggplot(apps, aes(x = log_reviews)) + geom_histogram(binwidth = 0.5) + labs(title = "Distribution of Log Transformed Reviews")
 apps %>%
   summarise(median(log_reviews), max(log_reviews), IQR(log_reviews))
 ```
 
-Above is the plot of the logged number of reviews for each application. We decided to log, due to an extreme skew seen in the plot of the original variable. 
+Reviews is definetley one of our most skewed predictors, as shown by the strong right skew in this histogram. Originally, the skew was even more extreme, since there was one outlier that had 78 million reviews. Therefore, to correct this issue, we removed the outlier from the variable as well as log transformed it in order to make it easier to see trends as well as make the variable less skewed.
 
-FOR OTHER UNIVARIATE PLOTS ONLY INCLUDE THOSE IN FULL MODEL
+##### Category
 
-Arrange the bars in the barplot of Categories in order of frequency. This will help the reader more easily distinguish which categories are the most common.
+```{r category, echo=FALSE,warning=FALSE,message=FALSE,error=FALSE}
+apps %>%
+    count(Category) %>%
+    mutate(Category = fct_reorder(Category, n, .desc = FALSE)) %>%
+    ggplot(aes(x = Category, y = n)) + geom_bar(stat = 'identity') + coord_flip() + labs(title = "Frequency of Category", y = "Count")
+```
 
-Which app has 78 million reviews?
+```{r log reviews, warning = FALSE, message = FALSE}
+ggplot(apps, aes(x = category_simp)) + geom_bar() + labs(title = "Frequency of Category", subtitle = "Simplified Version")
+```
 
-Change the bin width on the histogram of date_since. It should be fine to just use the default bin width by R.
+##### Size
+
+```{r size, echo=FALSE,warning=FALSE,message=FALSE,error=FALSE}
+ggplot(data = apps, aes(x = Size)) +
+  geom_histogram(stat="count", binwidth = 0.00025) +
+  labs(title = "Distribution of App Sizes")
+```
+
+##### Installs
+
+```{r installs, echo=FALSE,warning=FALSE,message=FALSE,error=FALSE}
+ggplot(data = apps, aes(x = Installs)) +
+  geom_histogram(stat="count") +
+  coord_flip()+
+  labs(title = "Distribution of Installs")
+```
+
+##### Price
+
+```{r price, echo=FALSE,warning=FALSE,message=FALSE,error=FALSE}
+ggplot(data = apps, aes(x = Price)) +
+  geom_histogram(stat="count")+
+  coord_flip() +
+  labs(title = "Distribution of Price (in USD)")
+```
+
+##### Content Rating
+
+```{r cr, echo=FALSE,warning=FALSE,message=FALSE,error=FALSE}
+ggplot(data = apps, aes(x = content_simp)) +
+  geom_histogram(stat="count") +
+  labs(title = "Distribution of Content Rating")
+```
+
+##### Android Version 
+
+```{r and-plot, echo=FALSE,warning=FALSE,message=FALSE,error=FALSE}
+ggplot(data = apps, aes(x = androidver_simp)) +
+  geom_histogram(stat="count") +
+  labs(title = "Distribution of Android Version", x = "Android Version")
+```
+
+```{r datesince-plot, echo=FALSE,warning=FALSE,message=FALSE,error=FALSE}
+ggplot(data = apps, aes(x = date_since)) +
+  geom_histogram(stat= "count") +
+  labs(title = "Frequency of Date Since Last Updated", subtitle = "Based off of number of days since August 1, 2018")
+```
 
 #### Bivariate Analysis
 
 A bivariate analysis between variables will help understand the interaction between indidivual predictor variables and the response. 
 
-```{r category-rating}
+```{r category-rating, warning = FALSE, message=FALSE}
 ggplot(data = apps, aes(x = category_simp, y = Rating)) + geom_boxplot() + coord_flip() +
   labs(title = "Relationship between Category and Rating") 
 ```
 
-Although there is some variation in rating between app categories, the most telling aspect of this exploratory model is the outliers. It appears that some categories are more susceptible to outliers with low ratings. More over there are notable discrepancies between minimum boxplot rating among categories. 
+Although there is some variation in rating between app categories, the most telling aspect of this exploratory model is the outliers. It appears that some categories are more susceptible to outliers with low ratings. More over there are notable discrepancies between minimum boxplot rating among categories. **NOTE THIS NEEDS TO BE FIXED this was copy pasted from the old one i think
 
-```{r reviews-rating}
-ggplot(data = apps, aes(x = Reviews, y = Rating)) + geom_point() +
-  labs(title = "Relationship between Reviews and Rating", x = "Number of Reviews") 
+```{r reviews-rating, warning = FALSE, message=FALSE}
+ggplot(data = apps, aes(x = log_reviews, y = Rating)) + geom_point() +
+  labs(title = "Relationship between Log Reviews and Rating", x = "Number of Reviews") 
 ```
 
 Based on the scatterplot above, there is likely a relationship between number of reviews and app rating. As the number of reviews increased the app rating was concentrated at approximately 4.5 - which was consistent with apps holding smaller number of reviews. IS THIS RIGHT??
 
-```{r installs-rating}
+```{r size-rating, warning = FALSE, message=FALSE}
+ggplot(data = apps, aes(x = Size, y = Rating)) + geom_boxplot() +
+  labs(title = "Relationship between Size and Rating", x = "Size")
+```
+
+```{r installs-rating, warning = FALSE, message=FALSE}
 ggplot(data = apps, aes(x = Installs, y = Rating)) + geom_boxplot() +
   labs(title = "Relationship between Installs and Rating", x = "Number of Installs") + coord_flip()
 ```
 
 The boxplot above clearly shows a significant relationship between number of installs and rating. As the number of installs increases the IQR appears to decrease in conjunction. Moreover median rating also increases with number of installs. 
 
-```{r type-rating}
-ggplot(data = apps, aes(x = Type, y = Rating)) + geom_boxplot() +
-  labs(title = "Relationship between Type and Rating")
+```{r type-rating, warning = FALSE, message=FALSE}
+ggplot(data = apps, aes(x = Price, y = Rating)) + geom_boxplot() +
+  labs(title = "Relationship between Price and Rating")
 ```
 
-The boxplots for free and paid apps sport nearly identical median and IQR values. This tells us that whether an app is free or paid doesn't appear to have a major impact on the rating. Further analysis into the variation of rating among apps of different price levels is needed. 
+```{r content-rating, warning = FALSE, message=FALSE}
+ggplot(data = apps, aes(x = content_simp, y = Rating)) + geom_boxplot() +
+  labs(title = "Relationship between Content Rating and App Rating")
+```
+
+```{r andsimp-rating, warning = FALSE, message=FALSE}
+ggplot(data = apps, aes(x = androidver_simp, y = Rating)) + geom_boxplot() +
+  labs(title = "Relationship between Android Version and Rating")
+```
+
+```{r datesince-rating, warning = FALSE, message=FALSE}
+ggplot(data = apps, aes(x = date_since, y = Rating)) + geom_point() +
+  labs(title = "Relationship between Days Since Last Updated and Rating", x = "Days Since") 
+```
 
 ## Section 2: Regression Analysis (includes the final model and discussion of assumptions)
 
@@ -263,7 +349,7 @@ In order to find our final model, we will use a process of both forwards and bac
 
 ### Model Selection
 
-```{r full-model}
+```{r full-model, warning = FALSE, message=FALSE}
 apps <- apps %>%
   na.omit(apps)
 full_model <- lm(Rating ~ category_simp + log_reviews + Size + Installs + Price + content_simp + androidver_simp + date_since, data = apps)
@@ -272,7 +358,7 @@ kable(tidy(full_model),format="html",digits=4)
 
 Above is the output of our full model using the predictors we deemed to be relevant in our Exploratory Data Analysis. As shown, there are a number of predictors that appear to have p-values greater than 0.05, deeming them insiginifcant. To find the most parsimonious model for our purporses of prediction, we used a model selection process comparing both BIC and AIC using a combination of backwards, forwards, and hybrid selection. The final model we chose was that selected using both AIC forward and hybrid selection as this particular model (as displayed below) gave us the shortest model while retaining assumptions better than the other models we tried. After going through the model process, we found that the constant variance assumption was violated using our BIC model. As well, it had far too many levels and we afraid that it was "overfitting" our data. Our model determines its coefficients through the relative variance of different variables in our data. If there are some predictors which have high frequency in the data, it is most likely that those predictors will account for the highest amount of variance when developing our final model. Thus, our model would tend to "memorize" our data rather than rather assessing the variability in response through particular trends in our predictors generalizable to the app store as a whole - as opposed to this singular dataset. In our additional work section, we have attached the final versions of those models as well as a plot of the residuals to illustrate this violation. 
 
-```{r aic-forward}
+```{r aic-forward, warning = FALSE, message=FALSE}
 apps <- apps %>%
   na.omit(apps)
 null_model <- lm(Rating ~ 1, data = apps,)
@@ -281,7 +367,7 @@ regfit_forward <- step(null_model, scope = formula(full_model),
 ```
 
 
-```{r final model}
+```{r final model, warning = FALSE, message=FALSE}
 final_model <- lm(Rating ~ category_simp + Size, data = apps)
 kable(tidy(final_model),format="html",digits=3)
 ```
@@ -307,7 +393,7 @@ Ha: Atleast one Beta_j is not equal to 0
 
 In this case, we are measuring the interaction between `category_simp` and `Size`, so our Beta j's denotate the coefficient for both of these predictors as well as the interaction term. Our null hypothesis can essentially be read as there are no interactions between any of the variables in our model and our alternative can be read as that there is a significant interaction effect in the model since there are only two predictors in our final model. 
 
-```{r testing interactions}
+```{r testing interactions, warning = FALSE, message=FALSE}
 reduced <- final_model
 full  <- lm(Rating ~ category_simp + Size + category_simp*Size, data = apps)
 kable(anova(reduced, full), format="markdown", digits = 3)
@@ -321,7 +407,7 @@ Since our p-value of approximately 0.5727 is greater than our significance level
 
 The Linearity Assumptions assumes that the response variable has a linear relationship with the predictor variables used in the final model. To assess linearity, we look at the plots created in the Exploratory Data Analysis. None of these plots seem to have a non-linear relationship such as one that would be polynomial; however, some are quite skewed but this should not matter for the purposes of our model. To illustrate this, we will re-display the bivariate plots with our final predictor variables. 
 
-```{r linearity}
+```{r linearity, warning = FALSE, message=FALSE}
 ggplot(data = apps, aes(x = category_simp, y = Rating)) + geom_boxplot() +
   labs(title = "Relationship between Category and Rating")
 
@@ -335,7 +421,7 @@ As shown in the plots above, both the predictor variables appear to satisfy the 
 
 The Constant Variance Assumption assumes that the regression variance is the same for all of the predictor variables in the model. To test this assumption, we will plot the residual values against predictors.
 
-```{r resid-plots}
+```{r resid-plots, warning = FALSE, message=FALSE}
 apps <- apps %>% 
   mutate(predicted = predict.lm(final_model), residuals = resid(final_model)) #mutates residuals to the model
 ggplot(data=apps,aes(x=predicted, y=residuals)) + #plots residuals vs predictors
@@ -350,7 +436,7 @@ As shown, it appears that the constant variance assumption is violated. There ap
 
 The Normality Assumption assumes that for any given set of predictors, the response variable, `ratings`, follows a Normal distribution around its mean. To test this, we will make a Normal QQ plot. 
 
-```{r norm-qq}
+```{r norm-qq, warning = FALSE, message=FALSE}
  ggplot(data = apps, mapping = aes(sample = residuals)) + 
    stat_qq() + 
    stat_qq_line() +
@@ -373,7 +459,7 @@ The Independence Assumption assumes that all observations in the data used to co
 
 According to lecture, the threshold we should use for determining if observations are high leverage points is: hi > (2(p+1))/n
 
-```{r leverage}
+```{r leverage, warning = FALSE, message=FALSE}
 apps_output <- augment(final_model) %>%
   mutate(obs_num = row_number())
 
@@ -387,7 +473,7 @@ ggplot(data = apps_output, aes(x = obs_num,y = .hat)) +
 
 Let’s filter to see the total # of points that crossed the threshold.
 
-```{r filterlev}
+```{r filterlev, warning = FALSE, message=FALSE}
 apps_output %>% filter(.hat > leverage_threshold) %>%
   select(category_simp, Size)
 ```
@@ -399,7 +485,7 @@ As shown, there are 214 high leverage points. This is problematic but before we 
 
 Now let’s check how many of these points cross our threshold for Cook’s Distance (Di > 1) to determine if these high leverage points do in fact have a significant influence on our model coefficients.
 
-```{r cooks-distance}
+```{r cooks-distance, warning = FALSE, message=FALSE}
 ggplot(data = apps_output, aes(x = obs_num, y = .cooksd)) + 
   geom_point(alpha = 0.7) + 
   geom_hline(yintercept=1,color = "red")+
@@ -409,7 +495,7 @@ ggplot(data = apps_output, aes(x = obs_num, y = .cooksd)) +
 
 Let's check to see the number of points that violated this threshold. 
 
-```{r filtercook}
+```{r filtercook, warning = FALSE, message=FALSE}
 apps_output %>% filter(.cooksd > 1) %>%
   select(category_simp, Size)
 ```
@@ -419,7 +505,7 @@ As shown, none of these violate Cook's Distance - so it is most likely the case 
 #### Standardized Residuals
 Now, let’s plot our standardized residuals to see if there are any points which break the threshold |resid std.| > 2.
 
-```{r standardresid-predicted}
+```{r standardresid-predicted, warning = FALSE, message=FALSE}
 ggplot(data = apps_output, aes(x = .fitted,y = .std.resid)) +
   geom_point(alpha = 0.7) + 
   geom_hline(yintercept = 0,color = "red") +
@@ -431,14 +517,14 @@ ggplot(data = apps_output, aes(x = .fitted,y = .std.resid)) +
 
 As depicted the plot, there are a number of points which violate this threshold, so let’s filter the data to get an exact number.
 
-```{r filtersd}
+```{r filtersd, warning = FALSE, message=FALSE}
 apps_output %>% filter(abs(.std.resid) > 2) %>%
   select(category_simp, Size)
 ```
 
 As illustrated, there are 363 observations with a standardized residual greater than +/- 2. These observations are considered to have standardized residuals with large magnitude. This us much better than our previous model which had greater than 470 points that violated this threshold
 
-```{r residgram}
+```{r residgram, warning = FALSE, message=FALSE}
 ggplot(data = apps_output, aes(x = .std.resid)) +
   geom_vline(xintercept = 2,color = "red") +
   geom_vline(xintercept = -2,color = "red") +
@@ -446,7 +532,7 @@ ggplot(data = apps_output, aes(x = .std.resid)) +
   labs(x = "Residuals")
 ```
 
-```{r percent}
+```{r percent, warning = FALSE, message=FALSE}
 percentage <- (363/nrow(apps)) * 100
 print(percentage)
 ```
@@ -456,7 +542,7 @@ The proportion of observations that have standardized residuals with magnitude >
 ### VIF
 
 We will check the VIF of our model without interactions:
-```{r vif}
+```{r vif, warning = FALSE, message=FALSE}
 tidy(vif(final_model))
 ```
 
@@ -485,13 +571,13 @@ In conclusion, our project’s goal was to understand what factors contribute to
 
 ### Model Selection
 
-```{r bic-back}
+```{r bic-back, warning = FALSE, message=FALSE}
 regfit_backward <- regsubsets(Rating ~ category_simp + log_reviews + Size + Installs + Price + content_simp + androidver_simp + date_since, data = apps, method="backward")
 sel_summary <- summary(regfit_backward)
 coef(regfit_backward, which.min(sel_summary$bic))
 ```
 
-```{r bic-forward}
+```{r bic-forward, warning = FALSE, message=FALSE}
 regfit_forward <- regsubsets(Rating ~ category_simp + log_reviews + Size + Installs + Price + content_simp + androidver_simp + date_since, data = apps, method="forward")
 sel_summary <- summary(regfit_forward)
 coef(regfit_forward, which.min(sel_summary$bic))
@@ -499,14 +585,14 @@ coef(regfit_forward, which.min(sel_summary$bic))
 
 Above is our model selection using BIC, we chose not to include this particular model for multiple reasons, including the fact that the constant variance assumption of this model is violated. 
 
-```{r aic-back}
+```{r aic-back, warning = FALSE, message=FALSE}
 apps <- apps %>%
   na.omit(apps)
 null_model <- lm(Rating ~ 1, data = apps,)
 regfit_backward <- step(full_model, direction = "backward")
 ```
 
-```{r hybrid}
+```{r hybrid, warning = FALSE, message=FALSE}
 regfit_hybrid <- step(null_model, scope = formula(full_model), 
                       direction = "both")
 ```
@@ -515,7 +601,7 @@ Above is the model selection for both Hybrid and Backward AIC selection. Our fin
 
 Here is the residual plot for the model produced by BIC selection:
 
-```{r final-model2}
+```{r final-model2, warning = FALSE, message=FALSE}
 old_model <- lm(Rating ~ log_reviews + Installs + Price + content_simp, data = apps,)
 apps <- apps %>% 
   mutate(predicted = predict.lm(old_model), residuals = resid(old_model)) #mutates residuals to the model
