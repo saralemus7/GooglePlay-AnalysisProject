@@ -174,9 +174,9 @@ apps <- apps %>%
   mutate(content_simp = case_when( 
     `Content Rating` == "Everyone" ~ "Everyone",
     `Content Rating` == "Teen" ~ "Teen",
-    `Content Rating` == "Mature" ~ "Mature",
-    `Content Rating` == "Everyone" ~ "Everyone",
-    `Content Rating` == "Adults only" ~ "Adults only",
+    `Content Rating` == "Mature " ~ "Mature",
+    `Content Rating` == "Everyone " ~ "Everyone",
+    `Content Rating` == "Adults only " ~ "Adults only",
     `Content Rating` == "Unrated" ~ "Unrated"))
 
 apps %>%
@@ -285,6 +285,23 @@ Given the BIC forwards and backwards selection our reduced linear model is:
 
 hat(mean rating) =  4.5124715854 x exp(0.0744108983(log_reviews)) - 0.3447278672(InstallsBetween 100 and 1,000) -0.6891663588 (InstallsBetween 1,000 and 10,000) - 0.8405412693(InstallsBetween 10,000 and 100,000) -1.0072240860(Installs 100,000 or Greater) + 0.0978316624(PriceBetween 0 and 4.99) -0.0001211124(date_since)
 
+```{r aic-back}
+apps <- apps %>%
+  na.omit(apps)
+null_model <- lm(Rating ~ 1, data = apps,)
+regfit_backward <- step(full_model, direction = "backward")
+```
+
+```{r aic-forward}
+regfit_forward <- step(null_model, scope = formula(full_model), 
+                       direction = "forward")
+```
+
+```{r hybrid}
+regfit_hybrid <- step(null_model, scope = formula(full_model), 
+                      direction = "both")
+```
+
 ### Interactions & Our Updated Model
 
 (finish this)
@@ -305,6 +322,7 @@ Will finish after we get model
 
 
 ## Section 5: Additional Work
+
 
 ### References
 
