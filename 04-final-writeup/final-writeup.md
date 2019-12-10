@@ -3,12 +3,12 @@ Understanding Google Play Application Reviews
 RTime2Shine
 12/7/19
 
-## Section 1: Introduction (includes introduction and exploratory data analysis)
+## Section 1: Introduction
 
-### Motivaton
+### Motivation
 
 As technology has become increasingly prevalent around the world, there
-has been a change in the consumption of media. One of these ways is via
+has been changes in the consumption of media. One of these ways is via
 the purchase of applications (apps) for various smartphones and other
 devices. Several technology companies, including Apple and Google, run
 virtual stores for these apps in which a person can download an app for
@@ -30,9 +30,9 @@ developers are made aware of changes that need to be made to their apps
 through user feedback. Lastly, reviews serve to inform potential users
 of an app whether or not it is worth their time and can affect future
 downloads. Considering that app users are predicted to spend about $120
-billion in app stores in 2019, understanding which apps do well on the
-Play Store and what factors affect app performance is an immensely
-important question to gain more insight into.
+billion in app stores in 2019 (Dignan), understanding which apps do well
+on the Play Store and what factors affect app performance is an
+immensely important question to gain more insight into.
 
 ### Research Question & Hypothesis
 
@@ -52,9 +52,8 @@ relevant factors that affect the rating given for apps in the Google
 Play store? Although this project will give a detailed attempt to answer
 this question, our preliminary hypothesis is that the variables
 Category, Price, Installs, and Content Rating are the predictor
-variables that will most affect a given app rating and popularity, as
-measured by the number of installs of the app. We believe that these
-variables are indicative of an apps useability and likeness (as
+variables that will most affect a given app rating. We believe that
+these variables are indicative of an app’s usability and likeness (as
 determined by variables like content rating and categories in how people
 may be drawn to an app) as well as its accessibility (price).
 Furthermore, once we test our hypothesis and determine which factors are
@@ -83,7 +82,7 @@ Google Play Store. This is a numeric variable.
     ##  n obs: 10841 
     ##  n variables: 13 
     ## 
-    ## ── Variable type:character ─────────────────────────────────────────────────────────────────────────────────────────────────────────
+    ## ── Variable type:character ───────────────────────────────────────────────────────────────────────────
     ##        variable missing complete     n min max empty n_unique
     ##     Android Ver       1    10840 10841   3  18     0       34
     ##             App       0    10841 10841   1 194     0     9660
@@ -97,7 +96,7 @@ Google Play Store. This is a numeric variable.
     ##            Size       0    10841 10841   3  18     0      462
     ##            Type       0    10841 10841   1   4     0        4
     ## 
-    ## ── Variable type:numeric ───────────────────────────────────────────────────────────────────────────────────────────────────────────
+    ## ── Variable type:numeric ─────────────────────────────────────────────────────────────────────────────
     ##  variable missing complete     n      mean         sd p0 p25    p50
     ##    Rating    1474     9367 10841      4.19       0.54  1   4    4.3
     ##   Reviews       1    10840 10841 444152.9  2927760.6   0  38 2094  
@@ -123,16 +122,16 @@ difference being that the data is just displayed a bit differently.
 Therefore, as to avoid being redundant, we will only be using `category`
 in our analysis. As well, the information contained in the variable
 `Type` is also contained in `Price`. Since `Price` provides the prices
-of an app and `Type` simply denotes wether or not an app is paid or
-free. There is mostly likely a large linear dependency between these two
+of an app and `Type` simply denotes whether or not an app is paid or
+free, there is most likely a large linear dependency between these two
 variables as they measure the same thing, so we will use `Price` instead
-of `Type.` We will not deleting theese variables from the dataset as to
+of `Type.` We will not deleting these variables from the dataset as to
 maintain integrity, but will not examine them in our analysis.
 
-As well, we also have many of predictors that are coded as characters in
-the dataset, so we decided to recode them as factors. We also have some
+Aditionally, we have many predictors that are coded as characters in the
+dataset, so we decided to recode them as factors. We also have some
 variables that are coded as characters due to the existence of a
-particular a symbol (ex. $), we will recoded these into a format which
+particular a symbol (ex. $),so we will recode these into a format which
 will be usable for our analysis.
 
 Looking at the data, there are two variables related to the version, or
@@ -154,9 +153,9 @@ related to the relative frequency of updates and how that may affect an
 app’s rating.
 
 There are also a number of variables which required releveling. Many of
-our predictors have multiple levels and these may have made our model
-too complicated. To reduce the probabiltiy that the model overfits the
-data and is too complicated, we will relevel our variables as follows:
+our predictors have multiple levels which made our model too
+complicated. To reduce the probability that the model over fits the data
+and is too complex, we will relevel our variables as follows:
 
 Since our variable `Price` is currently not numeric and isn’t coded into
 categories, we will relevel price into 3 categories: Free, Between 0 and
@@ -172,7 +171,7 @@ will relevel installs into 3 categories: Less than 100, Between 100 and
 or Greater.
 
 Our variable `Category` is extremely large and has many levels as shown
-in the graphiic below. To simplify this, we will create a new variable
+in the graph below. To simplify this, we will create a new variable
 called `category_simp` with two levels: one for the top 6 categories
 (“FAMILY”,“GAME”, “TOOLS”,“MEDICAL”, “LIFESTYLE”, and “FINANCE”) and
 another for all the other categories.
@@ -237,9 +236,9 @@ one level and the others are stored in another level.
     ## 8 6                  5-8                   43
     ## 9 8                  5-8                    5
 
-As well, the variable `Android Ver` is quite complicated. To simplify
-our analysis we decided to bin this variable into two levels, one for
-apps that support the first “generation” of Android, versions 1-4, and
+Also, the variable `Android Ver` is quite complicated. To simplify our
+analysis we decided to bin this variable into two levels, one for apps
+that support the first “generation” of Android, versions 1-4, and
 another for apps that support the second generation, 5-8. For apps that
 vary with device, we kept those observations as is. As shown in the
 final graphic, our new variable, `androidver_simp` reduces some of the
@@ -258,7 +257,7 @@ analysis.
 
 Lastly, there were also issues with our variable `Content Rating`. This
 particular variable had two categories for the rating “Everyone,” one of
-which happend to be coded with a space (“Everyone”) in the dataset.
+which happened to be coded with a space (“Everyone”) in the dataset.
 Knowing that content ratings are finite, we decided to combine these
 categories together as to reduce the number of levels in this variable
 and its redundancy.
@@ -276,21 +275,18 @@ and its redundancy.
 
 As seen above, the distribution of ratings is left-skewed with its peak
 between 4 and 4.5. The IQR of 0.6 demonstrates that the middle 50% of
-our data is highly concentrated around that peak.
+our data is highly concentrated around that peak. It is interesting that
+the data is so right skewed- this sugguests that a majority of apps have
+a rating between 4 and 5, which is very high on a 5 point scale.
 
 ##### Reviews
 
 ![](final-writeup_files/figure-gfm/Reviews-1.png)<!-- -->
 
-    ## # A tibble: 1 x 1
-    ##   `median(Reviews)`
-    ##               <dbl>
-    ## 1              1902
-
-    ## # A tibble: 1 x 1
-    ##   `max(Reviews)`
-    ##            <dbl>
-    ## 1         203130
+    ## # A tibble: 1 x 3
+    ##   `median(Reviews)` `max(Reviews)` `IQR(Reviews)`
+    ##               <dbl>          <dbl>          <dbl>
+    ## 1              1902         203130          22909
 
 ![](final-writeup_files/figure-gfm/log-reviews-1-1.png)<!-- -->
 
@@ -299,12 +295,14 @@ our data is highly concentrated around that peak.
     ##                   <dbl>              <dbl>              <dbl>
     ## 1                  7.55               12.2               5.44
 
-Reviews is definetley one of our most skewed predictors, as shown by the
+Reviews is definitely one of our most skewed predictors, as shown by the
 strong right skew in this histogram. Originally, the skew was even more
 extreme, since there was one outlier that had 78 million reviews.
 Therefore, to correct this issue, we removed the outlier from the
 variable as well as log transformed it in order to make it easier to see
-trends as well as make the variable less skewed.
+trends as well as make the variable less skewed. We assumed that the
+outlier with 78 million reviews was a mistake coming from the data
+scrape, since a number so high seems very unlikely.
 
 ##### Category
 
@@ -314,47 +312,61 @@ trends as well as make the variable less skewed.
 
 As demonstrated above, there are a number of levels within the variable
 `Category`, this will cause problems with overfitting down the line, so
-we decided to create two levels- one for the most popular levels, and
+we decided to create two levels- one for the 6 most popular levels, and
 one with the least popular levels. Once binned into those two levels,
-there is a much more even spread.
+there is a much more even spread between the number of observations in
+both categories.
 
 ##### Size
 
 ![](final-writeup_files/figure-gfm/size-1.png)<!-- -->
 
-The above plot demonstrates that the most common Size type is “Less than
-100 MB” with more than 6000 of the applications being of that Size.
+As shown by the distribution of app sizes, it is clear that most of our
+apps are less than 100MB, with more than 6000 of the applications being
+of that Size. There are also some apps whose size varies with device
+(meaning that no specific size information was available). There are
+very few apps that have sizes greater than 100 MB.
 
 ##### Installs
 
 ![](final-writeup_files/figure-gfm/installs-1.png)<!-- -->
 
-Given the above plot, the most common number of installs within the
-dataset is 100,000 or Greater.
+The majority of reviews have 100k installs or more, and then from there
+on, the number of observations for each level of installs decreases more
+than the previous one. Few apps have less than 100 installs. This means
+that many apps have a very large number of reviews, which is interesting
+considering there are also many apps that have very high ratings- this
+will be examined further when we make our model.
 
 ##### Price
 
 ![](final-writeup_files/figure-gfm/price-1.png)<!-- -->
 
-Given the above plot, the most common Price for the applications whithin
-the dataset is “Free”. For our analysis, we decided to use the variable
-`Price` because it has more levels and is a more specific classification
-of the price of the applications than `Type` which just indicated free
-or paid.
+The majority of apps are free, while the ones that are paid are between
+0 and 4.99, and a very small proportion of apps being greater than 5
+dollars.For our analysis, we decided to use the variable `Price` because
+it has more levels and is a more specific classification of the price of
+the applications than `Type` which just indicated free or paid.
 
 ##### Content Rating
 
 ![](final-writeup_files/figure-gfm/cr-1.png)<!-- -->
 
 Given the above plot, the most common content rating is “Everyone”
-within the dataset.
+within the dataset. The next most occurring category is Teen. After
+that, we see even less apps that are rated mature. Unrated and Adults
+only have so few observations that they are hard to see on the plot.
 
 ##### Android Version
 
 ![](final-writeup_files/figure-gfm/and-plot-1.png)<!-- -->
 
 Given the above plot, within the dataset, the most common Android
-Version is 1-5.
+Version is 1-4. Android versions 5-8 and “Varies with device” have
+similar numbers of observations, but are still much lower than the
+version 1-4 category.
+
+##### Date Since Last Update
 
 ![](final-writeup_files/figure-gfm/datesince-plot-1.png)<!-- -->
 
@@ -363,14 +375,15 @@ Version is 1-5.
     ##   <drtn>               <drtn>                        <dbl>
     ## 1 92 days              3001 days                       363
 
-Given the above plot, for 50% of the observations it has been greater
+It is important to note that the distribution of days is pretty right
+skewed and unimodal. For 50% of the observations it has been greater
 than 92 days since the last update and for the other 50% of the
 observations, it has been less than 92 days since the last update.
 
 #### Bivariate Analysis
 
 A bivariate analysis between variables will help understand the
-interaction between indidivual predictor variables and the response.
+interaction between individual predictor variables and the response.
 
 ![](final-writeup_files/figure-gfm/category-rating-1.png)<!-- -->
 
@@ -412,7 +425,7 @@ installs.
 
 The regression modeling technique we will use will be Multiple Linear
 Regression (MLR). Since we are exploring the effect of multiple
-predictor variables on our response, `rating`, it is apt that we use MLR
+predictor variables on our response, `Rating`, it is apt that we use MLR
 to model our data. MLR allows us to see the effect of multiple
 predictors on a response and explore both the significance of each
 predictor on the response as well as the effect of each predictor on the
@@ -423,8 +436,8 @@ response in one model. This is very taxing and inefficient for the
 number of predictors we want to measure. As well, there may be
 interactions between these predictors that we will be unable to view
 using SLR. MLR allows us to both model and view the amalgamation of
-these predictors in their effects on the response variable. MLR from
-both an efficiency and relevancy perspective is much better suited to
+these predictors in their effects on the response variable. MLR, from
+both an efficiency and relevancy perspective, is much better suited to
 model our data as opposed to other methods.
 
 Our ultimate goal is to create the model which most accurately and
@@ -444,7 +457,7 @@ for insignificant predictors and can give us a better idea of which
 predictors actually contribute to the response variable.
 
 In order to find our final model, we will use a process of both forwards
-and backwards selection slowly adding a combination of relevant
+and backwards selection, slowly adding a combination of relevant
 predictors into our model. We will then check the BIC and AIC values for
 each of these models and find the model with the lowest value overall,
 or the fewest predictors - this will be the model that most accurately
@@ -489,25 +502,26 @@ correlated.
 Above is the output of our full model using the predictors we deemed to
 be relevant in our Exploratory Data Analysis. As shown, there are a
 number of predictors that appear to have p-values greater than 0.05,
-deeming them insiginifcant. To find the most parsimonious model for our
-purporses of prediction, we used a model selection process comparing
-both BIC and AIC using a combination of backwards, forwards, and hybrid
+deeming them insignificant. To find the most parsimonious model for our
+purposes of prediction, we used a model selection process comparing both
+BIC and AIC using a combination of backwards, forwards, and hybrid
 selection. The final model we chose was that selected using both AIC
 forward and hybrid selection as this particular model (as displayed
 below) gave us the shortest model while retaining assumptions better
 than the other models we tried. After going through the model process,
 we found that the constant variance assumption was violated using our
-BIC model. As well, it had far too many levels and we afraid that it was
-“overfitting” our data. Our model determines its coefficients through
-the relative variance of different variables in our data. If there are
-some predictors which have high frequency in the data, it is most likely
-that those predictors will account for the highest amount of variance
-when developing our final model. Thus, our model would tend to
-“memorize” our data rather than rather assessing the variability in
-response through particular trends in our predictors generalizable to
-the app store as a whole - as opposed to this singular dataset. In our
-additional work section, we have attached the final versions of those
-models as well as a plot of the residuals to illustrate this violation.
+BIC model. As well, the BIC model had far too many levels and we afraid
+that it was “overfitting” our data. Our model determines its
+coefficients through the relative variance of different variables in our
+data. If there are some predictors which have high frequency in the
+data, it is most likely that those predictors will account for the
+highest amount of variance when developing our final model. Thus, a
+model with too many levels would tend to “memorize” our data rather than
+rather assessing the variability in response through particular trends
+in our predictors generalizable to the app store as a whole - as opposed
+to this singular dataset. In our additional work section, we have
+attached the final versions of those models as well as a plot of the
+residuals to illustrate this violation.
 
     ## Start:  AIC=-9224.82
     ## Rating ~ 1
@@ -620,10 +634,10 @@ are significant.
 
 Ho: B(1) = B(2) = … = 0
 
-Ha: Atleast one Beta\_j is not equal to 0
+Ha: At least one Beta\_j is not equal to 0
 
 In this case, we are measuring the interaction between `category_simp`
-and `Size`, so our Beta j’s denotate the coefficient for both of these
+and `Size`, so our Beta j’s denote the coefficient for both of these
 predictors as well as the interaction term. Our null hypothesis can
 essentially be read as there are no interactions between any of the
 variables in our model and our alternative can be read as that there is
@@ -664,7 +678,8 @@ satisfy the linearity assumption.
 
 The Constant Variance Assumption assumes that the regression variance is
 the same for all of the predictor variables in the model. To test this
-assumption, we will plot the residual values against predictors.
+assumption, we will plot the residual values against the predicted
+values.
 
 ![](final-writeup_files/figure-gfm/resid-plots-1.png)<!-- -->
 
@@ -673,7 +688,7 @@ constant variance. Although there appears to be a small, non-random
 pattern in our residuals relating to the significance of large amounts
 of negative values this particular pattern doesn’t “fan” (which would be
 a reason for concern) indicating that our constant variance assumption
-is satified. The reason for this may be that our response has a
+is satisfied. The reason for this may be that our response has a
 significant number of observations with ratings between 4.1 and 4.2
 which would indicate higher variability in prediction for these value
 (as illustrated in the residuals plot).
@@ -684,14 +699,14 @@ it was the case that there was a need for more a log transformation of
 our predictor `Reviews` (refer to additional work to see old residual
 plot).
 
-Since our model satisfies the linearity assumption and also realtively
+Since our model satisfies the linearity assumption and also relatively
 satisfies our normality assumption it is reasonable to assume that the
 assumptions for this model are satisfied. As well, as stated above and
 in our additional work we did try to choose multiple models and this
 particular one was the one with the least noticeable violation of
 constant variance and normality. Therefore, we believe that given this
-sufficient effort, this model is mostly likely the one that is grestest
-for predicting the majority of applications given our dataset.
+sufficient effort, this model is mostly likely the one that is greatest
+for predicting the majority of applications given our data set.
 
 #### Normality
 
@@ -722,7 +737,7 @@ each observation and is not dependent on the time frame or location of
 collection for its mean rating. The observations are independent of each
 other and thus the Independence Assumption is maintained.
 
-### Model Assesment
+### Model Assessment
 
 #### Leverage
 
@@ -748,7 +763,7 @@ Let’s filter to see the total \# of points that crossed the threshold.
     ## 10 Top 6 Categories Greater than 100 MB
     ## # … with 204 more rows
 
-As shown, there are 214 high leverage points. This is problematic but
+As shown, there are 214 high leverage points. This is problematic, but
 before we assess our model’s strength we should check cook’s distance.
 However, in our previous model we had 8,134 leverage points. Thus, this
 model is a significant improvement over that.
@@ -769,7 +784,7 @@ Let’s check to see the number of points that violated this threshold.
 As shown, none of these violate Cook’s Distance - so it is most likely
 the case that although there may be some skew or slight violation of
 assumptions, our model still is relatively strong in predicting Rating
-and that there isn’t a cause for concern. It is unlikley that any of
+and that there isn’t a cause for concern. It is unlikely that any of
 these high leverage points have a significant influence on the model
 coefficients.
 
@@ -803,7 +818,7 @@ As illustrated, there are 363 observations with a standardized residual
 greater than +/- 2. These observations are considered to have
 standardized residuals with large magnitude. This us much better than
 our previous model which had greater than 470 points that violated this
-threshold
+threshold.
 
 ![](final-writeup_files/figure-gfm/residgram-1.png)<!-- -->
 
@@ -816,11 +831,11 @@ not statistically significant and is relatively small. Therefore, there
 is most likely not a concern with the number of observations flagged as
 having standardized residuals with large magnitude as the proportion of
 these residuals is relatively small. Although our proportion is somewhat
-close to 5% it is still most likely the case that these flagged
-residuals are a relatively small proportion of the data, as well since
-none of our points violated Cook’s Distance, it is most likely the case
-that our model is sound. As well, it is most likely these 5% of
-observations which may have caused the skew in our residual variance.
+close to 5%, it is still most likely the case that these flagged
+residuals are a relatively small proportion of the data. Since none of
+our points violated Cook’s Distance, it is most likely the case that our
+model is sound. Also, it is most likely these 5% of observations may
+have caused the skew in our residual variance.
 
 ### VIF
 
@@ -844,21 +859,23 @@ for an interaction, confirming the results of our F-test.
 Our model allows us to make various predictions about what impacts an
 application’s mean rating. We see that the predictor variable with the
 most influence on the response- if the size of an application is less
-than 100 MB the mean rating is expected to increase by 0.1523095 vs an
-application that is greater than or equal to 100 MB and if the size
-varies with device, the mean rating is expected to increase by 0.1856302
-vs an application that is greater than or equal to 100 MB. The other
-variable deemed to be significant is cateogrry\_simpTop 6 Categories
-meaning that if an application is in the top 6 categories, the mean
-rating is expectected to decrease by 0.0268642. Thus, for an application
-developer, the size of the application and the category of the
-applications will be a factor that they would want to focus on if they
-are attempting to alter the mean rating of their application.
+than 100 MB the mean rating is expected to increase by 0.1523095
+compared an application that is greater than or equal to 100 MB. If the
+size varies with device, the mean rating is expected to increase by
+0.1856302 compared to an application that is greater than or equal to
+100 MB. The other variable deemed to be significant is category\_simpTop
+6 Categories, meaning that if an application is in the top 6 categories,
+the mean rating is expected to decrease by 0.0268642. Thus, for an
+application developer, the size of the application and the category of
+the applications will be a factor that they would want to focus on if
+they are attempting to alter the mean rating of their application.
 
 Another thing worth noting is that the intercept is quite high. At
 4.0096938, it is stating that for an application that is not within the
 top 6 categories and is 100 MB or larger the mean rating is estimated to
 be 4.0096938, which is quite close to the highest possible rating, 5.
+This is what we would have expected considering the original skew of the
+rating variable.
 
 #### Prediction
 
@@ -868,13 +885,13 @@ dataset.
 
 First, we’ll test the rating of observation \#7718, the app “Bejeweled
 Classic.” According to our data, the rating for this app is 4.4. We will
-now predict it’s rating given that it is in the cateogory Family and has
+now predict it’s rating given that it is in the category Family and has
 size Varies with Device.
 
     ##       fit      lwr      upr
     ## 1 4.16846 3.090893 5.246027
 
-Next, we will predict obeservation \#2345, the app “Selfie Camera Photo
+Next, we will predict observation \#2345, the app “Selfie Camera Photo
 Editor & Filter & Sticker.” According to our data, the rating for this
 app is 4.1. We will now predict it’s rating given that it is in the
 category Beauty and has size less than 100 MB.
@@ -900,7 +917,7 @@ is 4.5, it is in the Social Category, and has Size 80M.
     ##        fit     lwr      upr
     ## 1 4.162003 3.08501 5.238997
 
-As shown, the model underpredicts Bejeweled and TikTok but predicts the
+As shown, the model underpredicts Bejeweled and TikTok, but predicts the
 rating of Selfie Camera with relative accuracy. This is most likely due
 to the fact that we had to bin some of the variables such as `Category`
 and `Size` which may have reduced the amount of variability in the
@@ -912,8 +929,8 @@ the Google Play Store.
 The model’s performance is dictated by these tests and our model did
 perform relatively well as shown above. The apps that we chose to test
 the model were from a variety of categories and sizes as well as from
-apps that were and were not in our dataset. As we will disucss in the
-limitations section, the google play store is a dynamic environment with
+apps that were and were not in our dataset. As we will discuss in the
+limitations section, the Google play store is a dynamic environment with
 the distribution of categories and ratings changing every day, so this
 may be the reason for why our model is slightly underpredicting the
 rating of some apps.
@@ -924,40 +941,68 @@ With regards to the data we used, it is worth noting that the data we
 used was web scrapped all at one point by a third party. Therefore, due
 to time and human error, there is bound to be false or missing data.
 Another thing to note is that several of our variables, such as reviews
-and content rating, were incredibly skewed. On of the more major issues
+and content rating, were incredibly skewed. One of the larger issues
 with this dataset was that 1474 of the 10841 observations were missing a
-response. That means that 10% of our observations were missing
-throughout the modelling process potentially creating bias and skew.
+value for the response variable. That means that 10% of our observations
+were missing throughout the modelling process, potentially creating bias
+and skew.
+
+Additionally, it is important to note that the Google Play Store is a
+constantly changing environment. Apps come in and out of fashion in an
+often unpredictable manner, which our model may not predict. For
+example, TikTok, which is considered a social app, and which we chose to
+test our model on, is a new app that is immensely popular and already
+has 14 million reviews. Since our data set is old, we do not have this
+app in our model, however it may or may not have had an effect on our
+predictions. Since the play store is prone to change based on trends, it
+intrinsically presents a challenge for creating an accurate model that
+predicts ratings for apps that are up-to-date.
+
+It is important to also consider that there may be external factors not
+accounted for that can influence the rating on an app. One of these is
+engagement with a user in-app- many apps will have pop-up windows that
+remind a user to rate an app, and in some cases, even offer incentive
+for the user to give a 5-star review. This potentially can make reviews
+more biased and explain why app reviews are so high. Additionally, when
+working with reviews, it is important to remember that people also often
+only rate an app if they feel strong positive or negative emotions about
+it, so Ratings may not accurately reflect how all app users feel about
+any given app.
 
 If we were to start over with this project, we would probably look more
 closely at the dataset. Many of our variables had issues that needed to
-be taken care of in order to conduct multilinear regression. For
+be taken care of in order to conduct multiple linear regression. For
 instance, we needed to completely relevel a categorical variable,
-Category. There were other variables that were challenging such as a
+Category. There were other variables that were challenging, such as a
 time related variable and variables related to the version of the
-applications. If we were to restart the project, we would probably find
-a different dataset.
+applications that we should have realized earlier on needed special
+attention.
 
 If we were to continue the current project with the current dataset we
 would have explored how the factors contributing to app success change
 over time and specifically from year-to-year, we would set different
 baseline levels for every combination of categorical variables and redo
 the models and model selection. To improve our analysis, we would make
-training and test cases and conduct a k-folf cross validation that will
+training and test cases and conduct a k-fold cross validation that will
 allow us to assess the model’s fit allowing us to make sure that the
 model is not too closely fit as to check generalizability, but also make
 sure that it is specific enough to the data. Regarding the data itself,
-we would probably attempt to webscrape the data now as to have data that
-more closely reflects the current situation.
+we would probably attempt to re-scrape the data now as to have data that
+more closely reflects the current Google play store. Additionally,
+another factor that may be important to any given app rating is whether
+or not there are in-app purchases availiable. This is one aspect of an
+app that our data set did not provide information about, however ideally
+we would be able to put this information into our model to see if it
+helps us predict rating.
 
 ## Section 4: Conclusion
 
 In conclusion, our project’s goal was to understand what factors
 contribute to an apps success as measured by the average rating given to
-an application. By conducting multinormial regression analysis, we found
+an application. By conducting multiple regression analysis, we found
 that the categories and size variables are vital to the outcome of the
 mean ratings for an application. This can be useful to app developers,
-users, and application stores in how to view, change, and ustiliza
+users, and application stores in how to view, change, and utilize
 applications.
 
 ## Section 5: Additional Work
@@ -1139,7 +1184,7 @@ Here is the residual plot for the model produced by BIC selection:
 
 ![](final-writeup_files/figure-gfm/final-model2-1.png)<!-- -->
 
-As shown there is a sigificantly visible pattern in this model’s
+As shown there is a significantly visible pattern in this model’s
 residuals, far worse than our current model.
 
 ### References
