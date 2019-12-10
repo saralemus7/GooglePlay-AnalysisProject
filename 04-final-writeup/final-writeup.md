@@ -328,12 +328,8 @@ increases with number of installs.
 The boxplots for free and paid apps sport nearly identical median and
 IQR values. This tells us that whether an app is free or paid doesn’t
 appear to have a major impact on the rating. Further analysis into the
-variation of rating among apps of different price levels is needed.
-
-#### Possible Interactions
-
-ONLY INCLUDE THOSE IN FULL
-MODEL
+variation of rating among apps of different price levels is
+needed.
 
 ## Section 2: Regression Analysis (includes the final model and discussion of assumptions)
 
@@ -535,22 +531,237 @@ all statistically significant - indicating that a lot of the terms in
 the model are making a significant contribution to understanding the
 variation in the response, `Rating`.
 
+### Interactions & Our Updated Model
+
+Now, we will conduct an f-test including the possible interaction
+effects in our model to determine if there are any interaction effects
+which are significant.
+
+Our hypotheses for this F-test is as follows:
+
+Since the number of levels of our categorical variables are k \> 2 we
+can use a nested F test to determine if any of these interaction effects
+are significant.
+
+Ho: B(1) = B(2) = … = 0
+
+Ha: Atleast one Beta\_j is not equal to 0
+
+In this case, we are measuring the interaction between `category_simp`
+and `Size`, so our Beta j’s denotate the coefficient for both of these
+predictors as well as the interaction term. Our null hypothesis can
+essentially be read as there are no interactions between any of the
+variables in our model and our alternative can be read as that there is
+a significant interaction effect in the model since there are only two
+predictors in our final model.
+
 | Res.Df |   RSS    | Df | Sum of Sq |     F     |  Pr(\>F)  |
 | :----: | :------: | :-: | :-------: | :-------: | :-------: |
 |  7715  | 2328.105 | NA |    NA     |    NA     |    NA     |
 |  7713  | 2327.768 | 2  | 0.3364261 | 0.5573695 | 0.5727367 |
 
-### Interactions & Our Updated Model
-
-(finish this)
+Since our p-value of approximately 0.5727 is greater than our
+significance level of 0.05, we do not have evidence that there is a
+statistically significant interaction between both `Size` and
+`category_simp`. Thus, our final model will not include this interaction
+term and we will proceed with our previously defined final model.
 
 ### Assumptions
 
-(finish this)
+#### Linearity
+
+The Linearity Assumptions assumes that the response variable has a
+linear relationship with the predictor variables used in the final
+model. To assess linearity, we look at the plots created in the
+Exploratory Data Analysis. None of these plots seem to have a non-linear
+relationship such as one that would be polynomial; however, some are
+quite skewed but this should not matter for the purposes of our model.
+To illustrate this, we will re-display the bivariate plots with our
+final predictor
+variables.
+
+![](final-writeup_files/figure-gfm/linearity-1.png)<!-- -->![](final-writeup_files/figure-gfm/linearity-2.png)<!-- -->
+
+As shown in the plots above, both the predictor variables appear to
+satisfy the linearity assumption.
+
+#### Constant Variance
+
+The Constant Variance Assumption assumes that the regression variance is
+the same for all of the predictor variables in the model. To test this
+assumption, we will plot the residual values against predictors.
+
+    ## Warning: Continuous x aesthetic -- did you forget aes(group=...)?
+
+![](final-writeup_files/figure-gfm/resid-plots-1.png)<!-- -->
+
+As shown, it appears that the constant variance assumption is violated.
+There appears to be a clear pattern in our residuals relating to the
+significance of large amounts of negative values. Since our response was
+normally distributed at the beginning of our EDA, we did not see the
+need for a transformation of our response; however, it may be the case
+that there is a need for more, higher-order interaction terms. Since our
+model satisfies the linearity assumption and also realtively satisfies
+our normality assumption it is reasonable to assume that this is not a
+great cause for concern. As well, as stated above and in our additional
+work we did try to choose multiple models and this particular one was
+the one with the least noticeable violation of constant variance and
+normality. Therefore, we believe that given this sufficient effort, this
+model is mostly likely the one that is grestest for predicting the
+majority of applications given our dataset.
+
+#### Normality
+
+The Normality Assumption assumes that for any given set of predictors,
+the response variable, `ratings`, follows a Normal distribution around
+its mean. To test this, we will make a Normal QQ
+    plot.
+
+![](final-writeup_files/figure-gfm/norm-qq-1.png)<!-- -->
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+![](final-writeup_files/figure-gfm/norm-qq-2.png)<!-- -->
+
+As shown, our residuals are relatively normally distributed in our
+histogram. The center is around 0 which is good; however there is a
+slight left skew. As well, our Normal-QQ plot doesn’t closely match the
+idea line at the beginning of the more negative values. It may be the
+case that there are many outliers or high leverage points in our model
+that are causing this skew and if they were removed then we wouldn’t see
+this. However, since our distribution of residuals is relatively normal
+and the Normal QQ Plot is mostly following the trend line it is
+reasonable to assume that this assumption is satisfied due to the
+robustness of our model. In our model Assessment, we can further fix
+these issues and improve our model.
+
+#### Independence
+
+The Independence Assumption assumes that all observations in the data
+used to construct the model are independent of each other. Given that
+each observation and is not dependent on the time frame or location of
+collection for its mean rating. The observations are independent of each
+other and thus the Independence Assumption is maintained.
 
 ### Model Assesment
 
-(c/p code from regressions wehn we finish stuff)
+#### Leverage
+
+According to lecture, the threshold we should use for determining if
+observations are high leverage points is: hi \> (2(p+1))/n
+
+![](final-writeup_files/figure-gfm/leverage-1.png)<!-- -->
+
+Let’s filter to see the total \# of points that crossed the threshold.
+
+    ## # A tibble: 214 x 2
+    ##    category_simp    Size               
+    ##    <chr>            <chr>              
+    ##  1 Others           Greater than 100 MB
+    ##  2 Others           Greater than 100 MB
+    ##  3 Others           Greater than 100 MB
+    ##  4 Others           Greater than 100 MB
+    ##  5 Others           Greater than 100 MB
+    ##  6 Others           Greater than 100 MB
+    ##  7 Others           Greater than 100 MB
+    ##  8 Others           Greater than 100 MB
+    ##  9 Others           Greater than 100 MB
+    ## 10 Top 6 Categories Greater than 100 MB
+    ## # … with 204 more rows
+
+As shown, there are 214 high leverage points. This is problematic but
+before we assess our model’s strength we should check cook’s distance.
+However, in our previous model we had 8,134 leverage points. Thus, this
+model is a significant improvement over that.
+
+#### Cook’s Distance
+
+Now let’s check how many of these points cross our threshold for Cook’s
+Distance (Di \> 1) to determine if these high leverage points do in fact
+have a significant influence on our model coefficients.
+
+![](final-writeup_files/figure-gfm/cooks-distance-1.png)<!-- -->
+
+Let’s check to see the number of points that violated this threshold.
+
+    ## # A tibble: 0 x 2
+    ## # … with 2 variables: category_simp <chr>, Size <chr>
+
+As shown, none of these violate Cook’s Distance - so it is most likely
+the case that although there may be some skew or slight violation of
+assumptions, our model still is relatively strong in predicting Rating
+and that there isn’t a cause for concern. It is unlikley that any of
+these high leverage points have a significant influence on the model
+coefficients.
+
+#### Standardized Residuals
+
+Now, let’s plot our standardized residuals to see if there are any
+points which break the threshold |resid std.| \>
+2.
+
+![](final-writeup_files/figure-gfm/standardresid-predicted-1.png)<!-- -->
+
+As depicted the plot, there are a number of points which violate this
+threshold, so let’s filter the data to get an exact number.
+
+    ## # A tibble: 363 x 2
+    ##    category_simp Size            
+    ##    <chr>         <chr>           
+    ##  1 Others        Less than 100 MB
+    ##  2 Others        Less than 100 MB
+    ##  3 Others        Less than 100 MB
+    ##  4 Others        Less than 100 MB
+    ##  5 Others        Less than 100 MB
+    ##  6 Others        Less than 100 MB
+    ##  7 Others        Less than 100 MB
+    ##  8 Others        Less than 100 MB
+    ##  9 Others        Less than 100 MB
+    ## 10 Others        Less than 100 MB
+    ## # … with 353 more rows
+
+As illustrated, there are 363 observations with a standardized residual
+greater than +/- 2. These observations are considered to have
+standardized residuals with large magnitude. This us much better than
+our previous model which had greater than 470 points that violated this
+threshold
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+![](final-writeup_files/figure-gfm/residgram-1.png)<!-- -->
+
+    ## [1] 4.702682
+
+The proportion of observations that have standardized residuals with
+magnitude \> 2 is about 0.4702682, or 4.702% of the observations. Since
+this proportion is less than 5%, it is most likely the case that it is
+not statistically significant and is relatively small. Therefore, there
+is most likely not a concern with the number of observations flagged as
+having standardized residuals with large magnitude as the proportion of
+these residuals is relatively small. Although our proportion is somewhat
+close to 5% it is still most likely the case that these flagged
+residuals are a relatively small proportion of the data, as well since
+none of our points violated Cook’s Distance, it is most likely the case
+that our model is sound. As well, it is most likely these 5% of
+observations which may have caused the skew in our residual variance.
+
+### VIF
+
+We will check the VIF of our model without interactions:
+
+    ## Warning: 'tidy.numeric' is deprecated.
+    ## See help("Deprecated")
+
+    ## # A tibble: 3 x 2
+    ##   names                             x
+    ##   <chr>                         <dbl>
+    ## 1 category_simpTop 6 Categories  1.02
+    ## 2 SizeLess than 100 MB           4.62
+    ## 3 SizeVaries with device         4.63
+
+None of our variables have VIF \> 10, indicating that there were no
+concerns with multicollinearity in our final model and there was no need
+for an interaction, confirming the results of our F-test.
 
 ### Model Interpretation
 
