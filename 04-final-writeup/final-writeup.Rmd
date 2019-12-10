@@ -249,6 +249,8 @@ ggplot(data = apps, aes(x = Size)) +
   labs(title = "Distribution of App Sizes")
 ```
  
+ The above plot demonstrates that the most common Size type is "Less than 100 MB" with more than 6000 of the applications being of that Size. 
+ 
 ##### Installs
 
 ```{r installs, echo=FALSE,warning=FALSE,message=FALSE,error=FALSE}
@@ -257,6 +259,8 @@ ggplot(data = apps, aes(x = Installs)) +
   coord_flip()+
   labs(title = "Distribution of Installs")
 ```
+
+Given the above plot, the most common number of installs within the dataset is 100,000 or Greater. 
 
 ##### Price
 
@@ -267,6 +271,9 @@ ggplot(data = apps, aes(x = Price)) +
   labs(title = "Distribution of Price (in USD)")
 ```
 
+Given the above plot, the most common Price for the applications whithin the dataset is "Free". For our analysis, we decided to use the variable `Price` because it has more levels and is a more specific classification of the price of the applications than `Type` which just indicated free or paid. 
+
+
 ##### Content Rating
 
 ```{r cr, echo=FALSE,warning=FALSE,message=FALSE,error=FALSE}
@@ -274,6 +281,8 @@ ggplot(data = apps, aes(x = content_simp)) +
   geom_histogram(stat="count") +
   labs(title = "Distribution of Content Rating")
 ```
+
+Given the above plot, the most common content rating is "Everyone" within the dataset. 
 
 ##### Android Version 
 
@@ -283,11 +292,17 @@ ggplot(data = apps, aes(x = androidver_simp)) +
   labs(title = "Distribution of Android Version", x = "Android Version")
 ```
 
+Given the above plot, within the dataset, the most common Android Version is 1-5. 
+
 ```{r datesince-plot, echo=FALSE,warning=FALSE,message=FALSE,error=FALSE}
 ggplot(data = apps, aes(x = date_since)) +
   geom_histogram(stat= "count") +
   labs(title = "Frequency of Date Since Last Updated", subtitle = "Based off of number of days since August 1, 2018")
+apps %>%
+  summarise(median(date_since), max(date_since), IQR(date_since))
 ```
+
+Given the above plot, for 50% of the observations it has been greater than 92 days since the last update and for the other 50% of the observations, it has been less than 92 days since the last update. 
 
 #### Bivariate Analysis
 
@@ -427,12 +442,12 @@ The Constant Variance Assumption assumes that the regression variance is the sam
 apps <- apps %>% 
   mutate(predicted = predict.lm(final_model), residuals = resid(final_model)) #mutates residuals to the model
 ggplot(data=apps,aes(x=predicted, y=residuals)) + #plots residuals vs predictors
-  geom_point() + 
+  geom_boxplot() + 
   geom_hline(yintercept=0,color="red") +
   labs(title="Residuals vs. Predicted Values")
 ```
 
-As shown, it appears that the constant variance assumption is violated. There is not an even distribution of the residuals across 0, rather there appears to be a negative trend in this graph as there are more values for resiudals that appear below 0. Since our response was normally distributed at the beginning of our EDA, we did not see the need for a transformation of our response tp try to remedy this; however, it may be the case that there is a need for more, higher-order interaction terms. Since our model satisfies the linearity assumption and also realtively satisfies our normality assumption it is reasonable to assume that this is not a great cause for concern. As well, as stated above and in our additional work we did try to choose multiple models and this particular one was the one with the least noticeable violation of constant variance and normality. Therefore, we believe that given this sufficient effort, this model is mostly likely the one that is grestest for predicting the majority of applications given our dataset. 
+As shown, it appears that the constant variance assumption is violated. There appears to be a clear pattern in our residuals relating to the significance of large amounts of negative values. Since our response was normally distributed at the beginning of our EDA, we did not see the need for a transformation of our response; however, it may be the case that there is a need for more, higher-order interaction terms. Since our model satisfies the linearity assumption and also realtively satisfies our normality assumption it is reasonable to assume that this is not a great cause for concern. As well, as stated above and in our additional work we did try to choose multiple models and this particular one was the one with the least noticeable violation of constant variance and normality. Therefore, we believe that given this sufficient effort, this model is mostly likely the one that is grestest for predicting the majority of applications given our dataset. 
 
 #### Normality
 
@@ -551,23 +566,23 @@ tidy(vif(final_model))
 None of our variables have VIF > 10, indicating that there were no concerns with multicollinearity in our final model and there was no need for an interaction, confirming the results of our F-test. 
 
 ### Model Interpretation
-Will finish after we get model
+
+Our model allows us to make various predictions about what impacts an application’s mean rating. We see that the predictor variable with the most influence on the response- if the size of an application is less than 100 MB the mean rating is expected to increase by 0.1523095 and if the size varies with device, the mean rating is expected to increase by 0.1856302. The other variable deemed to be significant is cateogrry_simpTop 6 Categories meaning that if an application is in the top 6 categories, the mean rating is expectected to decrease by 0.0268642. Thus, for an application developer, the size of the application and the category of the applications will be a factor that they would want to focus on if they are attempting to alter the mean rating of their application.
+
+Another thing worth noting is that the intercept is quite high. At 4.0096938, it is stating that for an application that is not within the top 6 categories and is 100 MB or larger the mean rating is estimated to be 4.0096938, which is quite close to the highest possible rating, 5.
+
 
 ## Section 3: Discussion and Limitations 
 
-Our model allows us to make various predictions about what impacts an application’s mean rating. We see that the predictor variable with the most influence on the response- if a review has more than 100,000 installs, the mean rating is expected to be 1.0113334 less than the mean rating of an app with less than 100,00 installs. It is also worth noting that the three other most influential predictors are the other levels within the Installs predictors. Thus, for an application developer, the number of installs will be a factor that they would want to focus on if they are attempting to alter the mean rating of their application. The predictor variable with the least influence on the mean rating of an application is the number of days that the app has been updated since the day that the data was scraped on August 8, 2018. The predictor variables deemed to be too insignificant, via VIF, for the model are 
-
-Another thing worth noting is that the intercept is quite high. At 4.5102346, it is stating that for an application with less than 100 installations, 0 reviews, is free, and has been 0 days since being updated we can expect the mean rating of the application to be 4.5102346, which is quite close to the highest possible rating, 5.
-
-It is also worth noting that the data we used was web scrapped all at one point by a third party. Therefore, due to time and human error, there is bound to be false or missing data. Another thing to note is that several of our variables, such as reviews and content rating, were incredibly skewed. On of the more major issues with this dataset was that 1474 of the 10841 observations were missing a response. That means that 10% of our observations were missing throughout the modelling process potentially creating bias and skew.
+With regards to the data we used, it is worth noting that the data we used was web scrapped all at one point by a third party. Therefore, due to time and human error, there is bound to be false or missing data. Another thing to note is that several of our variables, such as reviews and content rating, were incredibly skewed. On of the more major issues with this dataset was that 1474 of the 10841 observations were missing a response. That means that 10% of our observations were missing throughout the modelling process potentially creating bias and skew.
 
 If we were to start over with this project, we would probably look more closely at the dataset. Many of our variables had issues that needed to be taken care of in order to conduct multilinear regression. For instance, we needed to completely relevel a categorical variable, Category. There were other variables that were challenging such as a time related variable and variables related to the version of the applications. If we were to restart the project, we would probably find a different dataset. 
 
-If we were to continue the current project with the current dataset, we would set different baseline levels for every combination of categorical variables and redo the models and model selection. To improve our analysis, we would make training and test cases and conduct a k-folf cross validation that will allow us to assess the model's fit allowing us to make sure that the model is not too closely fit as to check generalizability, but also make sure that it is specific enough to the data. Regarding the data itself, we would probably attempt to webscrape the data now as to have data that more closely reflects the current situation. 
+If we were to continue the current project with the current dataset we would have explored how the factors contributing to app success change over time and specifically from year-to-year, we would set different baseline levels for every combination of categorical variables and redo the models and model selection. To improve our analysis, we would make training and test cases and conduct a k-folf cross validation that will allow us to assess the model's fit allowing us to make sure that the model is not too closely fit as to check generalizability, but also make sure that it is specific enough to the data. Regarding the data itself, we would probably attempt to webscrape the data now as to have data that more closely reflects the current situation. 
 
 ## Section 4: Conclusion
 
-In conclusion, our project’s goal was to understand what factors contribute to an apps success as measured by the average rating given to an application. By conducting multinormial regression analysis, we found that ________ variables are vital to the outcome of the mean ratings for an application. This can be useful to app developers, users, and application stores in how to view, change, and ustiliza applications. 
+In conclusion, our project’s goal was to understand what factors contribute to an apps success as measured by the average rating given to an application. By conducting multinormial regression analysis, we found that the categories and size variables are vital to the outcome of the mean ratings for an application. This can be useful to app developers, users, and application stores in how to view, change, and ustiliza applications. 
 
 ## Section 5: Additional Work
 
@@ -614,13 +629,6 @@ ggplot(data=apps,aes(x=predicted, y=residuals)) + #plots residuals vs predictors
 ```
 
 As shown there is a sigificantly visible pattern in this model's residuals, far worse than our current model. 
-
-These are the VIFs for our full model:
-```{r vif2, warning = FALSE, message=FALSE}
-tidy(vif(full_model))
-```
-
-As shown many of our variables had multicollinearity issues, which is why we removed them at the beginning as shown in the Data Wrangling. 
 
 ### References
 
