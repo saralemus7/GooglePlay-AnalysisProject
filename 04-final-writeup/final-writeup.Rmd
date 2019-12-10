@@ -239,6 +239,8 @@ apps %>%
 ggplot(apps, aes(x = category_simp)) + geom_bar() + labs(title = "Frequency of Category", subtitle = "Simplified Version")
 ```
 
+As demonstrated above, there are a number of levels within the variable `Category`, this will cause problems with overfitting down the line, so we decided to create two levels- one for the most popular levels, and one with the least popular levels. Once binned into those two levels, there is a much more even spread. 
+
 ##### Size
 
 ```{r size, echo=FALSE,warning=FALSE,message=FALSE,error=FALSE}
@@ -246,7 +248,7 @@ ggplot(data = apps, aes(x = Size)) +
   geom_histogram(stat="count", binwidth = 0.00025) +
   labs(title = "Distribution of App Sizes")
 ```
-
+ 
 ##### Installs
 
 ```{r installs, echo=FALSE,warning=FALSE,message=FALSE,error=FALSE}
