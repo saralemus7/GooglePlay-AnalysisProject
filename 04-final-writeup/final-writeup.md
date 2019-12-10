@@ -83,7 +83,7 @@ Google Play Store. This is a numeric variable.
     ##  n obs: 10841 
     ##  n variables: 13 
     ## 
-    ## ── Variable type:character ─────────────────────────────────────────────────────────────────
+    ## ── Variable type:character ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
     ##        variable missing complete     n min max empty n_unique
     ##     Android Ver       1    10840 10841   3  18     0       34
     ##             App       0    10841 10841   1 194     0     9660
@@ -97,7 +97,7 @@ Google Play Store. This is a numeric variable.
     ##            Size       0    10841 10841   3  18     0      462
     ##            Type       0    10841 10841   1   4     0        4
     ## 
-    ## ── Variable type:numeric ───────────────────────────────────────────────────────────────────
+    ## ── Variable type:numeric ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
     ##  variable missing complete     n      mean         sd p0 p25    p50
     ##    Rating    1474     9367 10841      4.19       0.54  1   4    4.3
     ##   Reviews       1    10840 10841 444152.9  2927760.6   0  38 2094  
@@ -207,7 +207,7 @@ another for all the other categories.
     ## 10 PRODUCTIVITY    Others             262
     ## # … with 23 more rows
 
-As shown in the above table, we can see that the top 6 cateogies are in
+As shown in the above table, we can see that the top 6 categories are in
 one level and the others are stored in another
     level.
 
@@ -241,6 +241,15 @@ one level and the others are stored in another
     ## 8 6                  5-8                   43
     ## 9 8                  5-8                    5
 
+As well, the variable `Android Ver` is quite complicated. To simplify
+our analysis we decided to bin this variable into two levels, one for
+apps that support the first “generation” of Android, versions 1-4, and
+another for apps that support the second generation, 5-8. For apps that
+vary with device, we kept those observations as is. As shown in the
+final graphic, our new variable, `androidver_simp` reduces some of the
+complexity in the previous variable while retaining ease of use for
+analysis.
+
     ## # A tibble: 6 x 3
     ##   `Content Rating` content_simp     n
     ##   <chr>            <chr>        <int>
@@ -251,7 +260,12 @@ one level and the others are stored in another
     ## 5 "Adults only "   Adults only      3
     ## 6 Unrated          Unrated          1
 
-#### Univariate Analysis
+Lastly, there were also issues with our variable `Content Rating`. This
+particular variable had two categories for the rating “Everyone,” one of
+which happend to be coded with a space (“Everyone”) in the dataset.
+Knowing that content ratings are finite, we decided to combine these
+categories together as to reduce the number of levels in this variable
+and its redundancy. \#\#\#\# Univariate Analysis
 
 ![](final-writeup_files/figure-gfm/rating-distribution-1.png)<!-- -->
 
@@ -401,78 +415,28 @@ correlated.
 | androidver\_simpVaries with Device | \-0.0252211 | 0.0378350 | \-0.6666081  | 0.5050425 |
 |            date\_since             | \-0.0001225 | 0.0000159 | \-7.7071746  | 0.0000000 |
 
-    ##                        (Intercept)                        log_reviews 
-    ##                       4.4912514453                       0.0758591553 
-    ##      InstallsBetween 100 and 1,000   InstallsBetween 1,000 and 10,000 
-    ##                      -0.3194153798                      -0.6723565620 
-    ## InstallsBetween 10,000 and 100,000         Installs100,000 or Greater 
-    ##                      -0.8289290318                      -1.0026226107 
-    ##          PriceBetween $0 and $4.99                 content_simpMature 
-    ##                       0.1046628972                      -0.0878715403 
-    ##                         date_since 
-    ##                      -0.0001177867
-
-    ##                        (Intercept)                        log_reviews 
-    ##                       4.4912514453                       0.0758591553 
-    ##      InstallsBetween 100 and 1,000   InstallsBetween 1,000 and 10,000 
-    ##                      -0.3194153798                      -0.6723565620 
-    ## InstallsBetween 10,000 and 100,000         Installs100,000 or Greater 
-    ##                      -0.8289290318                      -1.0026226107 
-    ##          PriceBetween $0 and $4.99                 content_simpMature 
-    ##                       0.1046628972                      -0.0878715403 
-    ##                         date_since 
-    ##                      -0.0001177867
-
-Given the BIC forwards and backwards selection our reduced linear model
-is:
-
-hat(mean rating) = 4.5124715854 x exp(0.0744108983(log\_reviews)) -
-0.3447278672(InstallsBetween 100 and 1,000) -0.6891663588
-(InstallsBetween 1,000 and 10,000) - 0.8405412693(InstallsBetween 10,000
-and 100,000) -1.0072240860(Installs 100,000 or Greater) +
-0.0978316624(PriceBetween 0 and 4.99) -0.0001211124(date\_since)
-
-    ## Start:  AIC=-9896.48
-    ## Rating ~ category_simp + log_reviews + Size + Installs + Price + 
-    ##     content_simp + androidver_simp + date_since
-    ## 
-    ##                   Df Sum of Sq    RSS     AIC
-    ## - Size             2     0.589 2132.3 -9898.3
-    ## - category_simp    1     0.481 2132.2 -9896.7
-    ## <none>                         2131.7 -9896.5
-    ## - androidver_simp  2     1.802 2133.5 -9894.0
-    ## - content_simp     4     3.282 2135.0 -9892.6
-    ## - Price            2     5.683 2137.4 -9879.9
-    ## - date_since       1    16.443 2148.2 -9839.2
-    ## - log_reviews      1    95.741 2227.5 -9559.4
-    ## - Installs         4   122.340 2254.1 -9473.7
-    ## 
-    ## Step:  AIC=-9898.34
-    ## Rating ~ category_simp + log_reviews + Installs + Price + content_simp + 
-    ##     androidver_simp + date_since
-    ## 
-    ##                   Df Sum of Sq    RSS     AIC
-    ## - category_simp    1     0.440 2132.8 -9898.8
-    ## <none>                         2132.3 -9898.3
-    ## - content_simp     4     3.247 2135.6 -9894.6
-    ## - androidver_simp  2     3.886 2136.2 -9888.3
-    ## - Price            2     5.671 2138.0 -9881.8
-    ## - date_since       1    18.913 2151.2 -9832.2
-    ## - log_reviews      1    95.335 2227.6 -9562.7
-    ## - Installs         4   122.218 2254.5 -9476.1
-    ## 
-    ## Step:  AIC=-9898.75
-    ## Rating ~ log_reviews + Installs + Price + content_simp + androidver_simp + 
-    ##     date_since
-    ## 
-    ##                   Df Sum of Sq    RSS     AIC
-    ## <none>                         2132.8 -9898.8
-    ## - content_simp     4     3.101 2135.8 -9895.5
-    ## - androidver_simp  2     3.646 2136.4 -9889.6
-    ## - Price            2     5.499 2138.2 -9882.9
-    ## - date_since       1    19.394 2152.1 -9830.9
-    ## - log_reviews      1    95.621 2228.4 -9562.2
-    ## - Installs         4   122.505 2255.2 -9475.6
+Above is the output of our full model using the predictors we deemed to
+be relevant in our Exploratory Data Analysis. As shown, there are a
+number of predictors that appear to have p-values greater than 0.05,
+deeming them insiginifcant. To find the most parsimonious model for our
+purporses of prediction, we used a model selection process comparing
+both BIC and AIC using a combination of backwards, forwards, and hybrid
+selection. The final model we chose was that selected using both AIC
+forward and hybrid selection as this particular model (as displayed
+below) gave us the shortest model while retaining assumptions better
+than the other models we tried. After going through the model process,
+we found that the constant variance assumption was violated using our
+BIC model. As well, it had far too many levels and we afraid that it was
+“overfitting” our data. Our model determines its coefficients through
+the relative variance of different variables in our data. If there are
+some predictors which have high frequency in the data, it is most likely
+that those predictors will account for the highest amount of variance
+when developing our final model. Thus, our model would tend to
+“memorize” our data rather than rather assessing the variability in
+response through particular trends in our predictors generalizable to
+the app store as a whole - as opposed to this singular dataset. In our
+additional work section, we have attached the final versions of those
+models as well as a plot of the residuals to illustrate this violation.
 
     ## Start:  AIC=-9224.82
     ## Rating ~ 1
@@ -551,6 +515,179 @@ and 100,000) -1.0072240860(Installs 100,000 or Greater) +
     ## <none>                       2132.8 -9898.8
     ## + category_simp  1   0.43981 2132.3 -9898.3
     ## + Size           2   0.54839 2132.2 -9896.7
+
+|              term              |  estimate   | std.error | statistic  |  p.value  |
+| :----------------------------: | :---------: | :-------: | :--------: | :-------: |
+|          (Intercept)           |  4.0096938  | 0.0380781 | 105.301857 | 0.0000000 |
+| category\_simpTop 6 Categories | \-0.0268642 | 0.0126225 | \-2.128288 | 0.0333448 |
+|      SizeLess than 100 MB      |  0.1523095  | 0.0381560 |  3.991756  | 0.0000662 |
+|     SizeVaries with device     |  0.1856302  | 0.0418267 |  4.438079  | 0.0000092 |
+
+As shown above, our final model is as follows:
+
+`Rating`^ = 4.00969938 - 0.0268642 \* `category_simpTop 6 Categories`+
+0.1523095 \* `SizeLess than 100 MB` + 0.1856302 \* `SizeVaries with
+device`
+
+As well, it can be seen that all of the predictors in our final model
+have p-values less than 0.05, which allows us to conclude that they are
+all statistically significant - indicating that a lot of the terms in
+the model are making a significant contribution to understanding the
+variation in the response, `Rating`.
+
+| Res.Df |   RSS    | Df | Sum of Sq |     F     |  Pr(\>F)  |
+| :----: | :------: | :-: | :-------: | :-------: | :-------: |
+|  7715  | 2328.105 | NA |    NA     |    NA     |    NA     |
+|  7713  | 2327.768 | 2  | 0.3364261 | 0.5573695 | 0.5727367 |
+
+### Interactions & Our Updated Model
+
+(finish this)
+
+### Assumptions
+
+(finish this)
+
+### Model Assesment
+
+(c/p code from regressions wehn we finish stuff)
+
+### Model Interpretation
+
+Will finish after we get model
+
+## Section 3: Discussion and Limitations
+
+Our model allows us to make various predictions about what impacts an
+application’s mean rating. We see that the predictor variable with the
+most influence on the response- if a review has more than 100,000
+installs, the mean rating is expected to be 1.0113334 less than the mean
+rating of an app with less than 100,00 installs. It is also worth noting
+that the three other most influential predictors are the other levels
+within the Installs predictors. Thus, for an application developer, the
+number of installs will be a factor that they would want to focus on if
+they are attempting to alter the mean rating of their application. The
+predictor variable with the least influence on the mean rating of an
+application is the number of days that the app has been updated since
+the day that the data was scraped on August 8, 2018. The predictor
+variables deemed to be too insignificant, via VIF, for the model are
+
+Another thing worth noting is that the intercept is quite high. At
+4.5102346, it is stating that for an application with less than 100
+installations, 0 reviews, is free, and has been 0 days since being
+updated we can expect the mean rating of the application to be
+4.5102346, which is quite close to the highest possible rating, 5.
+
+It is also worth noting that the data we used was web scrapped all at
+one point by a third party. Therefore, due to time and human error,
+there is bound to be false or missing data. Another thing to note is
+that several of our variables, such as reviews and content rating, were
+incredibly skewed. On of the more major issues with this dataset was
+that 1474 of the 10841 observations were missing a response. That means
+that 10% of our observations were missing throughout the modelling
+process potentially creating bias and skew.
+
+If we were to start over with this project, we would probably look more
+closely at the dataset. Many of our variables had issues that needed to
+be taken care of in order to conduct multilinear regression. For
+instance, we needed to completely relevel a categorical variable,
+Category. There were other variables that were challenging such as a
+time related variable and variables related to the version of the
+applications. If we were to restart the project, we would probably find
+a different dataset.
+
+If we were to continue the current project with the current dataset, we
+would set different baseline levels for every combination of categorical
+variables and redo the models and model selection. To improve our
+analysis, we would make training and test cases and conduct a k-folf
+cross validation that will allow us to assess the model’s fit allowing
+us to make sure that the model is not too closely fit as to check
+generalizability, but also make sure that it is specific enough to the
+data. Regarding the data itself, we would probably attempt to webscrape
+the data now as to have data that more closely reflects the current
+situation.
+
+## Section 4: Conclusion
+
+In conclusion, our project’s goal was to understand what factors
+contribute to an apps success as measured by the average rating given to
+an application. By conducting multinormial regression analysis, we found
+that \_\_\_\_\_\_\_\_ variables are vital to the outcome of the mean
+ratings for an application. This can be useful to app developers, users,
+and application stores in how to view, change, and ustiliza
+applications.
+
+## Section 5: Additional Work
+
+### Model Selection
+
+    ##                        (Intercept)                        log_reviews 
+    ##                       4.4912514453                       0.0758591553 
+    ##      InstallsBetween 100 and 1,000   InstallsBetween 1,000 and 10,000 
+    ##                      -0.3194153798                      -0.6723565620 
+    ## InstallsBetween 10,000 and 100,000         Installs100,000 or Greater 
+    ##                      -0.8289290318                      -1.0026226107 
+    ##          PriceBetween $0 and $4.99                 content_simpMature 
+    ##                       0.1046628972                      -0.0878715403 
+    ##                         date_since 
+    ##                      -0.0001177867
+
+    ##                        (Intercept)                        log_reviews 
+    ##                       4.4912514453                       0.0758591553 
+    ##      InstallsBetween 100 and 1,000   InstallsBetween 1,000 and 10,000 
+    ##                      -0.3194153798                      -0.6723565620 
+    ## InstallsBetween 10,000 and 100,000         Installs100,000 or Greater 
+    ##                      -0.8289290318                      -1.0026226107 
+    ##          PriceBetween $0 and $4.99                 content_simpMature 
+    ##                       0.1046628972                      -0.0878715403 
+    ##                         date_since 
+    ##                      -0.0001177867
+
+Above is our model selection using BIC, we chose not to include this
+particular model for multiple reasons, including the fact that the
+constant variance assumption of this model is violated.
+
+    ## Start:  AIC=-9896.48
+    ## Rating ~ category_simp + log_reviews + Size + Installs + Price + 
+    ##     content_simp + androidver_simp + date_since
+    ## 
+    ##                   Df Sum of Sq    RSS     AIC
+    ## - Size             2     0.589 2132.3 -9898.3
+    ## - category_simp    1     0.481 2132.2 -9896.7
+    ## <none>                         2131.7 -9896.5
+    ## - androidver_simp  2     1.802 2133.5 -9894.0
+    ## - content_simp     4     3.282 2135.0 -9892.6
+    ## - Price            2     5.683 2137.4 -9879.9
+    ## - date_since       1    16.443 2148.2 -9839.2
+    ## - log_reviews      1    95.741 2227.5 -9559.4
+    ## - Installs         4   122.340 2254.1 -9473.7
+    ## 
+    ## Step:  AIC=-9898.34
+    ## Rating ~ category_simp + log_reviews + Installs + Price + content_simp + 
+    ##     androidver_simp + date_since
+    ## 
+    ##                   Df Sum of Sq    RSS     AIC
+    ## - category_simp    1     0.440 2132.8 -9898.8
+    ## <none>                         2132.3 -9898.3
+    ## - content_simp     4     3.247 2135.6 -9894.6
+    ## - androidver_simp  2     3.886 2136.2 -9888.3
+    ## - Price            2     5.671 2138.0 -9881.8
+    ## - date_since       1    18.913 2151.2 -9832.2
+    ## - log_reviews      1    95.335 2227.6 -9562.7
+    ## - Installs         4   122.218 2254.5 -9476.1
+    ## 
+    ## Step:  AIC=-9898.75
+    ## Rating ~ log_reviews + Installs + Price + content_simp + androidver_simp + 
+    ##     date_since
+    ## 
+    ##                   Df Sum of Sq    RSS     AIC
+    ## <none>                         2132.8 -9898.8
+    ## - content_simp     4     3.101 2135.8 -9895.5
+    ## - androidver_simp  2     3.646 2136.4 -9889.6
+    ## - Price            2     5.499 2138.2 -9882.9
+    ## - date_since       1    19.394 2152.1 -9830.9
+    ## - log_reviews      1    95.621 2228.4 -9562.2
+    ## - Installs         4   122.505 2255.2 -9475.6
 
     ## Start:  AIC=-9224.82
     ## Rating ~ 1
@@ -651,91 +788,9 @@ and 100,000) -1.0072240860(Installs 100,000 or Greater) +
     ## - log_reviews      1    95.621 2228.4 -9562.2
     ## - Installs         4   122.505 2255.2 -9475.6
 
-NOTE: THIS IS A TEST ASSUMING WE USE AIC FOR THE FINAL MODEL.
-
-| Res.Df |   RSS    | Df | Sum of Sq |     F     |  Pr(\>F)  |
-| :----: | :------: | :-: | :-------: | :-------: | :-------: |
-|  7715  | 2328.105 | NA |    NA     |    NA     |    NA     |
-|  7713  | 2327.768 | 2  | 0.3364261 | 0.5573695 | 0.5727367 |
-
-### Interactions & Our Updated Model
-
-(finish this)
-
-### Assumptions
-
-(finish this)
-
-### Model Assesment
-
-(c/p code from regressions wehn we finish stuff)
-
-### Model Interpretation
-
-Will finish after we get model
-
-## Section 3: Discussion and Limitations
-
-Our model allows us to make various predictions about what impacts an
-application’s mean rating. We see that the predictor variable with the
-most influence on the response- if a review has more than 100,000
-installs, the mean rating is expected to be 1.0113334 less than the mean
-rating of an app with less than 100,00 installs. It is also worth noting
-that the three other most influential predictors are the other levels
-within the Installs predictors. Thus, for an application developer, the
-number of installs will be a factor that they would want to focus on if
-they are attempting to alter the mean rating of their application. The
-predictor variable with the least influence on the mean rating of an
-application is the number of days that the app has been updated since
-the day that the data was scraped on August 8, 2018. The predictor
-variables deemed to be too insignificant, via VIF, for the model are
-
-Another thing worth noting is that the intercept is quite high. At
-4.5102346, it is stating that for an application with less than 100
-installations, 0 reviews, is free, and has been 0 days since being
-updated we can expect the mean rating of the application to be
-4.5102346, which is quite close to the highest possible rating, 5.
-
-It is also worth noting that the data we used was web scrapped all at
-one point by a third party. Therefore, due to time and human error,
-there is bound to be false or missing data. Another thing to note is
-that several of our variables, such as reviews and content rating, were
-incredibly skewed. On of the more major issues with this dataset was
-that 1474 of the 10841 observations were missing a response. That means
-that 10% of our observations were missing throughout the modelling
-process potentially creating bias and skew.
-
-If we were to start over with this project, we would probably look more
-closely at the dataset. Many of our variables had issues that needed to
-be taken care of in order to conduct multilinear regression. For
-instance, we needed to completely relevel a categorical variable,
-Category. There were other variables that were challenging such as a
-time related variable and variables related to the version of the
-applications. If we were to restart the project, we would probably find
-a different dataset.
-
-If we were to continue the current project with the current dataset, we
-would set different baseline levels for every combination of categorical
-variables and redo the models and model selection. To improve our
-analysis, we would make training and test cases and conduct a k-folf
-cross validation that will allow us to assess the model’s fit allowing
-us to make sure that the model is not too closely fit as to check
-generalizability, but also make sure that it is specific enough to the
-data. Regarding the data itself, we would probably attempt to webscrape
-the data now as to have data that more closely reflects the current
-situation.
-
-## Section 4: Conclusion
-
-In conclusion, our project’s goal was to understand what factors
-contribute to an apps success as measured by the average rating given to
-an application. By conducting multinormial regression analysis, we found
-that \_\_\_\_\_\_\_\_ variables are viatle to the outcome of the mean
-ratings for an application. This can be useful to app developers, users,
-and application stores in how to view, change, and ustiliza
-applications.
-
-## Section 5: Additional Work
+Above is the model selection for both Hybrid and Backward AIC selection.
+Our final model was the one that was produced with both Hybrid and
+forward selection.
 
 ### References
 

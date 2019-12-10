@@ -150,7 +150,7 @@ apps %>%
   arrange(desc(n))
 ```
 
-As shown in the above table, we can see that the top 6 cateogies are in one level and the others are stored in another level. 
+As shown in the above table, we can see that the top 6 categories are in one level and the others are stored in another level. 
 
 ```{r relevel-andriod-ver}
 apps %>%
@@ -169,6 +169,8 @@ apps %>%
   arrange(desc(n))
 ```
 
+As well, the variable `Android Ver` is quite complicated. To simplify our analysis we decided to bin this variable into two levels, one for apps that support the first "generation" of Android, versions 1-4, and another for apps that support the second generation, 5-8. For apps that vary with device, we kept those observations as is. As shown in the final graphic, our new variable, `androidver_simp` reduces some of the complexity in the previous variable while retaining ease of use for analysis. 
+
 ```{r relevel-content}
 apps <- apps %>%
   mutate(content_simp = case_when( 
@@ -184,6 +186,7 @@ apps %>%
   arrange(desc(n))
 ```
 
+Lastly, there were also issues with our variable `Content Rating`. This particular variable had two categories for the rating "Everyone," one of which happend to be coded with a space ("Everyone ") in the dataset. Knowing that content ratings are finite, we decided to combine these categories together as to reduce the number of levels in this variable and its redundancy. 
 #### Univariate Analysis
 
 ```{r rating-distribution, warning = FALSE, message = FALSE}
@@ -196,6 +199,7 @@ ggplot(data = apps, aes(x = Rating)) +
 apps %>% 
   summarise(median(Rating), IQR(Rating))
 ```
+
 
 ```{r log reviews, warning = FALSE, message = FALSE}
 apps <- apps %>% 
@@ -269,44 +273,28 @@ full_model <- lm(Rating ~ category_simp + log_reviews + Size + Installs + Price 
 kable(tidy(full_model),format="html",digits=4)
 ```
 
-```{r bic-back}
-regfit_backward <- regsubsets(Rating ~ category_simp + log_reviews + Size + Installs + Price + content_simp + androidver_simp + date_since, data = apps, method="backward")
-sel_summary <- summary(regfit_backward)
-coef(regfit_backward, which.min(sel_summary$bic))
-```
+Above is the output of our full model using the predictors we deemed to be relevant in our Exploratory Data Analysis. As shown, there are a number of predictors that appear to have p-values greater than 0.05, deeming them insiginifcant. To find the most parsimonious model for our purporses of prediction, we used a model selection process comparing both BIC and AIC using a combination of backwards, forwards, and hybrid selection. The final model we chose was that selected using both AIC forward and hybrid selection as this particular model (as displayed below) gave us the shortest model while retaining assumptions better than the other models we tried. After going through the model process, we found that the constant variance assumption was violated using our BIC model. As well, it had far too many levels and we afraid that it was "overfitting" our data. Our model determines its coefficients through the relative variance of different variables in our data. If there are some predictors which have high frequency in the data, it is most likely that those predictors will account for the highest amount of variance when developing our final model. Thus, our model would tend to "memorize" our data rather than rather assessing the variability in response through particular trends in our predictors generalizable to the app store as a whole - as opposed to this singular dataset. In our additional work section, we have attached the final versions of those models as well as a plot of the residuals to illustrate this violation. 
 
-```{r bic-forward}
-regfit_forward <- regsubsets(Rating ~ category_simp + log_reviews + Size + Installs + Price + content_simp + androidver_simp + date_since, data = apps, method="forward")
-sel_summary <- summary(regfit_forward)
-coef(regfit_forward, which.min(sel_summary$bic))
-```
-
-Given the BIC forwards and backwards selection our reduced linear model is: 
-
-hat(mean rating) =  4.5124715854 x exp(0.0744108983(log_reviews)) - 0.3447278672(InstallsBetween 100 and 1,000) -0.6891663588 (InstallsBetween 1,000 and 10,000) - 0.8405412693(InstallsBetween 10,000 and 100,000) -1.0072240860(Installs 100,000 or Greater) + 0.0978316624(PriceBetween 0 and 4.99) -0.0001211124(date_since)
-
-```{r aic-back}
+```{r aic-forward}
 apps <- apps %>%
   na.omit(apps)
 null_model <- lm(Rating ~ 1, data = apps,)
-regfit_backward <- step(full_model, direction = "backward")
-```
-
-```{r aic-forward}
 regfit_forward <- step(null_model, scope = formula(full_model), 
                        direction = "forward")
 ```
 
-```{r hybrid}
-regfit_hybrid <- step(null_model, scope = formula(full_model), 
-                      direction = "both")
-```
 
-NOTE: THIS IS A TEST ASSUMING WE USE AIC FOR THE FINAL MODEL.
 ```{r final model}
 final_model <- lm(Rating ~ category_simp + Size, data = apps)
+kable(tidy(final_model),format="html",digits=3)
 ```
 
+
+As shown above, our final model is as follows:
+
+`Rating`^ = 4.00969938 - 0.0268642 * `category_simpTop 6 Categories`+ 0.1523095 * `SizeLess than 100 MB` + 0.1856302 * `SizeVaries with device`
+
+As well, it can be seen that all of the predictors in our final model have p-values less than 0.05, which allows us to conclude that they are all statistically significant - indicating that a lot of the terms in the model are making a significant contribution to understanding the variation in the response, `Rating`.
 
 ```{r testing interactions}
 reduced <- final_model
@@ -342,10 +330,39 @@ If we were to continue the current project with the current dataset, we would se
 
 ## Section 4: Conclusion
 
-In conclusion, our project’s goal was to understand what factors contribute to an apps success as measured by the average rating given to an application. By conducting multinormial regression analysis, we found that ________ variables are viatle to the outcome of the mean ratings for an application. This can be useful to app developers, users, and application stores in how to view, change, and ustiliza applications. 
+In conclusion, our project’s goal was to understand what factors contribute to an apps success as measured by the average rating given to an application. By conducting multinormial regression analysis, we found that ________ variables are vital to the outcome of the mean ratings for an application. This can be useful to app developers, users, and application stores in how to view, change, and ustiliza applications. 
 
 ## Section 5: Additional Work
 
+### Model Selection
+
+```{r bic-back}
+regfit_backward <- regsubsets(Rating ~ category_simp + log_reviews + Size + Installs + Price + content_simp + androidver_simp + date_since, data = apps, method="backward")
+sel_summary <- summary(regfit_backward)
+coef(regfit_backward, which.min(sel_summary$bic))
+```
+
+```{r bic-forward}
+regfit_forward <- regsubsets(Rating ~ category_simp + log_reviews + Size + Installs + Price + content_simp + androidver_simp + date_since, data = apps, method="forward")
+sel_summary <- summary(regfit_forward)
+coef(regfit_forward, which.min(sel_summary$bic))
+```
+
+Above is our model selection using BIC, we chose not to include this particular model for multiple reasons, including the fact that the constant variance assumption of this model is violated. 
+
+```{r aic-back}
+apps <- apps %>%
+  na.omit(apps)
+null_model <- lm(Rating ~ 1, data = apps,)
+regfit_backward <- step(full_model, direction = "backward")
+```
+
+```{r hybrid}
+regfit_hybrid <- step(null_model, scope = formula(full_model), 
+                      direction = "both")
+```
+
+Above is the model selection for both Hybrid and Backward AIC selection. Our final model was the one that was produced with both Hybrid and forward selection.
 
 ### References
 
