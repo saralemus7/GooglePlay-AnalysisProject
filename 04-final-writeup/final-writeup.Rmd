@@ -265,18 +265,18 @@ In order to find our final model, we will use a process of both forwards and bac
 ```{r full-model}
 apps <- apps %>%
   na.omit(apps)
-full_model <- lm(Rating ~ category_simp + log_reviews + Size + Installs + Price + `Content Rating` + androidver_simp + date_since, data = apps)
+full_model <- lm(Rating ~ category_simp + log_reviews + Size + Installs + Price + content_simp + androidver_simp + date_since, data = apps)
 kable(tidy(full_model),format="html",digits=4)
 ```
 
 ```{r bic-back}
-regfit_backward <- regsubsets(Rating ~ category_simp + log_reviews + Size + Installs + Price + `Content Rating` + androidver_simp + date_since, data = apps, method="backward")
+regfit_backward <- regsubsets(Rating ~ category_simp + log_reviews + Size + Installs + Price + content_simp + androidver_simp + date_since, data = apps, method="backward")
 sel_summary <- summary(regfit_backward)
 coef(regfit_backward, which.min(sel_summary$bic))
 ```
 
 ```{r bic-forward}
-regfit_forward <- regsubsets(Rating ~ category_simp + log_reviews + Size + Installs + Price + `Content Rating` + androidver_simp + date_since, data = apps, method="forward")
+regfit_forward <- regsubsets(Rating ~ category_simp + log_reviews + Size + Installs + Price + content_simp + androidver_simp + date_since, data = apps, method="forward")
 sel_summary <- summary(regfit_forward)
 coef(regfit_forward, which.min(sel_summary$bic))
 ```
@@ -301,6 +301,19 @@ regfit_forward <- step(null_model, scope = formula(full_model),
 regfit_hybrid <- step(null_model, scope = formula(full_model), 
                       direction = "both")
 ```
+
+NOTE: THIS IS A TEST ASSUMING WE USE AIC FOR THE FINAL MODEL.
+```{r final model}
+final_model <- lm(Rating ~ category_simp + Size, data = apps)
+```
+
+
+```{r testing interactions}
+reduced <- final_model
+full  <- lm(Rating ~ category_simp + Size + category_simp*Size, data = apps)
+kable(anova(reduced, full), format="markdown", digits = 3)
+```
+
 
 ### Interactions & Our Updated Model
 
