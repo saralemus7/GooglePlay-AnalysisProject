@@ -83,7 +83,7 @@ Google Play Store. This is a numeric variable.
     ##  n obs: 10841 
     ##  n variables: 13 
     ## 
-    ## ── Variable type:character ─────────────────────────────────────────────────────────────
+    ## ── Variable type:character ─────────────────────────────────────────────────────────────────
     ##        variable missing complete     n min max empty n_unique
     ##     Android Ver       1    10840 10841   3  18     0       34
     ##             App       0    10841 10841   1 194     0     9660
@@ -97,7 +97,7 @@ Google Play Store. This is a numeric variable.
     ##            Size       0    10841 10841   3  18     0      462
     ##            Type       0    10841 10841   1   4     0        4
     ## 
-    ## ── Variable type:numeric ───────────────────────────────────────────────────────────────
+    ## ── Variable type:numeric ───────────────────────────────────────────────────────────────────
     ##  variable missing complete     n      mean         sd p0 p25    p50
     ##    Rating    1474     9367 10841      4.19       0.54  1   4    4.3
     ##   Reviews       1    10840 10841 444152.9  2927760.6   0  38 2094  
@@ -676,7 +676,64 @@ Will finish after we get model
 
 ## Section 3: Discussion and Limitations
 
+Our model allows us to make various predictions about what impacts an
+application’s mean rating. We see that the predictor variable with the
+most influence on the response- if a review has more than 100,000
+installs, the mean rating is expected to be 1.0113334 less than the mean
+rating of an app with less than 100,00 installs. It is also worth noting
+that the three other most influential predictors are the other levels
+within the Installs predictors. Thus, for an application developer, the
+number of installs will be a factor that they would want to focus on if
+they are attempting to alter the mean rating of their application. The
+predictor variable with the least influence on the mean rating of an
+application is the number of days that the app has been updated since
+the day that the data was scraped on August 8, 2018. The predictor
+variables deemed to be too insignificant, via VIF, for the model are
+
+Another thing worth noting is that the intercept is quite high. At
+4.5102346, it is stating that for an application with less than 100
+installations, 0 reviews, is free, and has been 0 days since being
+updated we can expect the mean rating of the application to be
+4.5102346, which is quite close to the highest possible rating, 5.
+
+It is also worth noting that the data we used was web scrapped all at
+one point by a third party. Therefore, due to time and human error,
+there is bound to be false or missing data. Another thing to note is
+that several of our variables, such as reviews and content rating, were
+incredibly skewed. On of the more major issues with this dataset was
+that 1474 of the 10841 observations were missing a response. That means
+that 10% of our observations were missing throughout the modelling
+process potentially creating bias and skew.
+
+If we were to start over with this project, we would probably look more
+closely at the dataset. Many of our variables had issues that needed to
+be taken care of in order to conduct multilinear regression. For
+instance, we needed to completely relevel a categorical variable,
+Category. There were other variables that were challenging such as a
+time related variable and variables related to the version of the
+applications. If we were to restart the project, we would probably find
+a different dataset.
+
+If we were to continue the current project with the current dataset, we
+would set different baseline levels for every combination of categorical
+variables and redo the models and model selection. To improve our
+analysis, we would make training and test cases and conduct a k-folf
+cross validation that will allow us to assess the model’s fit allowing
+us to make sure that the model is not too closely fit as to check
+generalizability, but also make sure that it is specific enough to the
+data. Regarding the data itself, we would probably attempt to webscrape
+the data now as to have data that more closely reflects the current
+situation.
+
 ## Section 4: Conclusion
+
+In conclusion, our project’s goal was to understand what factors
+contribute to an apps success as measured by the average rating given to
+an application. By conducting multinormial regression analysis, we found
+that \_\_\_\_\_\_\_\_ variables are viatle to the outcome of the mean
+ratings for an application. This can be useful to app developers, users,
+and application stores in how to view, change, and ustiliza
+applications.
 
 ## Section 5: Additional Work
 
