@@ -668,20 +668,30 @@ assumption, we will plot the residual values against predictors.
 
 ![](final-writeup_files/figure-gfm/resid-plots-1.png)<!-- -->
 
-As shown, it appears that the constant variance assumption is violated.
-There appears to be a clear pattern in our residuals relating to the
-significance of large amounts of negative values. Since our response was
-normally distributed at the beginning of our EDA, we did not see the
-need for a transformation of our response; however, it may be the case
-that there is a need for more, higher-order interaction terms. Since our
-model satisfies the linearity assumption and also realtively satisfies
-our normality assumption it is reasonable to assume that this is not a
-great cause for concern. As well, as stated above and in our additional
-work we did try to choose multiple models and this particular one was
-the one with the least noticeable violation of constant variance and
-normality. Therefore, we believe that given this sufficient effort, this
-model is mostly likely the one that is grestest for predicting the
-majority of applications given our dataset.
+As shown, it appears that there are no significant concerns with
+constant variance. Although there appears to be a small, non-random
+pattern in our residuals relating to the significance of large amounts
+of negative values this particular pattern doesn’t “fan” (which would be
+a reason for concern) indicating that our constant variance assumption
+is satified. The reason for this may be that our response has a
+significant number of observations with ratings between 4.1 and 4.2
+which would indicate higher variability in prediction for these value
+(as illustrated in the residuals plot).
+
+Since our response was normally distributed at the beginning of our EDA,
+we did not see the need for a transformation of our response; however,
+it was the case that there was a need for more a log transformation of
+our predictor `Reviews` (refer to additional work to see old residual
+plot).
+
+Since our model satisfies the linearity assumption and also realtively
+satisfies our normality assumption it is reasonable to assume that the
+assumptions for this model are satisfied. As well, as stated above and
+in our additional work we did try to choose multiple models and this
+particular one was the one with the least noticeable violation of
+constant variance and normality. Therefore, we believe that given this
+sufficient effort, this model is mostly likely the one that is grestest
+for predicting the majority of applications given our dataset.
 
 #### Normality
 
@@ -829,6 +839,8 @@ for an interaction, confirming the results of our F-test.
 
 ### Model Interpretation
 
+#### Coefficients and Intercept
+
 Our model allows us to make various predictions about what impacts an
 application’s mean rating. We see that the predictor variable with the
 most influence on the response- if the size of an application is less
@@ -847,6 +859,64 @@ Another thing worth noting is that the intercept is quite high. At
 4.0096938, it is stating that for an application that is not within the
 top 6 categories and is 100 MB or larger the mean rating is estimated to
 be 4.0096938, which is quite close to the highest possible rating, 5.
+
+#### Prediction
+
+To assess the predictive power of our model, let’s check and see how
+accurately it predicts observations in both the real world and our
+dataset.
+
+First, we’ll test the rating of observation \#7718, the app “Bejeweled
+Classic.” According to our data, the rating for this app is 4.4. We will
+now predict it’s rating given that it is in the cateogory Family and has
+size Varies with Device.
+
+    ##       fit      lwr      upr
+    ## 1 4.16846 3.090893 5.246027
+
+Next, we will predict obeservation \#2345, the app “Selfie Camera Photo
+Editor & Filter & Sticker.” According to our data, the rating for this
+app is 4.1. We will now predict it’s rating given that it is in the
+category Beauty and has size less than 100 MB.
+
+    ##        fit     lwr      upr
+    ## 1 4.162003 3.08501 5.238997
+
+Thirdly, we will predict the app “GO Notifier” which has size Greater
+than 100 MB and is in the communication category. This app satisfies
+both the baseline criteria of our model (not in top 6 category and size
+greater than 100 MB) it’s predicted rating would be our intercept of
+4.00969938. It’s actual rating of 4.2 is slightly larger than our
+predicted rating; however, its real rating is held within our confidence
+interval so our model is still accurate to some degree.
+
+    ##        fit      lwr      upr
+    ## 1 4.009694 2.930274 5.089114
+
+Lastly, we will predict the rating for the popular social media app
+“TikTok” which was created after our dataset was scraped. It’s rating
+is 4.5, it is in the Social Category, and has Size 80M.
+
+    ##        fit     lwr      upr
+    ## 1 4.162003 3.08501 5.238997
+
+As shown, the model underpredicts Bejeweled and TikTok but predicts the
+rating of Selfie Camera with relative accuracy. This is most likely due
+to the fact that we had to bin some of the variables such as `Category`
+and `Size` which may have reduced the amount of variability in the
+dataset that the model was able to capture. However, all of the 95%
+confidence intervals hold the actual rating of these apps, so our model
+still does a relatively good job of predicting the Rating of an app in
+the Google Play Store.
+
+The model’s performance is dictated by these tests and our model did
+perform relatively well as shown above. The apps that we chose to test
+the model were from a variety of categories and sizes as well as from
+apps that were and were not in our dataset. As we will disucss in the
+limitations section, the google play store is a dynamic environment with
+the distribution of categories and ratings changing every day, so this
+may be the reason for why our model is slightly underpredicting the
+rating of some apps.
 
 ## Section 3: Discussion and Limitations
 
