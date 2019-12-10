@@ -832,15 +832,16 @@ for an interaction, confirming the results of our F-test.
 Our model allows us to make various predictions about what impacts an
 application’s mean rating. We see that the predictor variable with the
 most influence on the response- if the size of an application is less
-than 100 MB the mean rating is expected to increase by 0.1523095 and if
-the size varies with device, the mean rating is expected to increase by
-0.1856302. The other variable deemed to be significant is
-cateogrry\_simpTop 6 Categories meaning that if an application is in the
-top 6 categories, the mean rating is expectected to decrease by
-0.0268642. Thus, for an application developer, the size of the
-application and the category of the applications will be a factor that
-they would want to focus on if they are attempting to alter the mean
-rating of their application.
+than 100 MB the mean rating is expected to increase by 0.1523095 vs an
+application that is greater than or equal to 100 MB and if the size
+varies with device, the mean rating is expected to increase by 0.1856302
+vs an application that is greater than or equal to 100 MB. The other
+variable deemed to be significant is cateogrry\_simpTop 6 Categories
+meaning that if an application is in the top 6 categories, the mean
+rating is expectected to decrease by 0.0268642. Thus, for an application
+developer, the size of the application and the category of the
+applications will be a factor that they would want to focus on if they
+are attempting to alter the mean rating of their application.
 
 Another thing worth noting is that the intercept is quite high. At
 4.0096938, it is stating that for an application that is not within the
