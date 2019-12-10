@@ -1003,6 +1003,13 @@ Above is the model selection for both Hybrid and Backward AIC selection.
 Our final model was the one that was produced with both Hybrid and
 forward selection.
 
+Here is the residual plot for the model produced by BIC selection:
+
+![](final-writeup_files/figure-gfm/final-model2-1.png)<!-- -->
+
+As shown there is a sigificantly visible pattern in this model’s
+residuals, far worse than our current model.
+
 ### References
 
 Gupta, Lavanya. Kaggle. Jan. 2019,

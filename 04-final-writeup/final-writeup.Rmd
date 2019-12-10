@@ -513,6 +513,20 @@ regfit_hybrid <- step(null_model, scope = formula(full_model),
 
 Above is the model selection for both Hybrid and Backward AIC selection. Our final model was the one that was produced with both Hybrid and forward selection.
 
+Here is the residual plot for the model produced by BIC selection:
+
+```{r final-model2}
+old_model <- lm(Rating ~ log_reviews + Installs + Price + content_simp, data = apps,)
+apps <- apps %>% 
+  mutate(predicted = predict.lm(old_model), residuals = resid(old_model)) #mutates residuals to the model
+ggplot(data=apps,aes(x=predicted, y=residuals)) + #plots residuals vs predictors
+  geom_point() + 
+  geom_hline(yintercept=0,color="red") +
+  labs(title="Residuals vs. Predicted Values")
+```
+
+As shown there is a sigificantly visible pattern in this model's residuals, far worse than our current model. 
+
 ### References
 
 Gupta, Lavanya. Kaggle. Jan. 2019, www.kaggle.com/lava18/google-play-store-apps?fbclid=IwAR36EMS2jg5fhPi-BQlX6Mv4MCk8YUm2XmyOLt0zsKkNyc9JK-JD7aLy-6I. Accessed 30 Oct. 2019. 
