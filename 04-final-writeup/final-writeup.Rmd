@@ -26,6 +26,7 @@ library(rms)
 ```
 
 ## Section 1: Introduction (includes introduction and exploratory data analysis)
+
 ### Motivaton
 
 As technology has become increasingly prevalent around the world, there has been a change in the consumption of media. One of these ways is via the purchase of applications (apps) for various smartphones and other devices. Several technology companies, including Apple and Google, run virtual stores for these apps in which a person can download an app for their device. These apps can be for various purposes like socializing, playing games, or watching television and movies, among others. While any user of a phone can agree that apps hold an important effect on how one interacts with technology on a daily basis, the weight of the impact becomes even more shocking when one looks at the figures- in 2018, global app downloads topped 194 billion (Dignan).
@@ -151,7 +152,7 @@ apps %>%
 
 As shown in the above table, we can see that the top 6 cateogies are in one level and the others are stored in another level. 
 
-```{r relevel andriod ver}
+```{r relevel-andriod-ver}
 apps %>%
   count(`Android Ver`) %>%
   arrange(desc(n))
@@ -168,10 +169,7 @@ apps %>%
   arrange(desc(n))
 ```
 
-Android Ver
-
-
-```{r}
+```{r relevel-content}
 apps <- apps %>%
   mutate(content_simp = case_when( 
     `Content Rating` == "Everyone" ~ "Everyone",
@@ -185,8 +183,6 @@ apps %>%
   count(`Content Rating`, content_simp) %>%
   arrange(desc(n))
 ```
-
-Content rating
 
 #### Univariate Analysis
 
@@ -209,7 +205,7 @@ apps %>%
   summarise(median(log_reviews), max(log_reviews), IQR(log_reviews))
 ```
 
-log reviews explain why
+Above is the plot of the logged number of reviews for each application. We decided to log, due to an extreme skew seen in the plot of the original variable. 
 
 FOR OTHER UNIVARIATE PLOTS ONLY INCLUDE THOSE IN FULL MODEL
 
@@ -220,7 +216,36 @@ Which app has 78 million reviews?
 Change the bin width on the histogram of date_since. It should be fine to just use the default bin width by R.
 
 #### Bivariate Analysis
-ONLY INCLUDE THOSE IN FULL MODEL
+
+A bivariate analysis between variables will help understand the interaction between indidivual predictor variables and the response. 
+
+```{r category-rating}
+ggplot(data = apps, aes(x = category_simp, y = Rating)) + geom_boxplot() + coord_flip() +
+  labs(title = "Relationship between Category and Rating") 
+```
+
+Although there is some variation in rating between app categories, the most telling aspect of this exploratory model is the outliers. It appears that some categories are more susceptible to outliers with low ratings. More over there are notable discrepancies between minimum boxplot rating among categories. 
+
+```{r reviews-rating}
+ggplot(data = apps, aes(x = Reviews, y = Rating)) + geom_point() +
+  labs(title = "Relationship between Reviews and Rating", x = "Number of Reviews") 
+```
+
+Based on the scatterplot above, there is likely a relationship between number of reviews and app rating. As the number of reviews increased the app rating was concentrated at approximately 4.5 - which was consistent with apps holding smaller number of reviews. IS THIS RIGHT??
+
+```{r installs-rating}
+ggplot(data = apps, aes(x = Installs, y = Rating)) + geom_boxplot() +
+  labs(title = "Relationship between Installs and Rating", x = "Number of Installs") + coord_flip()
+```
+
+The boxplot above clearly shows a significant relationship between number of installs and rating. As the number of installs increases the IQR appears to decrease in conjunction. Moreover median rating also increases with number of installs. 
+
+```{r type-rating}
+ggplot(data = apps, aes(x = Type, y = Rating)) + geom_boxplot() +
+  labs(title = "Relationship between Type and Rating")
+```
+
+The boxplots for free and paid apps sport nearly identical median and IQR values. This tells us that whether an app is free or paid doesn't appear to have a major impact on the rating. Further analysis into the variation of rating among apps of different price levels is needed. 
 
 #### Possible Interactions
 ONLY INCLUDE THOSE IN FULL MODEL
@@ -256,12 +281,17 @@ sel_summary <- summary(regfit_forward)
 coef(regfit_forward, which.min(sel_summary$bic))
 ```
 
-(Just show final model w/ AIC/Bic and everything)
+Given the BIC forwards and backwards selection our reduced linear model is: 
+
+hat(mean rating) =  4.5124715854 x exp(0.0744108983(log_reviews)) - 0.3447278672(InstallsBetween 100 and 1,000) -0.6891663588 (InstallsBetween 1,000 and 10,000) - 0.8405412693(InstallsBetween 10,000 and 100,000) -1.0072240860(Installs 100,000 or Greater) + 0.0978316624(PriceBetween 0 and 4.99) -0.0001211124(date_since)
 
 ### Interactions & Our Updated Model
+
 (finish this)
+
 ### Assumptions
 (finish this)
+
 ### Model Assesment
 (c/p code from regressions wehn we finish stuff)
 
@@ -269,9 +299,11 @@ coef(regfit_forward, which.min(sel_summary$bic))
 Will finish after we get model
 
 ## Section 3: Discussion and Limitations 
-Zoe
+
+
 ## Section 4: Conclusion
-Zoe
+
+
 ## Section 5: Additional Work
 
 ### References

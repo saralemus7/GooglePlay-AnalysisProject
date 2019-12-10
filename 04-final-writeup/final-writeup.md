@@ -83,7 +83,7 @@ Google Play Store. This is a numeric variable.
     ##  n obs: 10841 
     ##  n variables: 13 
     ## 
-    ## ── Variable type:character ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+    ## ── Variable type:character ────────────────────────────────────────────────────────
     ##        variable missing complete     n min max empty n_unique
     ##     Android Ver       1    10840 10841   3  18     0       34
     ##             App       0    10841 10841   1 194     0     9660
@@ -97,7 +97,7 @@ Google Play Store. This is a numeric variable.
     ##            Size       0    10841 10841   3  18     0      462
     ##            Type       0    10841 10841   1   4     0        4
     ## 
-    ## ── Variable type:numeric ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+    ## ── Variable type:numeric ──────────────────────────────────────────────────────────
     ##  variable missing complete     n      mean         sd p0 p25    p50
     ##    Rating    1474     9367 10841      4.19       0.54  1   4    4.3
     ##   Reviews       1    10840 10841 444152.9  2927760.6   0  38 2094  
@@ -241,8 +241,6 @@ one level and the others are stored in another
     ## 8 6                  5-8                   43
     ## 9 8                  5-8                    5
 
-Android Ver
-
     ## # A tibble: 6 x 3
     ##   `Content Rating` content_simp     n
     ##   <chr>            <chr>        <int>
@@ -252,8 +250,6 @@ Android Ver
     ## 4 "Everyone "      <NA>           271
     ## 5 "Adults only "   <NA>             3
     ## 6 Unrated          Unrated          1
-
-Content rating
 
 #### Univariate Analysis
 
@@ -271,7 +267,9 @@ Content rating
     ##                   <dbl>              <dbl>              <dbl>
     ## 1                  7.55               12.2               5.44
 
-log reviews explain why
+Above is the plot of the logged number of reviews for each application.
+We decided to log, due to an extreme skew seen in the plot of the
+original variable.
 
 FOR OTHER UNIVARIATE PLOTS ONLY INCLUDE THOSE IN FULL MODEL
 
@@ -286,7 +284,37 @@ to just use the default bin width by R.
 
 #### Bivariate Analysis
 
-ONLY INCLUDE THOSE IN FULL MODEL
+A bivariate analysis between variables will help understand the
+interaction between indidivual predictor variables and the response.
+
+![](final-writeup_files/figure-gfm/category-rating-1.png)<!-- -->
+
+Although there is some variation in rating between app categories, the
+most telling aspect of this exploratory model is the outliers. It
+appears that some categories are more susceptible to outliers with low
+ratings. More over there are notable discrepancies between minimum
+boxplot rating among categories.
+
+![](final-writeup_files/figure-gfm/reviews-rating-1.png)<!-- -->
+
+Based on the scatterplot above, there is likely a relationship between
+number of reviews and app rating. As the number of reviews increased the
+app rating was concentrated at approximately 4.5 - which was consistent
+with apps holding smaller number of reviews. IS THIS RIGHT??
+
+![](final-writeup_files/figure-gfm/installs-rating-1.png)<!-- -->
+
+The boxplot above clearly shows a significant relationship between
+number of installs and rating. As the number of installs increases the
+IQR appears to decrease in conjunction. Moreover median rating also
+increases with number of installs.
+
+![](final-writeup_files/figure-gfm/type-rating-1.png)<!-- -->
+
+The boxplots for free and paid apps sport nearly identical median and
+IQR values. This tells us that whether an app is free or paid doesn’t
+appear to have a major impact on the rating. Further analysis into the
+variation of rating among apps of different price levels is needed.
 
 #### Possible Interactions
 
@@ -389,11 +417,25 @@ correlated.
     ##          PriceBetween $0 and $4.99                         date_since 
     ##                       0.0978316624                      -0.0001211124
 
-(Just show final model w/ AIC/Bic and everything)
+Given the BIC forwards and backwards selection our reduced linear model
+is:
+
+hat(mean rating) = 4.5124715854 x exp(0.0744108983(log\_reviews)) -
+0.3447278672(InstallsBetween 100 and 1,000) -0.6891663588
+(InstallsBetween 1,000 and 10,000) - 0.8405412693(InstallsBetween 10,000
+and 100,000) -1.0072240860(Installs 100,000 or Greater) +
+0.0978316624(PriceBetween 0 and 4.99) -0.0001211124(date\_since)
 
 ### Interactions & Our Updated Model
 
-(finish this) \#\#\# Assumptions (finish this) \#\#\# Model Assesment
+(finish this)
+
+### Assumptions
+
+(finish this)
+
+### Model Assesment
+
 (c/p code from regressions wehn we finish stuff)
 
 ### Model Interpretation
@@ -402,7 +444,9 @@ Will finish after we get model
 
 ## Section 3: Discussion and Limitations
 
-Zoe \#\# Section 4: Conclusion Zoe \#\# Section 5: Additional Work
+## Section 4: Conclusion
+
+## Section 5: Additional Work
 
 ### References
 
