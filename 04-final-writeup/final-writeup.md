@@ -1044,6 +1044,32 @@ Here is the residual plot for the model produced by BIC selection:
 As shown there is a sigificantly visible pattern in this model’s
 residuals, far worse than our current model.
 
+These are the VIFs for our full model:
+
+    ## # A tibble: 17 x 2
+    ##    names                                   x
+    ##    <chr>                               <dbl>
+    ##  1 category_simpTop 6 Categories        1.06
+    ##  2 log_reviews                          5.00
+    ##  3 SizeLess than 100 MB                 5.15
+    ##  4 SizeVaries with device               7.69
+    ##  5 InstallsBetween 100 and 1,000        4.45
+    ##  6 InstallsBetween 1,000 and 10,000     8.41
+    ##  7 InstallsBetween 10,000 and 100,000  11.2 
+    ##  8 Installs100,000 or Greater          23.1 
+    ##  9 PriceBetween $0 and $4.99            1.11
+    ## 10 PriceGreater than $5                 1.03
+    ## 11 content_simpEveryone               322.  
+    ## 12 content_simpMature                 114.  
+    ## 13 content_simpTeen                   232.  
+    ## 14 content_simpUnrated                  1.34
+    ## 15 androidver_simp5-8                   1.04
+    ## 16 androidver_simpVaries with Device    3.44
+    ## 17 date_since                           1.22
+
+As shown many of our variables had multicollinearity issues, which is
+why we removed them at the beginning as shown in the Data Wrangling.
+
 ### References
 
 Gupta, Lavanya. Kaggle. Jan. 2019,
