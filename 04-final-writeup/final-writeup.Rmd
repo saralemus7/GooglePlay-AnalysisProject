@@ -203,6 +203,8 @@ apps %>%
   summarise(median(Rating), IQR(Rating))
 ```
 
+As seen above, the distribution of ratings is left-skewed with its peak between 4 and 4.5. The IQR of 0.6 demonstrates that the middle 50% of our data is highly concentrated around that peak. 
+
 ##### Reviews
 
 ```{r Reviews, echo=FALSE,warning=FALSE,message=FALSE,error=FALSE}

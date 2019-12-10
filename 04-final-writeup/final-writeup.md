@@ -83,7 +83,7 @@ Google Play Store. This is a numeric variable.
     ##  n obs: 10841 
     ##  n variables: 13 
     ## 
-    ## ── Variable type:character ─────────────────────────────────────────────
+    ## ── Variable type:character ─────────────────────────────────────────────────────────────────
     ##        variable missing complete     n min max empty n_unique
     ##     Android Ver       1    10840 10841   3  18     0       34
     ##             App       0    10841 10841   1 194     0     9660
@@ -97,7 +97,7 @@ Google Play Store. This is a numeric variable.
     ##            Size       0    10841 10841   3  18     0      462
     ##            Type       0    10841 10841   1   4     0        4
     ## 
-    ## ── Variable type:numeric ───────────────────────────────────────────────
+    ## ── Variable type:numeric ───────────────────────────────────────────────────────────────────
     ##  variable missing complete     n      mean         sd p0 p25    p50
     ##    Rating    1474     9367 10841      4.19       0.54  1   4    4.3
     ##   Reviews       1    10840 10841 444152.9  2927760.6   0  38 2094  
@@ -274,6 +274,10 @@ and its redundancy.
     ##              <dbl>         <dbl>
     ## 1              4.2           0.6
 
+As seen above, the distribution of ratings is left-skewed with its peak
+between 4 and 4.5. The IQR of 0.6 demonstrates that the middle 50% of
+our data is highly concentrated around that peak.
+
 ##### Reviews
 
 ![](final-writeup_files/figure-gfm/Reviews-1.png)<!-- -->
@@ -318,23 +322,50 @@ there is a much more even spread.
 
 ![](final-writeup_files/figure-gfm/size-1.png)<!-- -->
 
+The above plot demonstrates that the most common Size type is “Less than
+100 MB” with more than 6000 of the applications being of that Size.
+
 ##### Installs
 
 ![](final-writeup_files/figure-gfm/installs-1.png)<!-- -->
+
+Given the above plot, the most common number of installs within the
+dataset is 100,000 or Greater.
 
 ##### Price
 
 ![](final-writeup_files/figure-gfm/price-1.png)<!-- -->
 
+Given the above plot, the most common Price for the applications whithin
+the dataset is “Free”. For our analysis, we decided to use the variable
+`Price` because it has more levels and is a more specific classification
+of the price of the applications than `Type` which just indicated free
+or paid.
+
 ##### Content Rating
 
 ![](final-writeup_files/figure-gfm/cr-1.png)<!-- -->
+
+Given the above plot, the most common content rating is “Everyone”
+within the dataset.
 
 ##### Android Version
 
 ![](final-writeup_files/figure-gfm/and-plot-1.png)<!-- -->
 
+Given the above plot, within the dataset, the most common Android
+Version is 1-5.
+
 ![](final-writeup_files/figure-gfm/datesince-plot-1.png)<!-- -->
+
+    ## # A tibble: 1 x 3
+    ##   `median(date_since)` `max(date_since)` `IQR(date_since)`
+    ##   <drtn>               <drtn>                        <dbl>
+    ## 1 92 days              3001 days                       363
+
+Given the above plot, for 50% of the observations it has been greater
+than 92 days since the last update and for the other 50% of the
+observations, it has been less than 92 days since the last update.
 
 #### Bivariate Analysis
 
@@ -638,20 +669,19 @@ assumption, we will plot the residual values against predictors.
 ![](final-writeup_files/figure-gfm/resid-plots-1.png)<!-- -->
 
 As shown, it appears that the constant variance assumption is violated.
-There is not an even distribution of the residuals across 0, rather
-there appears to be a negative trend in this graph as there are more
-values for resiudals that appear below 0. Since our response was
+There appears to be a clear pattern in our residuals relating to the
+significance of large amounts of negative values. Since our response was
 normally distributed at the beginning of our EDA, we did not see the
-need for a transformation of our response tp try to remedy this;
-however, it may be the case that there is a need for more, higher-order
-interaction terms. Since our model satisfies the linearity assumption
-and also realtively satisfies our normality assumption it is reasonable
-to assume that this is not a great cause for concern. As well, as stated
-above and in our additional work we did try to choose multiple models
-and this particular one was the one with the least noticeable violation
-of constant variance and normality. Therefore, we believe that given
-this sufficient effort, this model is mostly likely the one that is
-grestest for predicting the majority of applications given our dataset.
+need for a transformation of our response; however, it may be the case
+that there is a need for more, higher-order interaction terms. Since our
+model satisfies the linearity assumption and also realtively satisfies
+our normality assumption it is reasonable to assume that this is not a
+great cause for concern. As well, as stated above and in our additional
+work we did try to choose multiple models and this particular one was
+the one with the least noticeable violation of constant variance and
+normality. Therefore, we believe that given this sufficient effort, this
+model is mostly likely the one that is grestest for predicting the
+majority of applications given our dataset.
 
 #### Normality
 
@@ -799,38 +829,34 @@ for an interaction, confirming the results of our F-test.
 
 ### Model Interpretation
 
-Will finish after we get model
+Our model allows us to make various predictions about what impacts an
+application’s mean rating. We see that the predictor variable with the
+most influence on the response- if the size of an application is less
+than 100 MB the mean rating is expected to increase by 0.1523095 and if
+the size varies with device, the mean rating is expected to increase by
+0.1856302. The other variable deemed to be significant is
+cateogrry\_simpTop 6 Categories meaning that if an application is in the
+top 6 categories, the mean rating is expectected to decrease by
+0.0268642. Thus, for an application developer, the size of the
+application and the category of the applications will be a factor that
+they would want to focus on if they are attempting to alter the mean
+rating of their application.
+
+Another thing worth noting is that the intercept is quite high. At
+4.0096938, it is stating that for an application that is not within the
+top 6 categories and is 100 MB or larger the mean rating is estimated to
+be 4.0096938, which is quite close to the highest possible rating, 5.
 
 ## Section 3: Discussion and Limitations
 
-Our model allows us to make various predictions about what impacts an
-application’s mean rating. We see that the predictor variable with the
-most influence on the response- if a review has more than 100,000
-installs, the mean rating is expected to be 1.0113334 less than the mean
-rating of an app with less than 100,00 installs. It is also worth noting
-that the three other most influential predictors are the other levels
-within the Installs predictors. Thus, for an application developer, the
-number of installs will be a factor that they would want to focus on if
-they are attempting to alter the mean rating of their application. The
-predictor variable with the least influence on the mean rating of an
-application is the number of days that the app has been updated since
-the day that the data was scraped on August 8, 2018. The predictor
-variables deemed to be too insignificant, via VIF, for the model are
-
-Another thing worth noting is that the intercept is quite high. At
-4.5102346, it is stating that for an application with less than 100
-installations, 0 reviews, is free, and has been 0 days since being
-updated we can expect the mean rating of the application to be
-4.5102346, which is quite close to the highest possible rating, 5.
-
-It is also worth noting that the data we used was web scrapped all at
-one point by a third party. Therefore, due to time and human error,
-there is bound to be false or missing data. Another thing to note is
-that several of our variables, such as reviews and content rating, were
-incredibly skewed. On of the more major issues with this dataset was
-that 1474 of the 10841 observations were missing a response. That means
-that 10% of our observations were missing throughout the modelling
-process potentially creating bias and skew.
+With regards to the data we used, it is worth noting that the data we
+used was web scrapped all at one point by a third party. Therefore, due
+to time and human error, there is bound to be false or missing data.
+Another thing to note is that several of our variables, such as reviews
+and content rating, were incredibly skewed. On of the more major issues
+with this dataset was that 1474 of the 10841 observations were missing a
+response. That means that 10% of our observations were missing
+throughout the modelling process potentially creating bias and skew.
 
 If we were to start over with this project, we would probably look more
 closely at the dataset. Many of our variables had issues that needed to
@@ -841,25 +867,26 @@ time related variable and variables related to the version of the
 applications. If we were to restart the project, we would probably find
 a different dataset.
 
-If we were to continue the current project with the current dataset, we
-would set different baseline levels for every combination of categorical
-variables and redo the models and model selection. To improve our
-analysis, we would make training and test cases and conduct a k-folf
-cross validation that will allow us to assess the model’s fit allowing
-us to make sure that the model is not too closely fit as to check
-generalizability, but also make sure that it is specific enough to the
-data. Regarding the data itself, we would probably attempt to webscrape
-the data now as to have data that more closely reflects the current
-situation.
+If we were to continue the current project with the current dataset we
+would have explored how the factors contributing to app success change
+over time and specifically from year-to-year, we would set different
+baseline levels for every combination of categorical variables and redo
+the models and model selection. To improve our analysis, we would make
+training and test cases and conduct a k-folf cross validation that will
+allow us to assess the model’s fit allowing us to make sure that the
+model is not too closely fit as to check generalizability, but also make
+sure that it is specific enough to the data. Regarding the data itself,
+we would probably attempt to webscrape the data now as to have data that
+more closely reflects the current situation.
 
 ## Section 4: Conclusion
 
 In conclusion, our project’s goal was to understand what factors
 contribute to an apps success as measured by the average rating given to
 an application. By conducting multinormial regression analysis, we found
-that \_\_\_\_\_\_\_\_ variables are vital to the outcome of the mean
-ratings for an application. This can be useful to app developers, users,
-and application stores in how to view, change, and ustiliza
+that the categories and size variables are vital to the outcome of the
+mean ratings for an application. This can be useful to app developers,
+users, and application stores in how to view, change, and ustiliza
 applications.
 
 ## Section 5: Additional Work
@@ -1043,32 +1070,6 @@ Here is the residual plot for the model produced by BIC selection:
 
 As shown there is a sigificantly visible pattern in this model’s
 residuals, far worse than our current model.
-
-These are the VIFs for our full model:
-
-    ## # A tibble: 17 x 2
-    ##    names                                   x
-    ##    <chr>                               <dbl>
-    ##  1 category_simpTop 6 Categories        1.06
-    ##  2 log_reviews                          5.00
-    ##  3 SizeLess than 100 MB                 5.15
-    ##  4 SizeVaries with device               7.69
-    ##  5 InstallsBetween 100 and 1,000        4.45
-    ##  6 InstallsBetween 1,000 and 10,000     8.41
-    ##  7 InstallsBetween 10,000 and 100,000  11.2 
-    ##  8 Installs100,000 or Greater          23.1 
-    ##  9 PriceBetween $0 and $4.99            1.11
-    ## 10 PriceGreater than $5                 1.03
-    ## 11 content_simpEveryone               322.  
-    ## 12 content_simpMature                 114.  
-    ## 13 content_simpTeen                   232.  
-    ## 14 content_simpUnrated                  1.34
-    ## 15 androidver_simp5-8                   1.04
-    ## 16 androidver_simpVaries with Device    3.44
-    ## 17 date_since                           1.22
-
-As shown many of our variables had multicollinearity issues, which is
-why we removed them at the beginning as shown in the Data Wrangling.
 
 ### References
 
