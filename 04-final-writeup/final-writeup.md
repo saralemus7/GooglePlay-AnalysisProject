@@ -83,7 +83,7 @@ Google Play Store. This is a numeric variable.
     ##  n obs: 10841 
     ##  n variables: 13 
     ## 
-    ## ── Variable type:character ───────────────────────────────────────────────────────────────────────────
+    ## ── Variable type:character ─────────────────────────────────────────────
     ##        variable missing complete     n min max empty n_unique
     ##     Android Ver       1    10840 10841   3  18     0       34
     ##             App       0    10841 10841   1 194     0     9660
@@ -97,7 +97,7 @@ Google Play Store. This is a numeric variable.
     ##            Size       0    10841 10841   3  18     0      462
     ##            Type       0    10841 10841   1   4     0        4
     ## 
-    ## ── Variable type:numeric ─────────────────────────────────────────────────────────────────────────────
+    ## ── Variable type:numeric ───────────────────────────────────────────────
     ##  variable missing complete     n      mean         sd p0 p25    p50
     ##    Rating    1474     9367 10841      4.19       0.54  1   4    4.3
     ##   Reviews       1    10840 10841 444152.9  2927760.6   0  38 2094  
@@ -307,6 +307,12 @@ trends as well as make the variable less skewed.
 ![](final-writeup_files/figure-gfm/category-1.png)<!-- -->
 
 ![](final-writeup_files/figure-gfm/log%20reviews-1.png)<!-- -->
+
+As demonstrated above, there are a number of levels within the variable
+`Category`, this will cause problems with overfitting down the line, so
+we decided to create two levels- one for the most popular levels, and
+one with the least popular levels. Once binned into those two levels,
+there is a much more even spread.
 
 ##### Size
 
@@ -632,19 +638,20 @@ assumption, we will plot the residual values against predictors.
 ![](final-writeup_files/figure-gfm/resid-plots-1.png)<!-- -->
 
 As shown, it appears that the constant variance assumption is violated.
-There appears to be a clear pattern in our residuals relating to the
-significance of large amounts of negative values. Since our response was
+There is not an even distribution of the residuals across 0, rather
+there appears to be a negative trend in this graph as there are more
+values for resiudals that appear below 0. Since our response was
 normally distributed at the beginning of our EDA, we did not see the
-need for a transformation of our response; however, it may be the case
-that there is a need for more, higher-order interaction terms. Since our
-model satisfies the linearity assumption and also realtively satisfies
-our normality assumption it is reasonable to assume that this is not a
-great cause for concern. As well, as stated above and in our additional
-work we did try to choose multiple models and this particular one was
-the one with the least noticeable violation of constant variance and
-normality. Therefore, we believe that given this sufficient effort, this
-model is mostly likely the one that is grestest for predicting the
-majority of applications given our dataset.
+need for a transformation of our response tp try to remedy this;
+however, it may be the case that there is a need for more, higher-order
+interaction terms. Since our model satisfies the linearity assumption
+and also realtively satisfies our normality assumption it is reasonable
+to assume that this is not a great cause for concern. As well, as stated
+above and in our additional work we did try to choose multiple models
+and this particular one was the one with the least noticeable violation
+of constant variance and normality. Therefore, we believe that given
+this sufficient effort, this model is mostly likely the one that is
+grestest for predicting the majority of applications given our dataset.
 
 #### Normality
 

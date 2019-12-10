@@ -427,12 +427,12 @@ The Constant Variance Assumption assumes that the regression variance is the sam
 apps <- apps %>% 
   mutate(predicted = predict.lm(final_model), residuals = resid(final_model)) #mutates residuals to the model
 ggplot(data=apps,aes(x=predicted, y=residuals)) + #plots residuals vs predictors
-  geom_boxplot() + 
+  geom_point() + 
   geom_hline(yintercept=0,color="red") +
   labs(title="Residuals vs. Predicted Values")
 ```
 
-As shown, it appears that the constant variance assumption is violated. There appears to be a clear pattern in our residuals relating to the significance of large amounts of negative values. Since our response was normally distributed at the beginning of our EDA, we did not see the need for a transformation of our response; however, it may be the case that there is a need for more, higher-order interaction terms. Since our model satisfies the linearity assumption and also realtively satisfies our normality assumption it is reasonable to assume that this is not a great cause for concern. As well, as stated above and in our additional work we did try to choose multiple models and this particular one was the one with the least noticeable violation of constant variance and normality. Therefore, we believe that given this sufficient effort, this model is mostly likely the one that is grestest for predicting the majority of applications given our dataset. 
+As shown, it appears that the constant variance assumption is violated. There is not an even distribution of the residuals across 0, rather there appears to be a negative trend in this graph as there are more values for resiudals that appear below 0. Since our response was normally distributed at the beginning of our EDA, we did not see the need for a transformation of our response tp try to remedy this; however, it may be the case that there is a need for more, higher-order interaction terms. Since our model satisfies the linearity assumption and also realtively satisfies our normality assumption it is reasonable to assume that this is not a great cause for concern. As well, as stated above and in our additional work we did try to choose multiple models and this particular one was the one with the least noticeable violation of constant variance and normality. Therefore, we believe that given this sufficient effort, this model is mostly likely the one that is grestest for predicting the majority of applications given our dataset. 
 
 #### Normality
 
