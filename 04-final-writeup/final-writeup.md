@@ -82,11 +82,7 @@ Google Play Store. This is a numeric variable.
     ##  n obs: 10841 
     ##  n variables: 13 
     ## 
-<<<<<<< HEAD
-    ## ── Variable type:character ─────────────────────────────────────────────────────────────────────────────────────
-=======
     ## ── Variable type:character ────────────────────────────────────────────────────────────────────────
->>>>>>> 31d94fc8b41359cf243cfdf17dedafb799052519
     ##        variable missing complete     n min max empty n_unique
     ##     Android Ver       1    10840 10841   3  18     0       34
     ##             App       0    10841 10841   1 194     0     9660
@@ -100,11 +96,7 @@ Google Play Store. This is a numeric variable.
     ##            Size       0    10841 10841   3  18     0      462
     ##            Type       0    10841 10841   1   4     0        4
     ## 
-<<<<<<< HEAD
-    ## ── Variable type:numeric ───────────────────────────────────────────────────────────────────────────────────────
-=======
     ## ── Variable type:numeric ──────────────────────────────────────────────────────────────────────────
->>>>>>> 31d94fc8b41359cf243cfdf17dedafb799052519
     ##  variable missing complete     n      mean         sd p0 p25    p50
     ##    Rating    1474     9367 10841      4.19       0.54  1   4    4.3
     ##   Reviews       1    10840 10841 444152.9  2927760.6   0  38 2094  
@@ -462,11 +454,17 @@ interaction between individual predictor variables and the response.
 
 ![](final-writeup_files/figure-gfm/category-rating-1.png)<!-- -->
 
+    ## # A tibble: 2 x 4
+    ##   category_simp      min   max   med
+    ##   <chr>            <dbl> <dbl> <dbl>
+    ## 1 Others               1     5   4.3
+    ## 2 Top 6 Categories     1     5   4.2
+
 Based on the scatterplot above, there is likely a relationship between
 categories and app rating. It appears that the median rating for all
-apps in categories outside the top 6 is higher than that of apps in the
-top 6, indicating that there is a relatinoship between rating and
-`category_simp`.
+apps in categories outside the top 6 is higher (4.3) than that of apps
+in the top 6 (4.2), indicating that there is a relationship between
+rating and `category_simp`.
 
 ![](final-writeup_files/figure-gfm/reviews-rating-1.png)<!-- -->
 
@@ -479,6 +477,13 @@ Rating.
 
 ![](final-writeup_files/figure-gfm/size-rating-1.png)<!-- -->
 
+    ## # A tibble: 3 x 4
+    ##   Size                  min   max   med
+    ##   <chr>               <dbl> <dbl> <dbl>
+    ## 1 Greater than 100 MB   1.8     5   4.1
+    ## 2 Less than 100 MB      1       5   4.2
+    ## 3 Varies with device    1.9     5   4.3
+
 Based on the boxplot above, there appears to be some relationship
 between size and app rating. As the size of an app decreases its rating
 appears to increase as well as when compared with apps that vary with
@@ -488,34 +493,69 @@ between Size and our response.
 
 ![](final-writeup_files/figure-gfm/installs-rating-1.png)<!-- -->
 
+    ## # A tibble: 5 x 4
+    ##   Installs                     min   max   med
+    ##   <fct>                      <dbl> <dbl> <dbl>
+    ## 1 Less than 100                1     5     5  
+    ## 2 Between 100 and 1,000        1     5     4.5
+    ## 3 Between 1,000 and 10,000     1     5     4.2
+    ## 4 Between 10,000 and 100,000   1.6   5     4.2
+    ## 5 100,000 or Greater           1.6   4.9   4.2
+
 The boxplot above clearly shows a significant relationship between
-number of installs and rating. As the number of installs increases the
-IQR appears to decrease in conjunction. Moreover median rating also
-increases with number of installs.
+number of installs and rating. One intresting finding is that for apps
+that have installs less than 100, the median rating is a perfect score-
+a 5. As the number of installs increases the IQR appears to decrease in
+conjunction. Moreover, median rating also decreased with number of
+installs, with the levels Between 1,000 and 10,000, Between 10,000 and
+100,000, and 100,000 or Greater all having medians of 4.2 compared to
+the medians 4.5 and 5 for the other two levels.
 
 ![](final-writeup_files/figure-gfm/type-rating-1.png)<!-- -->
 
+    ## # A tibble: 3 x 4
+    ##   Price                  min   max   med
+    ##   <fct>                <dbl> <dbl> <dbl>
+    ## 1 Free                   1       5   4.2
+    ## 2 Between $0 and $4.99   1       5   4.4
+    ## 3 Greater than $5        2.6     5   4.3
+
 From looking at this plot, there does seem to be some relationship
 between price of an app and the rating of an app. For free apps, we see
-a median of about 4.3, with lots of low outliers. If the price is
-between 0 and 4.99, then the median rating actually increases, with more
-ratings being closer to 4.4. If an app price is greater than 5 dollars,
-the median is about the same as the median rating for free apps, however
-there are less outliers for this category.
+a median of 4.2, with lots of low outliers. If the price is between 0
+and 4.99, then the median rating actually increases to 4.4. If an app
+price is greater than 5 dollars, the median decreases slightly to 4.2,
+however there are less outliers for this category.
 
 ![](final-writeup_files/figure-gfm/content-rating-1.png)<!-- -->
+
+    ## # A tibble: 5 x 4
+    ##   content_simp   min   max   med
+    ##   <chr>        <dbl> <dbl> <dbl>
+    ## 1 Adults only    3.8   4.6   4.5
+    ## 2 Everyone       1     5     4.3
+    ## 3 Mature         1     5     4.2
+    ## 4 Teen           2     5     4.2
+    ## 5 Unrated        4.1   4.1   4.1
 
 By looking at this graph, it seems that there is some relationship
 between content rating and app rating. For the everyone category, which
 we know from the univariate analysis is the most popular, we see that
-the median is higher than every other level except for adults only.
-However, Everyone also has the most low outliers. Mature and Teen have
-very close medians to each other, although Teen rated apps seem to have
-slightly higher ratings. Adults only actually has the highest median
-rating out of all of the categories, with no outliers. Unrated has few
-observations, but a median that is close to 4.
+the median is 4.3, which is higher than every other level except for
+adults only. However, Everyone also has the most low outliers. Mature
+and Teen have very close medians to each other, although Teen rated apps
+seem to have slightly higher ratings. Adults only actually has the
+highest median rating out of all of the categories of 4.5, with no
+outliers. Unrated has few observations, but a median of 4.1.
 
 ![](final-writeup_files/figure-gfm/andsimp-rating-1.png)<!-- -->
+
+    ## # A tibble: 3 x 4
+    ##   androidver_simp      min   max   med
+    ##   <chr>              <dbl> <dbl> <dbl>
+    ## 1 1-4                  1       5   4.2
+    ## 2 5-8                  1       5   4.3
+    ## 3 Varies with Device   1.9     5   4.3
 
 For each level of Android Device, there are a pretty significant amount
 of outliers, which in this case represent apps with low ratings. As the
