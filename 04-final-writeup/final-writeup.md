@@ -82,7 +82,7 @@ Google Play Store. This is a numeric variable.
     ##  n obs: 10841 
     ##  n variables: 13 
     ## 
-    ## ── Variable type:character ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+    ## ── Variable type:character ─────────────────────────────────────────────────────────────────────────────────────
     ##        variable missing complete     n min max empty n_unique
     ##     Android Ver       1    10840 10841   3  18     0       34
     ##             App       0    10841 10841   1 194     0     9660
@@ -96,7 +96,7 @@ Google Play Store. This is a numeric variable.
     ##            Size       0    10841 10841   3  18     0      462
     ##            Type       0    10841 10841   1   4     0        4
     ## 
-    ## ── Variable type:numeric ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+    ## ── Variable type:numeric ───────────────────────────────────────────────────────────────────────────────────────
     ##  variable missing complete     n      mean         sd p0 p25    p50
     ##    Rating    1474     9367 10841      4.19       0.54  1   4    4.3
     ##   Reviews       1    10840 10841 444152.9  2927760.6   0  38 2094  
@@ -312,7 +312,28 @@ not be extrapolating to apps with greater than 203579 reviews.
 
 ![](final-writeup_files/figure-gfm/category-1.png)<!-- -->
 
+    ## # A tibble: 33 x 2
+    ##    `apps$Category`         n
+    ##    <fct>               <int>
+    ##  1 ART_AND_DESIGN         58
+    ##  2 AUTO_AND_VEHICLES      72
+    ##  3 BEAUTY                 42
+    ##  4 BOOKS_AND_REFERENCE   153
+    ##  5 BUSINESS              289
+    ##  6 COMICS                 54
+    ##  7 COMMUNICATION         211
+    ##  8 DATING                179
+    ##  9 EDUCATION             127
+    ## 10 ENTERTAINMENT         105
+    ## # … with 23 more rows
+
 ![](final-writeup_files/figure-gfm/log%20reviews-1.png)<!-- -->
+
+    ## # A tibble: 2 x 2
+    ##   `apps$category_simp`     n
+    ##   <chr>                <int>
+    ## 1 Others                3916
+    ## 2 Top 6 Categories      3803
 
 As demonstrated above, there are a number of levels within the variable
 `Category`, this will cause problems with overfitting down the line, so
@@ -327,6 +348,13 @@ represent abouot 4,000, almost 50%, of our observations.
 
 ![](final-writeup_files/figure-gfm/size-1.png)<!-- -->
 
+    ## # A tibble: 3 x 2
+    ##   `apps$Size`             n
+    ##   <chr>               <int>
+    ## 1 Greater than 100 MB   214
+    ## 2 Less than 100 MB     6600
+    ## 3 Varies with device    905
+
 As shown by the distribution of app sizes, it is clear that most of our
 apps are less than 100MB, with more than 6000 of the applications being
 of that Size. There are also some apps whose size varies with device
@@ -336,6 +364,15 @@ very few apps that have sizes greater than 100 MB.
 ##### Installs
 
 ![](final-writeup_files/figure-gfm/installs-1.png)<!-- -->
+
+    ## # A tibble: 5 x 2
+    ##   `apps$Installs`                n
+    ##   <fct>                      <int>
+    ## 1 Less than 100                137
+    ## 2 Between 100 and 1,000        509
+    ## 3 Between 1,000 and 10,000    1143
+    ## 4 Between 10,000 and 100,000  1475
+    ## 5 100,000 or Greater          4455
 
 The majority of reviews have 100k installs or more, and then from there
 on, the number of observations for each level of installs decreases more
@@ -347,6 +384,13 @@ will be examined further when we make our model.
 ##### Price
 
 ![](final-writeup_files/figure-gfm/price-1.png)<!-- -->
+
+    ## # A tibble: 3 x 2
+    ##   Price                    n
+    ##   <fct>                <int>
+    ## 1 Free                  7079
+    ## 2 Between $0 and $4.99   504
+    ## 3 Greater than $5        136
 
 The majority of apps are free, while the ones that are paid are between
 0 and 4.99, and a very small proportion of apps being greater than 5
@@ -376,6 +420,13 @@ to see on the plot.
 ##### Android Version
 
 ![](final-writeup_files/figure-gfm/and-plot-1.png)<!-- -->
+
+    ## # A tibble: 3 x 2
+    ##   androidver_simp        n
+    ##   <chr>              <int>
+    ## 1 1-4                 6381
+    ## 2 5-8                  603
+    ## 3 Varies with Device   735
 
 Given the above plot, within the dataset, the most common Android
 Version is 1-4. Android versions 5-8 and “Varies with device” have

@@ -233,10 +233,14 @@ apps %>%
     count(Category) %>%
     mutate(Category = fct_reorder(Category, n, .desc = FALSE)) %>%
     ggplot(aes(x = Category, y = n)) + geom_bar(stat = 'identity') + coord_flip() + labs(title = "Frequency of Category", y = "Count")
+apps %>%
+  count(apps$Category)
 ```
 
 ```{r log reviews, warning = FALSE, message = FALSE}
 ggplot(apps, aes(x = category_simp)) + geom_bar() + labs(title = "Frequency of Category", subtitle = "Simplified Version")
+apps %>%
+  count(apps$category_simp)
 ```
 
 As demonstrated above, there are a number of levels within the variable `Category`, this will cause problems with overfitting down the line, so we decided to create two levels- one for the 6 most popular levels, and one with the least popular levels. Once binned into those two levels, there is a much more even spread between the number of observations in both categories. The top 6 categories are "FAMILY","GAME", "TOOLS","MEDICAL", "LIFESTYLE", and "FINANCE." These categories represent abouot 4,000, almost 50%, of our observations. 
@@ -247,6 +251,8 @@ As demonstrated above, there are a number of levels within the variable `Categor
 ggplot(data = apps, aes(x = Size)) +
   geom_histogram(stat="count", binwidth = 0.00025) +
   labs(title = "Distribution of App Sizes")
+apps %>%
+  count(apps$Size)
 ```
  
 As shown by the distribution of app sizes, it is clear that most of our apps are less than 100MB, with more than 6000 of the applications being of that Size. There are also some apps whose size varies with device (meaning that no specific size information was available). There are very few apps that have sizes greater than 100 MB.
@@ -259,6 +265,8 @@ ggplot(data = apps, aes(x = Installs)) +
   geom_histogram(stat="count") +
   coord_flip()+
   labs(title = "Distribution of Installs")
+apps %>%
+  count(apps$Installs)
 ```
 
 The majority of reviews have 100k installs or more, and then from there on, the number of observations for each level of installs decreases more than the previous one. Few apps have less than 100 installs. This means that many apps have a very large number of reviews, which is interesting considering there are also many apps that have very high ratings- this will be examined further when we make our model.
@@ -270,6 +278,8 @@ ggplot(data = apps, aes(x = Price)) +
   geom_histogram(stat="count")+
   coord_flip() +
   labs(title = "Distribution of Price (in USD)")
+apps %>%
+  count(Price)
 ```
 
 The majority of apps are free, while the ones that are paid are between 0 and 4.99, and a very small proportion of apps being greater than 5 dollars.For our analysis, we decided to use the variable `Price` because it has more levels and is a more specific classification of the price of the applications than `Type` which just indicated free or paid. 
@@ -294,6 +304,8 @@ Given the above plot, the most common content rating is "Everyone" within the da
 ggplot(data = apps, aes(x = androidver_simp)) +
   geom_histogram(stat="count") +
   labs(title = "Distribution of Android Version", x = "Android Version")
+apps %>%
+  count(androidver_simp)
 ```
 
 Given the above plot, within the dataset, the most common Android Version is 1-4. Android versions 5-8 and "Varies with device" have similar numbers of observations, but are still much lower than the version 1-4 category. 
