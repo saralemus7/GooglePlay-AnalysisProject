@@ -82,7 +82,7 @@ Google Play Store. This is a numeric variable.
     ##  n obs: 10841 
     ##  n variables: 13 
     ## 
-    ## ── Variable type:character ────────────────────────────────────────────────────────
+    ## ── Variable type:character ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
     ##        variable missing complete     n min max empty n_unique
     ##     Android Ver       1    10840 10841   3  18     0       34
     ##             App       0    10841 10841   1 194     0     9660
@@ -96,7 +96,7 @@ Google Play Store. This is a numeric variable.
     ##            Size       0    10841 10841   3  18     0      462
     ##            Type       0    10841 10841   1   4     0        4
     ## 
-    ## ── Variable type:numeric ──────────────────────────────────────────────────────────
+    ## ── Variable type:numeric ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
     ##  variable missing complete     n      mean         sd p0 p25    p50
     ##    Rating    1474     9367 10841      4.19       0.54  1   4    4.3
     ##   Reviews       1    10840 10841 444152.9  2927760.6   0  38 2094  
@@ -302,7 +302,11 @@ Therefore, to correct this issue, we removed the outlier from the
 variable as well as log transformed it in order to make it easier to see
 trends as well as make the variable less skewed. We assumed that the
 outlier with 78 million reviews was a mistake coming from the data
-scrape, since a number so high seems very unlikely.
+scrape, since a number so high seems very unlikely. We removed 38
+outliers using the 1.5 x (IQR) to the third/first quartile rule.
+Examples of apps that were removed are extremely popular apps such as
+“Facebook” or “Snapchat.” This would mean that later our model will
+not be extrapolating to apps with greater than 203579 reviews.
 
 ##### Category
 
@@ -315,7 +319,9 @@ As demonstrated above, there are a number of levels within the variable
 we decided to create two levels- one for the 6 most popular levels, and
 one with the least popular levels. Once binned into those two levels,
 there is a much more even spread between the number of observations in
-both categories.
+both categories. The top 6 categories are “FAMILY”,“GAME”,
+“TOOLS”,“MEDICAL”, “LIFESTYLE”, and “FINANCE.” These categories
+represent abouot 4,000, almost 50%, of our observations.
 
 ##### Size
 
@@ -352,10 +358,20 @@ the applications than `Type` which just indicated free or paid.
 
 ![](final-writeup_files/figure-gfm/cr-1.png)<!-- -->
 
+    ## # A tibble: 5 x 2
+    ##   content_simp     n
+    ##   <chr>        <int>
+    ## 1 Everyone      6590
+    ## 2 Teen           770
+    ## 3 Mature         355
+    ## 4 Adults only      3
+    ## 5 Unrated          1
+
 Given the above plot, the most common content rating is “Everyone”
 within the dataset. The next most occurring category is Teen. After
 that, we see even less apps that are rated mature. Unrated and Adults
-only have so few observations that they are hard to see on the plot.
+only have so few observations (1 and 3 respectively) that they are hard
+to see on the plot.
 
 ##### Android Version
 
@@ -399,9 +415,18 @@ was copy pasted from the old one i think
 Based on the scatterplot above, there is likely a relationship between
 number of reviews and app rating. As the number of reviews increased the
 app rating was concentrated at approximately 4.5 - which was consistent
-with apps holding smaller number of reviews. IS THIS RIGHT??
+with apps holding smaller number of reviews. In general, though, there
+is a possiible weak positive relationship between log(Reviews) and
+Rating.
 
 ![](final-writeup_files/figure-gfm/size-rating-1.png)<!-- -->
+
+Based on the boxplot above, there appears to be some relationship
+between size and app rating. As the size of an app decreases its rating
+appears to increase as well as when compared with apps that vary with
+device. In general, it appears that each category of size has a
+different median rating and thus there is moost likely a relationship
+between Size and our response.
 
 ![](final-writeup_files/figure-gfm/installs-rating-1.png)<!-- -->
 
@@ -910,21 +935,23 @@ interval so our model is still accurate to some degree.
     ##        fit      lwr      upr
     ## 1 4.009694 2.930274 5.089114
 
-Lastly, we will predict the rating for the popular social media app
-“TikTok” which was created after our dataset was scraped. It’s rating
-is 4.5, it is in the Social Category, and has Size 80M.
+Lastly, we will predict the rating for the popular app “Draw Around”
+which was not present in our dataset (its characteristics including
+number of reviews were consistent with the other predictors that were
+used so this is not an extraplation). It’s rating is 4.2, it is in the
+Game Category, and has Size Less than 100 MB.
 
-    ##        fit     lwr      upr
-    ## 1 4.162003 3.08501 5.238997
+    ##        fit      lwr      upr
+    ## 1 4.135139 3.058156 5.212123
 
-As shown, the model underpredicts Bejeweled and TikTok, but predicts the
-rating of Selfie Camera with relative accuracy. This is most likely due
-to the fact that we had to bin some of the variables such as `Category`
-and `Size` which may have reduced the amount of variability in the
-dataset that the model was able to capture. However, all of the 95%
-confidence intervals hold the actual rating of these apps, so our model
-still does a relatively good job of predicting the Rating of an app in
-the Google Play Store.
+As shown, the model underpredicts Bejeweled and Draw Around, but
+predicts the rating of Selfie Camera with relative accuracy. This is
+most likely due to the fact that we had to bin some of the variables
+such as `Category` and `Size` which may have reduced the amount of
+variability in the dataset that the model was able to capture. However,
+all of the 95% confidence intervals hold the actual rating of these
+apps, so our model still does a relatively good job of predicting the
+Rating of an app in the Google Play Store.
 
 The model’s performance is dictated by these tests and our model did
 perform relatively well as shown above. The apps that we chose to test

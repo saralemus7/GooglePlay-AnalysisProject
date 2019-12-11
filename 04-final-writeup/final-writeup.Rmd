@@ -224,7 +224,7 @@ apps %>%
   summarise(median(log_reviews), max(log_reviews), IQR(log_reviews))
 ```
 
-Reviews is definitely one of our most skewed predictors, as shown by the strong right skew in this histogram. Originally, the skew was even more extreme, since there was one outlier that had 78 million reviews. Therefore, to correct this issue, we removed the outlier from the variable as well as log transformed it in order to make it easier to see trends as well as make the variable less skewed. We assumed that the outlier with 78 million reviews was a mistake coming from the data scrape, since a number so high seems very unlikely.
+Reviews is definitely one of our most skewed predictors, as shown by the strong right skew in this histogram. Originally, the skew was even more extreme, since there was one outlier that had 78 million reviews. Therefore, to correct this issue, we removed the outlier from the variable as well as log transformed it in order to make it easier to see trends as well as make the variable less skewed. We assumed that the outlier with 78 million reviews was a mistake coming from the data scrape, since a number so high seems very unlikely. We removed 38 outliers using the 1.5 x (IQR) to the third/first quartile rule. Examples of apps that were removed are extremely popular apps such as "Facebook" or "Snapchat." This would mean that later our model will not be extrapolating to apps with greater than 203579 reviews. 
 
 ##### Category
 
@@ -239,7 +239,7 @@ apps %>%
 ggplot(apps, aes(x = category_simp)) + geom_bar() + labs(title = "Frequency of Category", subtitle = "Simplified Version")
 ```
 
-As demonstrated above, there are a number of levels within the variable `Category`, this will cause problems with overfitting down the line, so we decided to create two levels- one for the 6 most popular levels, and one with the least popular levels. Once binned into those two levels, there is a much more even spread between the number of observations in both categories. 
+As demonstrated above, there are a number of levels within the variable `Category`, this will cause problems with overfitting down the line, so we decided to create two levels- one for the 6 most popular levels, and one with the least popular levels. Once binned into those two levels, there is a much more even spread between the number of observations in both categories. The top 6 categories are "FAMILY","GAME", "TOOLS","MEDICAL", "LIFESTYLE", and "FINANCE." These categories represent abouot 4,000, almost 50%, of our observations. 
 
 ##### Size
 
@@ -249,7 +249,7 @@ ggplot(data = apps, aes(x = Size)) +
   labs(title = "Distribution of App Sizes")
 ```
  
- As shown by the distribution of app sizes, it is clear that most of our apps are less than 100MB, with more than 6000 of the applications being of that Size. There are also some apps whose size varies with device (meaning that no specific size information was available). There are very few apps that have sizes greater than 100 MB.
+As shown by the distribution of app sizes, it is clear that most of our apps are less than 100MB, with more than 6000 of the applications being of that Size. There are also some apps whose size varies with device (meaning that no specific size information was available). There are very few apps that have sizes greater than 100 MB.
 
  
 ##### Installs
@@ -281,9 +281,12 @@ The majority of apps are free, while the ones that are paid are between 0 and 4.
 ggplot(data = apps, aes(x = content_simp)) +
   geom_histogram(stat="count") +
   labs(title = "Distribution of Content Rating")
+apps %>%
+  count(content_simp) %>%
+  arrange(desc(n))
 ```
 
-Given the above plot, the most common content rating is "Everyone" within the dataset. The next most occurring category is Teen. After that, we see even less apps that are rated mature. Unrated and Adults only have so few observations that they are hard to see on the plot.
+Given the above plot, the most common content rating is "Everyone" within the dataset. The next most occurring category is Teen. After that, we see even less apps that are rated mature. Unrated and Adults only have so few observations (1 and 3 respectively) that they are hard to see on the plot.
 
 ##### Android Version 
 
@@ -323,12 +326,14 @@ ggplot(data = apps, aes(x = log_reviews, y = Rating)) + geom_point() +
   labs(title = "Relationship between Log Reviews and Rating", x = "Number of Reviews") 
 ```
 
-Based on the scatterplot above, there is likely a relationship between number of reviews and app rating. As the number of reviews increased the app rating was concentrated at approximately 4.5 - which was consistent with apps holding smaller number of reviews. IS THIS RIGHT??
+Based on the scatterplot above, there is likely a relationship between number of reviews and app rating. As the number of reviews increased the app rating was concentrated at approximately 4.5 - which was consistent with apps holding smaller number of reviews. In general, though, there is a possiible weak positive relationship between log(Reviews) and Rating. 
 
 ```{r size-rating, warning = FALSE, message=FALSE}
 ggplot(data = apps, aes(x = Size, y = Rating)) + geom_boxplot() +
   labs(title = "Relationship between Size and Rating", x = "Size")
 ```
+
+Based on the boxplot above, there appears to be some relationship between size and app rating. As the size of an app decreases its rating appears to increase as well as when compared with apps that vary with device. In general, it appears that each category of size has a different median rating and thus there is moost likely a relationship between Size and our response. 
 
 ```{r installs-rating, warning = FALSE, message=FALSE}
 ggplot(data = apps, aes(x = Installs, y = Rating)) + geom_boxplot() +
@@ -504,7 +509,6 @@ apps_output %>% filter(.hat > leverage_threshold) %>%
 
 As shown, there are 214 high leverage points. This is problematic, but before we assess our model's strength we should check cook's distance. However, in our previous model we had 8,134 leverage points. Thus, this model is a significant improvement over that. 
 
-
 #### Cook's Distance
 
 Now let’s check how many of these points cross our threshold for Cook’s Distance (Di > 1) to determine if these high leverage points do in fact have a significant influence on our model coefficients.
@@ -605,14 +609,14 @@ go <- data.frame(category_simp = "Others", Size = "Greater than 100 MB")
 predict.lm(final_model, go, interval = "prediction", conf.level = 0.95)
 ```
 
-Lastly, we will predict the rating for the popular social media app "TikTok" which was created after our dataset was scraped. It's rating is 4.5, it is in the Social Category, and has Size 80M.
+Lastly, we will predict the rating for the popular app "Draw Around" which was not present in our dataset (its characteristics including number of reviews were consistent with the other predictors that were used so this is not an extraplation). It's rating is 4.2, it is in the Game Category, and has Size Less than 100 MB.
 
 ```{r pred-4, warning = FALSE, message=FALSE}
-tik <- data.frame(category_simp = "Others", Size = "Less than 100 MB")
-predict.lm(final_model, tik, interval = "prediction", conf.level = 0.95)
+draw <- data.frame(category_simp = "Top 6 Categories", Size = "Less than 100 MB")
+predict.lm(final_model, draw, interval = "prediction", conf.level = 0.95)
 ```
 
-As shown, the model underpredicts Bejeweled and TikTok, but predicts the rating of Selfie Camera with relative accuracy. This is most likely due to the fact that we had to bin some of the variables such as `Category` and `Size` which may have reduced the amount of variability in the dataset that the model was able to capture. However, all of the 95% confidence intervals hold the actual rating of these apps, so our model still does a relatively good job of predicting the Rating of an app in the Google Play Store. 
+As shown, the model underpredicts Bejeweled and Draw Around, but predicts the rating of Selfie Camera with relative accuracy. This is most likely due to the fact that we had to bin some of the variables such as `Category` and `Size` which may have reduced the amount of variability in the dataset that the model was able to capture. However, all of the 95% confidence intervals hold the actual rating of these apps, so our model still does a relatively good job of predicting the Rating of an app in the Google Play Store. 
 
 The model's performance is dictated by these tests and our model did perform relatively well as shown above. The apps that we chose to test the model were from a variety of categories and sizes as well as from apps that were and were not in our dataset. As we will discuss in the limitations section, the Google play store is a dynamic environment with the distribution of categories and ratings changing every day, so this may be the reason for why our model is slightly underpredicting the rating of some apps. 
 
