@@ -2,5 +2,4 @@
 
 Place PDF of presentation here.
 
-- If you're using Google Slides, add a link to the slides to the README.
-- If not, delete this README once PDF is placed in this folder.
+Link to google slides for RTime2Shine: https://docs.google.com/presentation/d/1hoUUuDtvvW0mj3qGZbcjLMX1nNiyZjv7xRmVGFjZhuI/edit?usp=sharing
