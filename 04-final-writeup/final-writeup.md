@@ -82,7 +82,7 @@ Google Play Store. This is a numeric variable.
     ##  n obs: 10841 
     ##  n variables: 13 
     ## 
-    ## ── Variable type:character ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+    ## ── Variable type:character ──────────────────────────────────────────────────────────────────────────────────────────────────────
     ##        variable missing complete     n min max empty n_unique
     ##     Android Ver       1    10840 10841   3  18     0       34
     ##             App       0    10841 10841   1 194     0     9660
@@ -96,7 +96,7 @@ Google Play Store. This is a numeric variable.
     ##            Size       0    10841 10841   3  18     0      462
     ##            Type       0    10841 10841   1   4     0        4
     ## 
-    ## ── Variable type:numeric ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+    ## ── Variable type:numeric ────────────────────────────────────────────────────────────────────────────────────────────────────────
     ##  variable missing complete     n      mean         sd p0 p25    p50
     ##    Rating    1474     9367 10841      4.19       0.54  1   4    4.3
     ##   Reviews       1    10840 10841 444152.9  2927760.6   0  38 2094  
@@ -425,7 +425,7 @@ Based on the boxplot above, there appears to be some relationship
 between size and app rating. As the size of an app decreases its rating
 appears to increase as well as when compared with apps that vary with
 device. In general, it appears that each category of size has a
-different median rating and thus there is moost likely a relationship
+different median rating and thus there is most likely a relationship
 between Size and our response.
 
 ![](final-writeup_files/figure-gfm/installs-rating-1.png)<!-- -->
@@ -433,16 +433,50 @@ between Size and our response.
 The boxplot above clearly shows a significant relationship between
 number of installs and rating. As the number of installs increases the
 IQR appears to decrease in conjunction. Moreover median rating also
-increases with number of
-installs.
+increases with number of installs.
 
 ![](final-writeup_files/figure-gfm/type-rating-1.png)<!-- -->
 
+From looking at this plot, there does seem to be some relationship
+between price of an app and the rating of an app. For free apps, we see
+a median of about 4.3, with lots of low outliers. If the price is
+between 0 and 4.99, then the median rating actually increases, with more
+ratings being closer to 4.4. If an app price is greater than 5 dollars,
+the median is about tthe same as the median rating for free apps,
+however there are less outliers for this category.
+
 ![](final-writeup_files/figure-gfm/content-rating-1.png)<!-- -->
+
+By looking at this graph, it seems that there is some relationship
+between content rating and app rating. For the everyone category, which
+we know from the univariate analysis is the most popular, we see that
+the median is higher than every other level except for adults only.
+However, Everyone also has the most low outliers. Mature and Teen have
+very close medians to each other, although Teen rated apps seem to have
+slightly higher ratings. Adults only actually has the highest median
+rating out of all of the categories, with no outliers. Unrated has few
+observations, but a median that is close to 4.
 
 ![](final-writeup_files/figure-gfm/andsimp-rating-1.png)<!-- -->
 
+For each level of Android Device, there are a pretty significant amount
+of outliers, which in this case represent apps with low ratings. As the
+Android increases in generation, we see that the box for categories 5-8
+shows an increase in median app rating. Additionally, Android versions
+that vary with device show an even higher median and smaller IQR than
+either of the other two categories, implying that these apps have the
+highest ratings.
+
 ![](final-writeup_files/figure-gfm/datesince-rating-1.png)<!-- -->
+
+Looking at the scatter plot that shows the relationship between days
+since last update and rating, we can see that there is not a very strong
+relationship between these two variables. However, it does seem that as
+there becomes more days since the app has been last updated (200+),
+there are more apps that are rated between 3 and 4, which implies that
+if an app has not been updated for a very long it will be less likely to
+be rated 5
+stars.
 
 ## Section 2: Regression Analysis (includes the final model and discussion of assumptions)
 
