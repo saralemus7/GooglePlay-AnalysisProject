@@ -82,7 +82,7 @@ Google Play Store. This is a numeric variable.
     ##  n obs: 10841 
     ##  n variables: 13 
     ## 
-    ## ── Variable type:character ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+    ## ── Variable type:character ────────────────────────────────────────────────────────────────────────
     ##        variable missing complete     n min max empty n_unique
     ##     Android Ver       1    10840 10841   3  18     0       34
     ##             App       0    10841 10841   1 194     0     9660
@@ -96,7 +96,7 @@ Google Play Store. This is a numeric variable.
     ##            Size       0    10841 10841   3  18     0      462
     ##            Type       0    10841 10841   1   4     0        4
     ## 
-    ## ── Variable type:numeric ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+    ## ── Variable type:numeric ──────────────────────────────────────────────────────────────────────────
     ##  variable missing complete     n      mean         sd p0 p25    p50
     ##    Rating    1474     9367 10841      4.19       0.54  1   4    4.3
     ##   Reviews       1    10840 10841 444152.9  2927760.6   0  38 2094  
@@ -128,8 +128,8 @@ variables as they measure the same thing, so we will use `Price` instead
 of `Type.` We will not deleting these variables from the dataset as to
 maintain integrity, but will not examine them in our analysis.
 
-Aditionally, we have many predictors that are coded as characters in the
-dataset, so we decided to recode them as factors. We also have some
+Additionally, we have many predictors that are coded as characters in
+the dataset, so we decided to recode them as factors. We also have some
 variables that are coded as characters due to the existence of a
 particular a symbol (ex. $),so we will recode these into a format which
 will be usable for our analysis.
@@ -276,7 +276,7 @@ and its redundancy.
 As seen above, the distribution of ratings is left-skewed with its peak
 between 4 and 4.5. The IQR of 0.6 demonstrates that the middle 50% of
 our data is highly concentrated around that peak. It is interesting that
-the data is so right skewed- this sugguests that a majority of apps have
+the data is so right skewed- this suggests that a majority of apps have
 a rating between 4 and 5, which is very high on a 5 point scale.
 
 ##### Reviews
@@ -321,7 +321,7 @@ one with the least popular levels. Once binned into those two levels,
 there is a much more even spread between the number of observations in
 both categories. The top 6 categories are “FAMILY”,“GAME”,
 “TOOLS”,“MEDICAL”, “LIFESTYLE”, and “FINANCE.” These categories
-represent abouot 4,000, almost 50%, of our observations.
+represent about 4,000, almost 50%, of our observations.
 
 ##### Size
 
@@ -403,12 +403,11 @@ interaction between individual predictor variables and the response.
 
 ![](final-writeup_files/figure-gfm/category-rating-1.png)<!-- -->
 
-Although there is some variation in rating between app categories, the
-most telling aspect of this exploratory model is the outliers. It
-appears that some categories are more susceptible to outliers with low
-ratings. More over there are notable discrepancies between minimum
-boxplot rating among categories. \*\*NOTE THIS NEEDS TO BE FIXED this
-was copy pasted from the old one i think
+Based on the scatterplot above, there is likely a relationship between
+categories and app rating. It appears that the median rating for all
+apps in categories outside the top 6 is higher than that of apps in the
+top 6, indicating that there is a relationship between rating and
+category\_simp.
 
 ![](final-writeup_files/figure-gfm/reviews-rating-1.png)<!-- -->
 
@@ -416,7 +415,7 @@ Based on the scatterplot above, there is likely a relationship between
 number of reviews and app rating. As the number of reviews increased the
 app rating was concentrated at approximately 4.5 - which was consistent
 with apps holding smaller number of reviews. In general, though, there
-is a possiible weak positive relationship between log(Reviews) and
+is a possible weak positive relationship between log(Reviews) and
 Rating.
 
 ![](final-writeup_files/figure-gfm/size-rating-1.png)<!-- -->
@@ -442,8 +441,8 @@ between price of an app and the rating of an app. For free apps, we see
 a median of about 4.3, with lots of low outliers. If the price is
 between 0 and 4.99, then the median rating actually increases, with more
 ratings being closer to 4.4. If an app price is greater than 5 dollars,
-the median is about tthe same as the median rating for free apps,
-however there are less outliers for this category.
+the median is about the same as the median rating for free apps, however
+there are less outliers for this category.
 
 ![](final-writeup_files/figure-gfm/content-rating-1.png)<!-- -->
 
@@ -529,7 +528,7 @@ and a calculation of Cook’s distance, we will attempt to determine those
 observations with high standardized residuals or cook’s distance and
 determine if those observations have a significant effect on our model.
 Lastly, we will need to find the VIF factor for each of our final
-predictors to see if there is any collinearity between them. A VIF
+predictors to see if there is any multicollinearity between them. A VIF
 greater than 10 would require us to explore possible ways to mitigate
 interactions between variables or consider dropping predictors are are
 too heavily
@@ -972,7 +971,7 @@ interval so our model is still accurate to some degree.
 Lastly, we will predict the rating for the popular app “Draw Around”
 which was not present in our dataset (its characteristics including
 number of reviews were consistent with the other predictors that were
-used so this is not an extraplation). It’s rating is 4.2, it is in the
+used so this is not an extrapolation). It’s rating is 4.2, it is in the
 Game Category, and has Size Less than 100 MB.
 
     ##        fit      lwr      upr
@@ -1051,7 +1050,7 @@ sure that it is specific enough to the data. Regarding the data itself,
 we would probably attempt to re-scrape the data now as to have data that
 more closely reflects the current Google play store. Additionally,
 another factor that may be important to any given app rating is whether
-or not there are in-app purchases availiable. This is one aspect of an
+or not there are in-app purchases available. This is one aspect of an
 app that our data set did not provide information about, however ideally
 we would be able to put this information into our model to see if it
 helps us predict rating.
@@ -1074,7 +1073,7 @@ significant factors in an application’s success are `category` and
 
 This information can be useful to app developers, users, and application
 stores in how to view, change, and utilize applications to ensure their
-success as measued by mean rating on the Google Play
+success as measured by mean rating on the Google Play
 store.
 
 ## Section 5: Additional Work
@@ -1107,7 +1106,7 @@ paid or free, all apps that are free will be correlated with apps that
 have a price = 0 and apps that are paid will be correlated with apps
 that have a price greater than 0.
 
-![](final-writeup_files/figure-gfm/int-type-1.png)<!-- -->
+![](final-writeup_files/figure-gfm/type-rating-price-1.png)<!-- -->
 
 This is further illustrated through the above plot, which clearly shows
 this interaction. These interactions along with any further ones we may

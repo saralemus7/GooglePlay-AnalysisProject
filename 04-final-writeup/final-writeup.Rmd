@@ -82,7 +82,7 @@ Upon examining our predictor variables, it looks like there are occasionally one
 
 Furthermore, here it is worth noting that the variable, `Genres` contains the same information in the `category` variable - the only difference being that the data is just displayed a bit differently. Therefore, as to avoid being redundant, we will only be using `category` in our analysis. As well, the information contained in the variable `Type` is also contained in `Price`. Since `Price` provides the prices of an app and `Type` simply denotes whether or not an app is paid or free, there is most likely a large linear dependency between these two variables as they measure the same thing, so we will use `Price` instead of `Type.` We will not deleting these variables from the dataset as to maintain integrity, but will not examine them in our analysis.
 
-Aditionally, we have many predictors that are coded as characters in the dataset, so we decided to recode them as factors. We also have some variables that are coded as characters due to the existence of a particular a symbol (ex. $),so we will recode these into a format which will be usable for our analysis. 
+Additionally, we have many predictors that are coded as characters in the dataset, so we decided to recode them as factors. We also have some variables that are coded as characters due to the existence of a particular a symbol (ex. $),so we will recode these into a format which will be usable for our analysis. 
 
 Looking at the data, there are two variables related to the version, or iteration of the app as provided by the developers: `Current Ver` and `Android Ver`. Given that Google owns both Android and the Google Play Store, the company would likely be more interested in the Android version of the app. Furthermore, Android users are unlikely to be using other operating system's application stores, so a developer who is interested in creating apps for the Android market would gain more information through an examination of the compatibility of certain apps with a particular version of Android. Some data wrangling was necessary to make this variable suitable for analysis.
 
@@ -203,7 +203,7 @@ apps %>%
   summarise(median(Rating), IQR(Rating))
 ```
 
-As seen above, the distribution of ratings is left-skewed with its peak between 4 and 4.5. The IQR of 0.6 demonstrates that the middle 50% of our data is highly concentrated around that peak. It is interesting that the data is so right skewed- this sugguests that a majority of apps have a rating between 4 and 5, which is very high on a 5 point scale.
+As seen above, the distribution of ratings is left-skewed with its peak between 4 and 4.5. The IQR of 0.6 demonstrates that the middle 50% of our data is highly concentrated around that peak. It is interesting that the data is so right skewed- this suggests that a majority of apps have a rating between 4 and 5, which is very high on a 5 point scale.
 
 ##### Reviews
 
@@ -239,7 +239,7 @@ apps %>%
 ggplot(apps, aes(x = category_simp)) + geom_bar() + labs(title = "Frequency of Category", subtitle = "Simplified Version")
 ```
 
-As demonstrated above, there are a number of levels within the variable `Category`, this will cause problems with overfitting down the line, so we decided to create two levels- one for the 6 most popular levels, and one with the least popular levels. Once binned into those two levels, there is a much more even spread between the number of observations in both categories. The top 6 categories are "FAMILY","GAME", "TOOLS","MEDICAL", "LIFESTYLE", and "FINANCE." These categories represent abouot 4,000, almost 50%, of our observations. 
+As demonstrated above, there are a number of levels within the variable `Category`, this will cause problems with overfitting down the line, so we decided to create two levels- one for the 6 most popular levels, and one with the least popular levels. Once binned into those two levels, there is a much more even spread between the number of observations in both categories. The top 6 categories are "FAMILY","GAME", "TOOLS","MEDICAL", "LIFESTYLE", and "FINANCE." These categories represent about 4,000, almost 50%, of our observations. 
 
 ##### Size
 
@@ -319,14 +319,14 @@ ggplot(data = apps, aes(x = category_simp, y = Rating)) + geom_boxplot() + coord
   labs(title = "Relationship between Category and Rating") 
 ```
 
-Although there is some variation in rating between app categories, the most telling aspect of this exploratory model is the outliers. It appears that some categories are more susceptible to outliers with low ratings. More over there are notable discrepancies between minimum boxplot rating among categories. **NOTE THIS NEEDS TO BE FIXED this was copy pasted from the old one i think
+Based on the scatterplot above, there is likely a relationship between categories and app rating. It appears that the median rating for all apps in  categories outside the top 6 is higher than that of apps in the top 6, indicating that there is a relationship between rating and category_simp.
 
 ```{r reviews-rating, warning = FALSE, message=FALSE}
 ggplot(data = apps, aes(x = log_reviews, y = Rating)) + geom_point() +
   labs(title = "Relationship between Log Reviews and Rating", x = "Number of Reviews") 
 ```
 
-Based on the scatterplot above, there is likely a relationship between number of reviews and app rating. As the number of reviews increased the app rating was concentrated at approximately 4.5 - which was consistent with apps holding smaller number of reviews. In general, though, there is a possiible weak positive relationship between log(Reviews) and Rating. 
+Based on the scatterplot above, there is likely a relationship between number of reviews and app rating. As the number of reviews increased the app rating was concentrated at approximately 4.5 - which was consistent with apps holding smaller number of reviews. In general, though, there is a possible weak positive relationship between log(Reviews) and Rating. 
 
 ```{r size-rating, warning = FALSE, message=FALSE}
 ggplot(data = apps, aes(x = Size, y = Rating)) + geom_boxplot() +
@@ -347,7 +347,7 @@ ggplot(data = apps, aes(x = Price, y = Rating)) + geom_boxplot() +
   labs(title = "Relationship between Price and Rating")
 ```
 
-From looking at this plot, there does seem to be some relationship between price of an app and the rating of an app. For free apps, we see a median of about 4.3, with lots of low outliers. If the price is between 0 and 4.99, then the median rating actually increases, with more ratings being closer to 4.4. If an app price is greater than 5 dollars, the median is about tthe same as the median rating for free apps, however there are less outliers for this category. 
+From looking at this plot, there does seem to be some relationship between price of an app and the rating of an app. For free apps, we see a median of about 4.3, with lots of low outliers. If the price is between 0 and 4.99, then the median rating actually increases, with more ratings being closer to 4.4. If an app price is greater than 5 dollars, the median is about the same as the median rating for free apps, however there are less outliers for this category. 
 
 ```{r content-rating, warning = FALSE, message=FALSE}
 ggplot(data = apps, aes(x = content_simp, y = Rating)) + geom_boxplot() +
@@ -378,7 +378,7 @@ The regression modeling technique we will use will be Multiple Linear Regression
 
 Our ultimate goal is to create the model which most accurately and concisely predicts the Rating of an app given the predictors in the dataset. We will attempt to choose a model using a minimization of both BIC and AIC as our criteria as this will allow us to calculate a precise prediction of our response variable while also removing extraneous predictors. We will use BIC and AIC as our selection criteria as it penalizes more for erroneous predictors as compared to adj. R-Squared. We will not use R-squared as a criteria for model selection. R squared increases strictly as the number of predictors increases and does not tell us if these additional predictors are significant or not. If we used r-squared we would always choose models with the largest numbers of predictors, which would not always produce the simplest, most accurate model. Unlike R squared, AIC, BIC, and adjusted R squared do penalize for insignificant predictors and can give us a better idea of which predictors actually contribute to the response variable. 
 
-In order to find our final model, we will use a process of both forwards and backwards selection, slowly adding a combination of relevant predictors into our model. We will then check the BIC and AIC values for each of these models and find the model with the lowest value overall, or the fewest predictors - this will be the model that most accurately predicts our response with the fewest number of predictors. We will then plot each predictor on the response to determine if the effect is relevant or if there are possible interactions between other variables. As well, we will need to consider potential outliers and extraneous values in our model. Using the distributions of standardized residuals and a calculation of Cook’s distance, we will attempt to determine those observations with high standardized residuals or cook’s distance and determine if those observations have a significant effect on our model. Lastly, we will need to find the VIF factor for each of our final predictors to see if there is any collinearity between them. A VIF greater than 10 would require us to explore possible ways to mitigate interactions between variables or consider dropping predictors are are too heavily correlated. 
+In order to find our final model, we will use a process of both forwards and backwards selection, slowly adding a combination of relevant predictors into our model. We will then check the BIC and AIC values for each of these models and find the model with the lowest value overall, or the fewest predictors - this will be the model that most accurately predicts our response with the fewest number of predictors. We will then plot each predictor on the response to determine if the effect is relevant or if there are possible interactions between other variables. As well, we will need to consider potential outliers and extraneous values in our model. Using the distributions of standardized residuals and a calculation of Cook’s distance, we will attempt to determine those observations with high standardized residuals or cook’s distance and determine if those observations have a significant effect on our model. Lastly, we will need to find the VIF factor for each of our final predictors to see if there is any multicollinearity between them. A VIF greater than 10 would require us to explore possible ways to mitigate interactions between variables or consider dropping predictors are are too heavily correlated. 
 
 ### Model Selection
 
@@ -578,6 +578,7 @@ The proportion of observations that have standardized residuals with magnitude >
 ### VIF
 
 We will check the VIF of our model without interactions:
+
 ```{r vif, warning = FALSE, message=FALSE}
 tidy(vif(final_model))
 ```
@@ -617,7 +618,7 @@ go <- data.frame(category_simp = "Others", Size = "Greater than 100 MB")
 predict.lm(final_model, go, interval = "prediction", conf.level = 0.95)
 ```
 
-Lastly, we will predict the rating for the popular app "Draw Around" which was not present in our dataset (its characteristics including number of reviews were consistent with the other predictors that were used so this is not an extraplation). It's rating is 4.2, it is in the Game Category, and has Size Less than 100 MB.
+Lastly, we will predict the rating for the popular app "Draw Around" which was not present in our dataset (its characteristics including number of reviews were consistent with the other predictors that were used so this is not an extrapolation). It's rating is 4.2, it is in the Game Category, and has Size Less than 100 MB.
 
 ```{r pred-4, warning = FALSE, message=FALSE}
 draw <- data.frame(category_simp = "Top 6 Categories", Size = "Less than 100 MB")
@@ -638,7 +639,7 @@ It is important to also consider that there may be external factors not accounte
 
 If we were to start over with this project, we would probably look more closely at the dataset. Many of our variables had issues that needed to be taken care of in order to conduct multiple linear regression. For instance, we needed to completely relevel a categorical variable, Category. There were other variables that were challenging, such as a time related variable and variables related to the version of the applications that we should have realized earlier on needed special attention. 
 
-If we were to continue the current project with the current dataset we would have explored how the factors contributing to app success change over time and specifically from year-to-year, we would set different baseline levels for every combination of categorical variables and redo the models and model selection. To improve our analysis, we would make training and test cases and conduct a k-fold cross validation that will allow us to assess the model's fit allowing us to make sure that the model is not too closely fit as to check generalizability, but also make sure that it is specific enough to the data. Regarding the data itself, we would probably attempt to re-scrape the data now as to have data that more closely reflects the current Google play store.  Additionally, another factor that may be important to any given app rating is whether or not there are in-app purchases availiable. This is one aspect of an app that our data set did not provide information about, however ideally we would be able to put this information into our model to see if it helps us predict rating.
+If we were to continue the current project with the current dataset we would have explored how the factors contributing to app success change over time and specifically from year-to-year, we would set different baseline levels for every combination of categorical variables and redo the models and model selection. To improve our analysis, we would make training and test cases and conduct a k-fold cross validation that will allow us to assess the model's fit allowing us to make sure that the model is not too closely fit as to check generalizability, but also make sure that it is specific enough to the data. Regarding the data itself, we would probably attempt to re-scrape the data now as to have data that more closely reflects the current Google play store.  Additionally, another factor that may be important to any given app rating is whether or not there are in-app purchases available. This is one aspect of an app that our data set did not provide information about, however ideally we would be able to put this information into our model to see if it helps us predict rating.
 
 ## Section 4: Conclusion
 
@@ -646,7 +647,7 @@ At the beginning of our investigation, we wanted to find out which factors contr
 
 The answer to our research question therefore is that the most significant factors in an application's success are `category` and `size`. 
 
-This information can be useful to app developers, users, and application stores in how to view, change, and utilize applications to ensure their success as measued by mean rating on the Google Play store. 
+This information can be useful to app developers, users, and application stores in how to view, change, and utilize applications to ensure their success as measured by mean rating on the Google Play store. 
 
 ## Section 5: Additional Work
 
@@ -654,7 +655,7 @@ This information can be useful to app developers, users, and application stores 
 
 First, there is a possible interaction between content rating and categories. 
 
-```{r int-content}
+```{r int-content, warning = FALSE, message = FALSE}
 ggplot(apps, aes(x = Category, y = Rating, color = `Content Rating`)) + geom_point() + 
 coord_flip() +
 labs( title = "Relationship between Category and Rating", x ="Category", y = "Rating out of 5")
@@ -662,7 +663,7 @@ labs( title = "Relationship between Category and Rating", x ="Category", y = "Ra
 
 As shown in the plot above, there may be a correlation between having a lower content rating and being in a “family-friendly” category such as Family or game -  a clear example of this phenomenon is in the category dating. This interaction will have to be considered when building the model. As well, there is a clear interaction between other categories such as Mature or Teen being heavily represented among certain Categories. Secondly, there may be an interaction between number of reviews and rating. 
 
-```{r int-reviews}
+```{r int-reviews, warning = FALSE, message = FALSE}
 ggplot(apps, aes(x = Reviews, y = Rating, color = Reviews)) + 
   geom_point() +
   labs( title = "Relationship between Reviews and Rating", x ="# of Reviews ", y = "Rating out of 5")
@@ -670,7 +671,7 @@ ggplot(apps, aes(x = Reviews, y = Rating, color = Reviews)) +
 
 As shown in this plot, as the number of reviews for an app increases, so does the rating generally. This is indicative of an app being popular so as there are more reviews there is most likely more polarization in the ratings. There is most likely some interaction between these two variables in the dataset. Thirdly, there may be an interaction between Type and Price. Since Type is an indicator measuring whether an app is paid or free, all apps that are free will be correlated with apps that have a price = 0 and apps that are paid will be correlated with apps that have a price greater than 0. 
 
-```{r int-type}
+```{r type-rating-price, warning = FALSE, message = FALSE}
 ggplot(apps, aes(x = Type, y = Rating, color = Price)) + 
   geom_point() +
   labs( title = "Relationship between Type & Rating", x ="Type", y = "Rating out of 5")
