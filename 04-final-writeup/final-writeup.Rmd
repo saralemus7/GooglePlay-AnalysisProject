@@ -630,7 +630,9 @@ If we were to continue the current project with the current dataset we would hav
 
 ## Section 4: Conclusion
 
-In conclusion, our project’s goal was to understand what factors contribute to an apps success as measured by the average rating given to an application. By conducting multiple regression analysis, we found that the categories and size variables are vital to the outcome of the mean ratings for an application. This can be useful to app developers, users, and application stores in how to view, change, and utilize applications. 
+In conclusion, our project’s goal was to understand what factors contribute to an app's success as measured by the average rating given for an application. We hypothesized that Category, Price, Installs, and Content Rating would be the predictor variables that would most affect a given app's mean rating. After conducting multiple regression analysis, we found that the categories and size variables are vital to the outcome of the mean ratings for an application. This is pretty different from our hypothesized outcome, we had not anticipated size being a significant predictor. 
+
+This information can be useful to app developers, users, and application stores in how to view, change, and utilize applications to ensure their success as measued by mean rating on the Google Play store. 
 
 ## Section 5: Additional Work
 
