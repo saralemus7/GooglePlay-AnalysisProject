@@ -82,7 +82,7 @@ Google Play Store. This is a numeric variable.
     ##  n obs: 10841 
     ##  n variables: 13 
     ## 
-    ## ── Variable type:character ──────────────────────────────────────────────────────────────────────────────────────────────────────
+    ## ── Variable type:character ──────────────────────────────────────────────────────────────────
     ##        variable missing complete     n min max empty n_unique
     ##     Android Ver       1    10840 10841   3  18     0       34
     ##             App       0    10841 10841   1 194     0     9660
@@ -96,7 +96,7 @@ Google Play Store. This is a numeric variable.
     ##            Size       0    10841 10841   3  18     0      462
     ##            Type       0    10841 10841   1   4     0        4
     ## 
-    ## ── Variable type:numeric ────────────────────────────────────────────────────────────────────────────────────────────────────────
+    ## ── Variable type:numeric ────────────────────────────────────────────────────────────────────
     ##  variable missing complete     n      mean         sd p0 p25    p50
     ##    Rating    1474     9367 10841      4.19       0.54  1   4    4.3
     ##   Reviews       1    10840 10841 444152.9  2927760.6   0  38 2094  
@@ -1058,15 +1058,19 @@ helps us predict rating.
 
 ## Section 4: Conclusion
 
-In conclusion, our project’s goal was to understand what factors
-contribute to an app’s success as measured by the average rating given
-for an application. We hypothesized that Category, Price, Installs, and
-Content Rating would be the predictor variables that would most affect a
-given app’s mean rating. After conducting multiple regression analysis,
-we found that the categories and size variables are vital to the outcome
-of the mean ratings for an application. This is pretty different from
-our hypothesized outcome, we had not anticipated size being a
-significant predictor.
+At the beginning of our investigation, we wanted to find out which
+factors contributed to an application’s success, as measured by their
+mean rating. We hypothesized that Category, Price, Installs, and Content
+Rating would be the predictor variables that would most affect a given
+app’s mean rating. After conducting multiple regression analysis and
+backwards selection, we found that the categories and size variables are
+vital to the outcome of the mean ratings for an application. This is
+pretty different from our hypothesized outcome, as we had not
+anticipated size being a significant predictor.
+
+The answer to our research question therefore is that the most
+significant factors in an application’s success are `category` and
+`size`.
 
 This information can be useful to app developers, users, and application
 stores in how to view, change, and utilize applications to ensure their
