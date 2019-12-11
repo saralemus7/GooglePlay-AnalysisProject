@@ -406,8 +406,8 @@ interaction between individual predictor variables and the response.
 Based on the scatterplot above, there is likely a relationship between
 categories and app rating. It appears that the median rating for all
 apps in categories outside the top 6 is higher than that of apps in the
-top 6, indicating that there is a relationship between rating and
-category\_simp.
+top 6, indicating that there is a relatinoship between rating and
+`category_simp`.
 
 ![](final-writeup_files/figure-gfm/reviews-rating-1.png)<!-- -->
 
