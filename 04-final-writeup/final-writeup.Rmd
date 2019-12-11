@@ -319,7 +319,7 @@ ggplot(data = apps, aes(x = category_simp, y = Rating)) + geom_boxplot() + coord
   labs(title = "Relationship between Category and Rating") 
 ```
 
-Although there is some variation in rating between app categories, the most telling aspect of this exploratory model is the outliers. It appears that some categories are more susceptible to outliers with low ratings. More over there are notable discrepancies between minimum boxplot rating among categories. **NOTE THIS NEEDS TO BE FIXED this was copy pasted from the old one i think
+Based on the scatterplot above, there is likely a relationship between categories and app rating. It appears that the median rating for all apps in  categories outside the top 6 is higher than that of apps in the top 6, indicating that there is a relatinoship between rating and `category_simp`.
 
 ```{r reviews-rating, warning = FALSE, message=FALSE}
 ggplot(data = apps, aes(x = log_reviews, y = Rating)) + geom_point() +

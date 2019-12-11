@@ -403,12 +403,11 @@ interaction between individual predictor variables and the response.
 
 ![](final-writeup_files/figure-gfm/category-rating-1.png)<!-- -->
 
-Although there is some variation in rating between app categories, the
-most telling aspect of this exploratory model is the outliers. It
-appears that some categories are more susceptible to outliers with low
-ratings. More over there are notable discrepancies between minimum
-boxplot rating among categories. \*\*NOTE THIS NEEDS TO BE FIXED this
-was copy pasted from the old one i think
+Based on the scatterplot above, there is likely a relationship between
+categories and app rating. It appears that the median rating for all
+apps in categories outside the top 6 is higher than that of apps in the
+top 6, indicating that there is a relatinoship between rating and
+`category_simp`.
 
 ![](final-writeup_files/figure-gfm/reviews-rating-1.png)<!-- -->
 
