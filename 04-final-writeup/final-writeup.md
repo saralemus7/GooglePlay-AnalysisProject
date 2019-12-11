@@ -82,7 +82,7 @@ Google Play Store. This is a numeric variable.
     ##  n obs: 10841 
     ##  n variables: 13 
     ## 
-    ## ── Variable type:character ──────────────────────────────────────────────────────────────────
+    ## ── Variable type:character ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
     ##        variable missing complete     n min max empty n_unique
     ##     Android Ver       1    10840 10841   3  18     0       34
     ##             App       0    10841 10841   1 194     0     9660
@@ -96,7 +96,7 @@ Google Play Store. This is a numeric variable.
     ##            Size       0    10841 10841   3  18     0      462
     ##            Type       0    10841 10841   1   4     0        4
     ## 
-    ## ── Variable type:numeric ────────────────────────────────────────────────────────────────────
+    ## ── Variable type:numeric ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
     ##  variable missing complete     n      mean         sd p0 p25    p50
     ##    Rating    1474     9367 10841      4.19       0.54  1   4    4.3
     ##   Reviews       1    10840 10841 444152.9  2927760.6   0  38 2094  
@@ -1075,9 +1075,45 @@ significant factors in an application’s success are `category` and
 This information can be useful to app developers, users, and application
 stores in how to view, change, and utilize applications to ensure their
 success as measued by mean rating on the Google Play
-    store.
+store.
 
 ## Section 5: Additional Work
+
+### Possible Interactions (Preliminary Analysis during EDA before we releveled and changed variables)
+
+First, there is a possible interaction between content rating and
+categories.
+
+![](final-writeup_files/figure-gfm/int-content-1.png)<!-- -->
+
+As shown in the plot above, there may be a correlation between having a
+lower content rating and being in a “family-friendly” category such as
+Family or game - a clear example of this phenomenon is in the category
+dating. This interaction will have to be considered when building the
+model. As well, there is a clear interaction between other categories
+such as Mature or Teen being heavily represented among certain
+Categories. Secondly, there may be an interaction between number of
+reviews and rating.
+
+![](final-writeup_files/figure-gfm/int-reviews-1.png)<!-- -->
+
+As shown in this plot, as the number of reviews for an app increases, so
+does the rating generally. This is indicative of an app being popular so
+as there are more reviews there is most likely more polarization in the
+ratings. There is most likely some interaction between these two
+variables in the dataset. Thirdly, there may be an interaction between
+Type and Price. Since Type is an indicator measuring whether an app is
+paid or free, all apps that are free will be correlated with apps that
+have a price = 0 and apps that are paid will be correlated with apps
+that have a price greater than 0.
+
+![](final-writeup_files/figure-gfm/int-type-1.png)<!-- -->
+
+This is further illustrated through the above plot, which clearly shows
+this interaction. These interactions along with any further ones we may
+find after our preliminary analysis will have to be explored further and
+considered when building our
+    model.
 
 ### Model Selection
 
