@@ -82,7 +82,7 @@ Google Play Store. This is a numeric variable.
     ##  n obs: 10841 
     ##  n variables: 13 
     ## 
-    ## ── Variable type:character ────────────────────────────────────────────────────────────────────────
+    ## ── Variable type:character ────────────────────────────────────────────
     ##        variable missing complete     n min max empty n_unique
     ##     Android Ver       1    10840 10841   3  18     0       34
     ##             App       0    10841 10841   1 194     0     9660
@@ -96,7 +96,7 @@ Google Play Store. This is a numeric variable.
     ##            Size       0    10841 10841   3  18     0      462
     ##            Type       0    10841 10841   1   4     0        4
     ## 
-    ## ── Variable type:numeric ──────────────────────────────────────────────────────────────────────────
+    ## ── Variable type:numeric ──────────────────────────────────────────────
     ##  variable missing complete     n      mean         sd p0 p25    p50
     ##    Rating    1474     9367 10841      4.19       0.54  1   4    4.3
     ##   Reviews       1    10840 10841 444152.9  2927760.6   0  38 2094  
@@ -297,16 +297,11 @@ a rating between 4 and 5, which is very high on a 5 point scale.
 
 Reviews is definitely one of our most skewed predictors, as shown by the
 strong right skew in this histogram. Originally, the skew was even more
-extreme, since there was one outlier that had 78 million reviews.
-Therefore, to correct this issue, we removed the outlier from the
-variable as well as log transformed it in order to make it easier to see
-trends as well as make the variable less skewed. We assumed that the
-outlier with 78 million reviews was a mistake coming from the data
-scrape, since a number so high seems very unlikely. We removed 38
-outliers using the 1.5 x (IQR) to the third/first quartile rule.
-Examples of apps that were removed are extremely popular apps such as
-“Facebook” or “Snapchat.” This would mean that later our model will
-not be extrapolating to apps with greater than 203579 reviews.
+extreme due to the presence of outliers. We removed 38 outliers using
+the 1.5 x (IQR) to the third/first quartile rule. Examples of apps that
+were removed are extremely popular apps such as “Facebook” or
+“Snapchat.” This would mean that later our model will not be
+extrapolating to apps with greater than 203579 reviews.
 
 ##### Category
 
@@ -877,7 +872,7 @@ plot.
 As shown, our residuals are relatively normally distributed in our
 histogram. The center is around 0 which is good; however there is a
 slight left skew. As well, our Normal-QQ plot doesn’t closely match the
-idea line at the beginning of the more negative values. It may be the
+ideal line at the beginning of the more negative values. It may be the
 case that there are many outliers or high leverage points in our model
 that are causing this skew and if they were removed then we wouldn’t see
 this. However, since our distribution of residuals is relatively normal
@@ -1109,13 +1104,13 @@ and skew.
 Additionally, it is important to note that the Google Play Store is a
 constantly changing environment. Apps come in and out of fashion in an
 often unpredictable manner, which our model may not predict. For
-example, TikTok, which is considered a social app, and which we chose to
-test our model on, is a new app that is immensely popular and already
-has 14 million reviews. Since our data set is old, we do not have this
-app in our model, however it may or may not have had an effect on our
-predictions. Since the play store is prone to change based on trends, it
-intrinsically presents a challenge for creating an accurate model that
-predicts ratings for apps that are up-to-date.
+example, TikTok, which is considered a social app, is a new app that is
+immensely popular and already has 14 million reviews. Since our data set
+is old, we do not have this app in our model, however it may or may not
+have had an effect on our predictions. Since the play store is prone to
+change based on trends, it intrinsically presents a challenge for
+creating an accurate model that predicts ratings for apps that are
+up-to-date.
 
 It is important to also consider that there may be external factors not
 accounted for that can influence the rating on an app. One of these is
