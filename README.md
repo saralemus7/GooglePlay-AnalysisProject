@@ -266,7 +266,7 @@ and its redundancy.
 
 ##### Ratings
 
-![](final-writeup_files/figure-gfm/rating-distribution-1.png)<!-- -->
+![](04-final-writeup/final-writeup_files/figure-gfm/rating-distribution-1.png)<!-- -->
 
     ## # A tibble: 1 x 2
     ##   `median(Rating)` `IQR(Rating)`
@@ -281,14 +281,14 @@ a rating between 4 and 5, which is very high on a 5 point scale.
 
 ##### Reviews
 
-![](final-writeup_files/figure-gfm/Reviews-1.png)<!-- -->
+![](04-final-writeup/final-writeup_files/figure-gfm/Reviews-1.png)<!-- -->
 
     ## # A tibble: 1 x 3
     ##   `median(Reviews)` `max(Reviews)` `IQR(Reviews)`
     ##               <dbl>          <dbl>          <dbl>
     ## 1              1902         203130          22909
 
-![](final-writeup_files/figure-gfm/log-reviews-1-1.png)<!-- -->
+![](04-final-writeup/final-writeup_files/figure-gfm/log-reviews-1-1.png)<!-- -->
 
     ## # A tibble: 1 x 3
     ##   `median(log_reviews)` `max(log_reviews)` `IQR(log_reviews)`
@@ -305,7 +305,7 @@ extrapolating to apps with greater than 203579 reviews.
 
 ##### Category
 
-![](final-writeup_files/figure-gfm/category-1.png)<!-- -->
+![](04-final-writeup/final-writeup_files/figure-gfm/category-1.png)<!-- -->
 
     ## # A tibble: 33 x 2
     ##    `apps$Category`         n
@@ -322,7 +322,7 @@ extrapolating to apps with greater than 203579 reviews.
     ## 10 ENTERTAINMENT         105
     ## # … with 23 more rows
 
-![](final-writeup_files/figure-gfm/log%20reviews-1.png)<!-- -->
+![](04-final-writeup/final-writeup_files/figure-gfm/log%20reviews-1.png)<!-- -->
 
     ## # A tibble: 2 x 2
     ##   `apps$category_simp`     n
@@ -341,7 +341,7 @@ represent about 4,000, almost 50%, of our observations.
 
 ##### Size
 
-![](final-writeup_files/figure-gfm/size-1.png)<!-- -->
+![](04-final-writeup/final-writeup_files/figure-gfm/size-1.png)<!-- -->
 
     ## # A tibble: 3 x 2
     ##   `apps$Size`             n
@@ -358,7 +358,7 @@ very few apps that have sizes greater than 100 MB.
 
 ##### Installs
 
-![](final-writeup_files/figure-gfm/installs-1.png)<!-- -->
+![](04-final-writeup/final-writeup_files/figure-gfm/installs-1.png)<!-- -->
 
     ## # A tibble: 5 x 2
     ##   `apps$Installs`                n
@@ -378,7 +378,7 @@ will be examined further when we make our model.
 
 ##### Price
 
-![](final-writeup_files/figure-gfm/price-1.png)<!-- -->
+![](04-final-writeup/final-writeup_files/figure-gfm/price-1.png)<!-- -->
 
     ## # A tibble: 3 x 2
     ##   Price                    n
@@ -395,7 +395,7 @@ the applications than `Type` which just indicated free or paid.
 
 ##### Content Rating
 
-![](final-writeup_files/figure-gfm/cr-1.png)<!-- -->
+![](04-final-writeup/final-writeup_files/figure-gfm/cr-1.png)<!-- -->
 
     ## # A tibble: 5 x 2
     ##   content_simp     n
@@ -414,7 +414,7 @@ to see on the plot.
 
 ##### Android Version
 
-![](final-writeup_files/figure-gfm/and-plot-1.png)<!-- -->
+![](04-final-writeup/final-writeup_files/figure-gfm/and-plot-1.png)<!-- -->
 
     ## # A tibble: 3 x 2
     ##   androidver_simp        n
@@ -430,7 +430,7 @@ version 1-4 category.
 
 ##### Date Since Last Update
 
-![](final-writeup_files/figure-gfm/datesince-plot-1.png)<!-- -->
+![](04-final-writeup/final-writeup_files/figure-gfm/datesince-plot-1.png)<!-- -->
 
     ## # A tibble: 1 x 3
     ##   `median(date_since)` `max(date_since)` `IQR(date_since)`
@@ -447,7 +447,7 @@ observations, it has been less than 92 days since the last update.
 A bivariate analysis between variables will help understand the
 interaction between individual predictor variables and the response.
 
-![](final-writeup_files/figure-gfm/category-rating-1.png)<!-- -->
+![](04-final-writeup/final-writeup_files/figure-gfm/category-rating-1.png)<!-- -->
 
     ## # A tibble: 2 x 4
     ##   category_simp      min   max   med
@@ -461,7 +461,7 @@ apps in categories outside the top 6 is higher (4.3) than that of apps
 in the top 6 (4.2), indicating that there is a relationship between
 rating and `category_simp`.
 
-![](final-writeup_files/figure-gfm/reviews-rating-1.png)<!-- -->
+![](04-final-writeup/final-writeup_files/figure-gfm/reviews-rating-1.png)<!-- -->
 
 Based on the scatterplot above, there is likely a relationship between
 number of reviews and app rating. As the number of reviews increased the
@@ -470,7 +470,7 @@ with apps holding smaller number of reviews. In general, though, there
 is a possible weak positive relationship between log(Reviews) and
 Rating.
 
-![](final-writeup_files/figure-gfm/size-rating-1.png)<!-- -->
+![](04-final-writeup/final-writeup_files/figure-gfm/size-rating-1.png)<!-- -->
 
     ## # A tibble: 3 x 4
     ##   Size                  min   max   med
@@ -486,7 +486,7 @@ device. In general, it appears that each category of size has a
 different median rating and thus there is most likely a relationship
 between Size and our response.
 
-![](final-writeup_files/figure-gfm/installs-rating-1.png)<!-- -->
+![](04-final-writeup/final-writeup_files/figure-gfm/installs-rating-1.png)<!-- -->
 
     ## # A tibble: 5 x 4
     ##   Installs                     min   max   med
@@ -506,7 +506,7 @@ installs, with the levels Between 1,000 and 10,000, Between 10,000 and
 100,000, and 100,000 or Greater all having medians of 4.2 compared to
 the medians 4.5 and 5 for the other two levels.
 
-![](final-writeup_files/figure-gfm/type-rating-1.png)<!-- -->
+![](04-final-writeup/final-writeup_files/figure-gfm/type-rating-1.png)<!-- -->
 
     ## # A tibble: 3 x 4
     ##   Price                  min   max   med
@@ -522,7 +522,7 @@ and 4.99, then the median rating actually increases to 4.4. If an app
 price is greater than 5 dollars, the median decreases slightly to 4.2,
 however there are less outliers for this category.
 
-![](final-writeup_files/figure-gfm/content-rating-1.png)<!-- -->
+![](04-final-writeup/final-writeup_files/figure-gfm/content-rating-1.png)<!-- -->
 
     ## # A tibble: 5 x 4
     ##   content_simp   min   max   med
@@ -543,7 +543,7 @@ seem to have slightly higher ratings. Adults only actually has the
 highest median rating out of all of the categories of 4.5, with no
 outliers. Unrated has few observations, but a median of 4.1.
 
-![](final-writeup_files/figure-gfm/andsimp-rating-1.png)<!-- -->
+![](04-final-writeup/final-writeup_files/figure-gfm/andsimp-rating-1.png)<!-- -->
 
     ## # A tibble: 3 x 4
     ##   androidver_simp      min   max   med
@@ -560,7 +560,7 @@ that vary with device show an even higher median and smaller IQR than
 either of the other two categories, implying that these apps have the
 highest ratings.
 
-![](final-writeup_files/figure-gfm/datesince-rating-1.png)<!-- -->
+![](04-final-writeup/final-writeup_files/figure-gfm/datesince-rating-1.png)<!-- -->
 
 Looking at the scatter plot that shows the relationship between days
 since last update and rating, we can see that there is not a very strong
@@ -821,7 +821,7 @@ To illustrate this, we will re-display the bivariate plots with our
 final predictor
 variables.
 
-![](final-writeup_files/figure-gfm/linearity-1.png)<!-- -->![](final-writeup_files/figure-gfm/linearity-2.png)<!-- -->
+![](04-final-writeup/final-writeup_files/figure-gfm/linearity-1.png)<!-- -->![](04-final-writeup/final-writeup_files/figure-gfm/linearity-2.png)<!-- -->
 
 As shown in the plots above, both the predictor variables appear to
 satisfy the linearity assumption.
@@ -833,7 +833,7 @@ the same for all of the predictor variables in the model. To test this
 assumption, we will plot the residual values against the predicted
 values.
 
-![](final-writeup_files/figure-gfm/resid-plots-1.png)<!-- -->
+![](04-final-writeup/final-writeup_files/figure-gfm/resid-plots-1.png)<!-- -->
 
 As shown, it appears that there are no significant concerns with
 constant variance. Although there appears to be a small, non-random
@@ -867,7 +867,7 @@ the response variable, `ratings`, follows a Normal distribution around
 its mean. To test this, we will make a Normal QQ
 plot.
 
-![](final-writeup_files/figure-gfm/norm-qq-1.png)<!-- -->![](final-writeup_files/figure-gfm/norm-qq-2.png)<!-- -->
+![](04-final-writeup/final-writeup_files/figure-gfm/norm-qq-1.png)<!-- -->![](04-final-writeup/final-writeup_files/figure-gfm/norm-qq-2.png)<!-- -->
 
 As shown, our residuals are relatively normally distributed in our
 histogram. The center is around 0 which is good; however there is a
@@ -896,7 +896,7 @@ other and thus the Independence Assumption is maintained.
 According to lecture, the threshold we should use for determining if
 observations are high leverage points is: hi \> (2(p+1))/n
 
-![](final-writeup_files/figure-gfm/leverage-1.png)<!-- -->
+![](04-final-writeup/final-writeup_files/figure-gfm/leverage-1.png)<!-- -->
 
 Let’s filter to see the total \# of points that crossed the threshold.
 
@@ -926,7 +926,7 @@ Now let’s check how many of these points cross our threshold for Cook’s
 Distance (Di \> 1) to determine if these high leverage points do in fact
 have a significant influence on our model coefficients.
 
-![](final-writeup_files/figure-gfm/cooks-distance-1.png)<!-- -->
+![](04-final-writeup/final-writeup_files/figure-gfm/cooks-distance-1.png)<!-- -->
 
 Let’s check to see the number of points that violated this threshold.
 
@@ -946,7 +946,7 @@ Now, let’s plot our standardized residuals to see if there are any
 points which break the threshold |resid std.| \>
 2.
 
-![](final-writeup_files/figure-gfm/standardresid-predicted-1.png)<!-- -->
+![](04-final-writeup/final-writeup_files/figure-gfm/standardresid-predicted-1.png)<!-- -->
 
 As depicted the plot, there are a number of points which violate this
 threshold, so let’s filter the data to get an exact number.
@@ -972,7 +972,7 @@ standardized residuals with large magnitude. This us much better than
 our previous model which had greater than 470 points that violated this
 threshold.
 
-![](final-writeup_files/figure-gfm/residgram-1.png)<!-- -->
+![](04-final-writeup/final-writeup_files/figure-gfm/residgram-1.png)<!-- -->
 
     ## [1] 4.702682
 
@@ -1177,7 +1177,7 @@ store.
 First, there is a possible interaction between content rating and
 categories.
 
-![](final-writeup_files/figure-gfm/int-content-1.png)<!-- -->
+![](04-final-writeup/final-writeup_files/figure-gfm/int-content-1.png)<!-- -->
 
 As shown in the plot above, there may be a correlation between having a
 lower content rating and being in a “family-friendly” category such as
@@ -1188,7 +1188,7 @@ such as Mature or Teen being heavily represented among certain
 Categories. Secondly, there may be an interaction between number of
 reviews and rating.
 
-![](final-writeup_files/figure-gfm/int-reviews-1.png)<!-- -->
+![](04-final-writeup/final-writeup_files/figure-gfm/int-reviews-1.png)<!-- -->
 
 As shown in this plot, as the number of reviews for an app increases, so
 does the rating generally. This is indicative of an app being popular so
@@ -1198,12 +1198,7 @@ variables in the dataset. Thirdly, there may be an interaction between
 Type and Price. Since Type is an indicator measuring whether an app is
 paid or free, all apps that are free will be correlated with apps that
 have a price = 0 and apps that are paid will be correlated with apps
-that have a price greater than 0.
-
-![](final-writeup_files/figure-gfm/type-rating-price-1.png)<!-- -->
-
-This is further illustrated through the above plot, which clearly shows
-this interaction. These interactions along with any further ones we may
+that have a price greater than 0. These interactions along with any further ones we may
 find after our preliminary analysis will have to be explored further and
 considered when building our
     model.
@@ -1383,18 +1378,18 @@ forward selection.
 
 Here is the residual plot for the model produced by BIC selection:
 
-![](final-writeup_files/figure-gfm/final-model2-1.png)<!-- -->
+![](04-final-writeup/final-writeup_files/figure-gfm/final-model2-1.png)<!-- -->
 
 As shown there is a significantly visible pattern in this model’s
 residuals, far worse than our current model.
 
 ### References
 
-Gupta, Lavanya. Kaggle. Jan. 2019,
+Gupta, Lavanya. Kaggle. Jan.2019,
 www.kaggle.com/lava18/google-play-store-apps?fbclid=IwAR36EMS2jg5fhPi-BQlX6Mv4MCk8YUm2XmyOLt0zsKkNyc9JK-JD7aLy-6I.
-Accessed 30 Oct. 2019.
+Accessed 30 Oct.2019.
 
 Dignan, Larry. “App Economy Expected to Be $120 Billion in 2019 as Small
 Screen Leads Digital Transformation Efforts.” ZDNet, ZDNet, 16
-Jan. 2019,
+Jan.2019,
 www.zdnet.com/article/app-economy-expected-to-be-120-billion-in-2019-as-small-screen-leads-digital-transformation-efforts/
